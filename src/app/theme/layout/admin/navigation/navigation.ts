@@ -52,7 +52,7 @@ const NavigationItems = [
         children: [
           {
             id: 'listadoHoteles',
-            title: 'Listado',
+            title: 'Listado de hoteles',
             type: 'item',
             url: '/hoteles/list',
           },
@@ -84,7 +84,7 @@ const NavigationItems = [
         children: [
           {
             id: 'listadoHabitaciones',
-            title: 'Listado',
+            title: 'Listado de habitaciones',
             type: 'item',
             url: '/habitaciones/list',
           },
@@ -110,7 +110,7 @@ const NavigationItems = [
         children: [
           {
             id: 'listadoHuespedes',
-            title: 'Listado',
+            title: 'Listado de huéspedes',
             type: 'item',
             url: '/huespedes/list',
           },
@@ -136,7 +136,7 @@ const NavigationItems = [
         children: [
           {
             id: 'listadoServicios',
-            title: 'Listado',
+            title: 'Listado de servicios',
             type: 'item',
             url: '/servicios/list',
           },
