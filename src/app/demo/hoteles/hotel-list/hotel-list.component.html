@@ -1,1 +1,38 @@
-<p>hotel-list works!</p>
+<div class="col-xl-12">
+  <app-card
+    cardTitle="Lista de Hoteles"
+    [options]="false"
+    blockClass="table-border-style"
+  >
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Sitio Web</th>
+            <th>Habitaciones totales</th>
+            <th>Habitaciones Disponibles</th>
+            <th>Habitaciones Reservadas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hotel of hoteles">
+            <td>{{ hotel.id }}</td>
+            <td>{{ hotel.nombre }}</td>
+            <td>{{ hotel.direccion }}</td>
+            <td>{{ hotel.telefono }}</td>
+            <td>{{ hotel.email }}</td>
+            <td>{{ hotel.sitioWeb }}</td>
+            <td>{{ hotel.numeroHabitaciones }}</td>
+            <td>{{ hotel.numeroHabitacionesDisponibles }}</td>
+            <td>{{ hotel.numeroHabitacionesReservadas }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>

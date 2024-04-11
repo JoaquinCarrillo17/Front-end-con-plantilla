@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'hotel-chart',
         pathMatch: 'full',
       },
       {
@@ -68,7 +68,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'apexchart',
+        path: 'hotel-chart',
         loadComponent: () =>
           import('./demo/chart/apex-chart/apex-chart.component'),
       },

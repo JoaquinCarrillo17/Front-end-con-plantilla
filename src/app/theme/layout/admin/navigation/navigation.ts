@@ -32,7 +32,7 @@ const NavigationItems = [
         id: 'apexChart',
         title: 'Hoteles Chart',
         type: 'item',
-        url: 'apexchart',
+        url: '/hotel-chart',
         classes: 'nav-item',
         icon: 'feather icon-pie-chart',
       },

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HotelesRoutingModule } from './hoteles-routing.module';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 
 
@@ -8,7 +9,7 @@ import { HotelesRoutingModule } from './hoteles-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    HotelesRoutingModule
+    HotelesRoutingModule,
   ]
 })
 export class HotelesModule { }
