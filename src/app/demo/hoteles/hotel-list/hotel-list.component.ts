@@ -14,7 +14,6 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 export class HotelListComponent implements OnInit {
 
   public hoteles: Hotel[];
-  query: string = '';
 
   constructor(private HotelesService: HotelesService) { }
 
@@ -22,16 +21,8 @@ export class HotelListComponent implements OnInit {
     this.HotelesService.getAllHoteles().subscribe(hoteles => this.hoteles = hoteles);
   }
 
-  buscarHoteles() {
-    // Aquí puedes agregar la lógica para buscar hoteles según la consulta
-    console.log('Buscando hoteles con la consulta:', this.query);
-    // Llama a tu servicio o realiza la búsqueda directamente aquí
-  }
-
   search(value: string) {
-    // Aquí gestionas el valor de búsqueda
-    console.log('Valor de búsqueda:', value);
-    // Llama a tu función de búsqueda aquí
+    this.HotelesService.getHotelesFilteredByQuery(value).subscribe(hoteles => this.hoteles = hoteles);
   }
 
 

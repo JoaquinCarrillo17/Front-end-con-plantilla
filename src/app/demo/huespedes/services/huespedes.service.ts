@@ -17,5 +17,11 @@ export class HuespedesService {
     );
   }
 
+  getHuespedesFilteredByQuery(query: string, page?: number, items?: number): Observable<Huesped[]> {
+    return this.http.get<Huesped[]>(`${this.baseUrl}/huespedes/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
+      tap(huespedes => console.log(huespedes))
+    );
+  }
+
 }
 

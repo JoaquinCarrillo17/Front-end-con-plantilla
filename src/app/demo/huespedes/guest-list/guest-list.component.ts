@@ -20,6 +20,9 @@ export class GuestListComponent implements OnInit{
     this.HuespedesService.getAllHuespedes().subscribe(huespedes => this.huespedes = huespedes);
   }
 
+  search(value: string) {
+    this.HuespedesService.getHuespedesFilteredByQuery(value).subscribe(huespedes => this.huespedes = huespedes);
+  }
 
 
 }

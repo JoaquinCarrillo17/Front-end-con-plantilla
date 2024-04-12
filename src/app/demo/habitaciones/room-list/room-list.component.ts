@@ -20,6 +20,9 @@ export class RoomListComponent implements OnInit {
     this.HabitacionesService.getAllHabitaciones().subscribe(habitaciones => this.habitaciones = habitaciones);
   }
 
+  search(value: string) {
+    this.HabitacionesService.getHabitacionesFilteredByQuery(value).subscribe(habitaciones => this.habitaciones = habitaciones);
+  }
 
 
 }

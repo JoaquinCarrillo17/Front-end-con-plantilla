@@ -4,6 +4,7 @@
     [options]="false"
     blockClass="table-border-style"
   >
+  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>

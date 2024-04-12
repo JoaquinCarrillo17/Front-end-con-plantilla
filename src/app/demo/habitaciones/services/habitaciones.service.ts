@@ -17,4 +17,10 @@ export class HabitacionesService {
     );
   }
 
+  getHabitacionesFilteredByQuery(query: string, page?: number, items?: number): Observable<Habitacion[]> {
+    return this.http.get<Habitacion[]>(`${this.baseUrl}/habitaciones/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
+      tap(habitaciones => console.log(habitaciones))
+    );
+  }
+
 }

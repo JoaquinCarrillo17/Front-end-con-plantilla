@@ -20,4 +20,8 @@ export class ServiceListComponent implements OnInit {
     this.ServiciosService.getAllServicios().subscribe(servicios => this.servicios = servicios);
   }
 
+  search(value: string) {
+    this.ServiciosService.getServiciosFilteredByQuery(value).subscribe(servicios => this.servicios = servicios);
+  }
+
 }

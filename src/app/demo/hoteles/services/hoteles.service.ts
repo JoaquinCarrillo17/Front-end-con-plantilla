@@ -14,7 +14,13 @@ export class HotelesService {
 
   getAllHoteles(page?: number, items?: number) : Observable<Hotel[]> {
     return this.http.get<Hotel[]>(`${this.baseUrl}/hoteles/magicFilter?pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
-      tap(hoteles => console.log(hoteles)) // Loggea los hoteles emitidos por el observable
+      tap(hoteles => console.log(hoteles))
+    );
+  }
+
+  getHotelesFilteredByQuery(query: string, page?: number, items?: number): Observable<Hotel[]> {
+    return this.http.get<Hotel[]>(`${this.baseUrl}/hoteles/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
+      tap(hoteles => console.log(hoteles))
     );
   }
 
