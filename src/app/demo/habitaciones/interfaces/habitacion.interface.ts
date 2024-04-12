@@ -12,5 +12,4 @@ export interface Habitacion {
   numero: string;
   tipoHabitacion: TipoHabitacion;
   precioNoche: number;
-  huespedes: Huesped[];
 }

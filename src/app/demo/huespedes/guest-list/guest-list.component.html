@@ -1,1 +1,32 @@
-<p>guest-list works!</p>
+<div class="col-xl-12">
+  <app-card
+    cardTitle="Lista de Huéspedes"
+    [options]="false"
+    blockClass="table-border-style"
+  >
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre Completo</th>
+            <th>DNI</th>
+            <th>Email</th>
+            <th>Fecha de Check-In</th>
+            <th>Fecha de Check-Out</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let huesped of huespedes">
+            <td>{{ huesped.id }}</td>
+            <td>{{ huesped.nombreCompleto }}</td>
+            <td>{{ huesped.dni }}</td>
+            <td>{{ huesped.email }}</td>
+            <td>{{ huesped.fechaCheckIn }}</td>
+            <td>{{ huesped.fechaCheckOut }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>
