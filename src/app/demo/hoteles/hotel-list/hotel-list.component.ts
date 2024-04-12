@@ -19,17 +19,17 @@ export class HotelListComponent implements OnInit {
   public pageNumber: number = 0;
   public itemsPerPage: number = 5;
 
-  constructor(private HotelesService: HotelesService) { }
+  constructor(private hotelesService: HotelesService) { }
 
   ngOnInit(): void {
-    this.HotelesService.getAllHoteles(this.pageNumber, this.itemsPerPage).subscribe(response => {
+    this.hotelesService.getAllHoteles(this.pageNumber, this.itemsPerPage).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
     });
   }
 
   search(value: string) {
-    this.HotelesService.getHotelesFilteredByQuery(value, this.pageNumber, this.itemsPerPage).subscribe(response => {
+    this.hotelesService.getHotelesFilteredByQuery(value, this.pageNumber, this.itemsPerPage).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.query = value;
@@ -37,14 +37,14 @@ export class HotelListComponent implements OnInit {
   }
 
   onPageChange(value: number) {
-    this.HotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => { // TODO : cuando cambio de la pagina 1 a la 2, siempre mando coger 5 items por pagina (por defecto), si antes de cambiar de pagina he cambiado los items por pagina se me jode
+    this.hotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => { // TODO : cuando cambio de la pagina 1 a la 2, siempre mando coger 5 items por pagina (por defecto), si antes de cambiar de pagina he cambiado los items por pagina se me jode
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
     });
   }
 
   onItemPerPageChange(value: number) {
-    this.HotelesService.getHotelesFilteredByQuery(this.query, this.pageNumber, value).subscribe(response => {
+    this.hotelesService.getHotelesFilteredByQuery(this.query, this.pageNumber, value).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
     });

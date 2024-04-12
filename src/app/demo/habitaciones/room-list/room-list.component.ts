@@ -18,14 +18,39 @@ export class RoomListComponent implements OnInit {
   public pageNumber: number = 0;
   public itemsPerPage: number = 5;
 
-  constructor(private HabitacionesService: HabitacionesService){ }
+  constructor(private habitacionesService: HabitacionesService){ }
 
   ngOnInit(): void {
-    this.HabitacionesService.getAllHabitaciones().subscribe(habitaciones => this.habitaciones = habitaciones);
+    this.habitacionesService.getAllHabitaciones(this.pageNumber, this.itemsPerPage)
+      .subscribe(response => {
+        this.habitaciones = response.habitaciones;
+        this.totalItems = response.totalItems;
+      });
   }
 
-  search(value: string) {
-    this.HabitacionesService.getHabitacionesFilteredByQuery(value).subscribe(habitaciones => this.habitaciones = habitaciones);
+  search(value: string): void {
+    this.habitacionesService.getHabitacionesFilteredByQuery(value, this.pageNumber, this.itemsPerPage)
+      .subscribe(response => {
+        this.habitaciones = response.habitaciones;
+        this.totalItems = response.totalItems;
+        this.query = value;
+      });
+  }
+
+  onPageChange(value: number): void {
+    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, value, this.itemsPerPage)
+      .subscribe(response => {
+        this.habitaciones = response.habitaciones;
+        this.totalItems = response.totalItems;
+      });
+  }
+
+  onItemPerPageChange(value: number): void {
+    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.pageNumber, value)
+      .subscribe(response => {
+        this.habitaciones = response.habitaciones;
+        this.totalItems = response.totalItems;
+      });
   }
 
 

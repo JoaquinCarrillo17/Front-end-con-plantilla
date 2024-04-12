@@ -11,17 +11,16 @@ export class HuespedesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllHuespedes(page?: number, items?: number) : Observable<Huesped[]> {
-    return this.http.get<Huesped[]>(`${this.baseUrl}/huespedes/magicFilter?pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
+  getAllHuespedes(page?: number, items?: number) : Observable<{ huespedes: Huesped[], totalItems: number }> {
+    return this.http.get<{ huespedes: Huesped[], totalItems: number }>(`${this.baseUrl}/huespedes/magicFilter?pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
       tap(huespedes => console.log(huespedes)) // Loggea los huespedes emitidos por el observable
     );
   }
 
-  getHuespedesFilteredByQuery(query: string, page?: number, items?: number): Observable<Huesped[]> {
-    return this.http.get<Huesped[]>(`${this.baseUrl}/huespedes/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
+  getHuespedesFilteredByQuery(query: string, page?: number, items?: number): Observable<{ huespedes: Huesped[], totalItems: number }> {
+    return this.http.get<{ huespedes: Huesped[], totalItems: number }>(`${this.baseUrl}/huespedes/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
       tap(huespedes => console.log(huespedes))
     );
   }
 
 }
-

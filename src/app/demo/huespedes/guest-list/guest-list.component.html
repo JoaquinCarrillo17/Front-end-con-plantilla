@@ -29,5 +29,6 @@
         </tbody>
       </table>
     </div>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
 </div>

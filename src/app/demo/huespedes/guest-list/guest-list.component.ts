@@ -13,15 +13,44 @@ import { HuespedesService } from '../services/huespedes.service';
 export class GuestListComponent implements OnInit{
 
   public huespedes: Huesped[];
+  public totalItems: number = 0;
+  public query: string = '';
+  public pageNumber: number = 0;
+  public itemsPerPage: number = 5;
 
-  constructor(private HuespedesService: HuespedesService) { }
+  constructor(private huespedesService: HuespedesService) { }
 
   ngOnInit(): void {
-    this.HuespedesService.getAllHuespedes().subscribe(huespedes => this.huespedes = huespedes);
+    this.huespedesService.getAllHuespedes(this.pageNumber, this.itemsPerPage)
+      .subscribe(response => {
+        this.huespedes = response.huespedes;
+        this.totalItems = response.totalItems;
+      });
   }
 
-  search(value: string) {
-    this.HuespedesService.getHuespedesFilteredByQuery(value).subscribe(huespedes => this.huespedes = huespedes);
+  search(value: string): void {
+    this.huespedesService.getHuespedesFilteredByQuery(value, this.pageNumber, this.itemsPerPage)
+      .subscribe(response => {
+        this.huespedes = response.huespedes;
+        this.totalItems = response.totalItems;
+        this.query = value;
+      });
+  }
+
+  onPageChange(value: number): void {
+    this.huespedesService.getHuespedesFilteredByQuery(this.query, value, this.itemsPerPage)
+      .subscribe(response => {
+        this.huespedes = response.huespedes;
+        this.totalItems = response.totalItems;
+      });
+  }
+
+  onItemPerPageChange(value: number): void {
+    this.huespedesService.getHuespedesFilteredByQuery(this.query, this.pageNumber, value)
+      .subscribe(response => {
+        this.huespedes = response.huespedes;
+        this.totalItems = response.totalItems;
+      });
   }
 
 
