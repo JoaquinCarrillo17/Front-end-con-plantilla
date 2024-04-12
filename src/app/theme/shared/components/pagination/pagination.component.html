@@ -1,0 +1,16 @@
+<div class="pagination-container">
+  <div class="pagination-info">
+    Filas por página:
+    <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+      <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
+    </select>
+    {{ startIndex + 1 }} - {{ endIndex }} de {{ totalItems }}
+  </div>
+  <div class="pagination-buttons">
+    <button (click)="firstPage()" [disabled]="currentPage === 1">First</button>
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+    <button *ngFor="let page of pages" (click)="goToPage(page)" [disabled]="currentPage === page">{{ page }}</button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    <button (click)="lastPage()" [disabled]="currentPage === totalPages">Last</button>
+  </div>
+</div>

@@ -14,16 +14,42 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 export class HotelListComponent implements OnInit {
 
   public hoteles: Hotel[];
+  public totalItems: number = 0;
+  public query: string = '';
+  public pageNumber: number = 0;
+  public itemsPerPage: number = 5;
 
   constructor(private HotelesService: HotelesService) { }
 
   ngOnInit(): void {
-    this.HotelesService.getAllHoteles().subscribe(hoteles => this.hoteles = hoteles);
+    this.HotelesService.getAllHoteles(this.pageNumber, this.itemsPerPage).subscribe(response => {
+      this.hoteles = response.hoteles;
+      this.totalItems = response.totalItems;
+    });
   }
 
   search(value: string) {
-    this.HotelesService.getHotelesFilteredByQuery(value).subscribe(hoteles => this.hoteles = hoteles);
+    this.HotelesService.getHotelesFilteredByQuery(value, this.pageNumber, this.itemsPerPage).subscribe(response => {
+      this.hoteles = response.hoteles;
+      this.totalItems = response.totalItems;
+      this.query = value;
+    });
   }
+
+  onPageChange(value: number) {
+    this.HotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => {
+      this.hoteles = response.hoteles;
+      this.totalItems = response.totalItems;
+    });
+  }
+
+  onItemPerPageChange(value: number) {
+    this.HotelesService.getHotelesFilteredByQuery(this.query, this.pageNumber, value).subscribe(response => {
+      this.hoteles = response.hoteles;
+      this.totalItems = response.totalItems;
+    });
+  }
+
 
 
 }
