@@ -37,7 +37,7 @@ export class HotelListComponent implements OnInit {
   }
 
   onPageChange(value: number) {
-    this.HotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => {
+    this.HotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => { // TODO : cuando cambio de la pagina 1 a la 2, siempre mando coger 5 items por pagina (por defecto), si antes de cambiar de pagina he cambiado los items por pagina se me jode
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
     });

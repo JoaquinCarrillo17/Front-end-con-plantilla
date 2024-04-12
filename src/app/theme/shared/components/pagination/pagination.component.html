@@ -7,10 +7,10 @@
     {{ startIndex + 1 }} - {{ endIndex }} de {{ totalItems }}
   </div>
   <div class="pagination-buttons">
-    <button (click)="firstPage()" [disabled]="currentPage === 1">First</button>
-    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
-    <button *ngFor="let page of pages" (click)="goToPage(page)" [disabled]="currentPage === page">{{ page }}</button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
-    <button (click)="lastPage()" [disabled]="currentPage === totalPages">Last</button>
+    <button (click)="firstPage()" [disabled]="currentPage === 1" class="pagination-button-NaN {{ currentPage === 1 ? 'disabled' : '' }}">First</button>
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="pagination-button-NaN {{ currentPage === 1 ? 'disabled' : '' }}">Prev</button>
+    <button *ngFor="let page of pages" (click)="goToPage(page)" [disabled]="currentPage === page" class="pagination-button {{ currentPage === page ? 'active' : '' }}">{{ page }}</button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-button-NaN {{ currentPage === totalPages ? 'disabled' : '' }}">Next</button>
+    <button (click)="lastPage()" [disabled]="currentPage === totalPages" class="pagination-button-NaN {{ currentPage === totalPages ? 'disabled' : '' }}">Last</button>
   </div>
 </div>

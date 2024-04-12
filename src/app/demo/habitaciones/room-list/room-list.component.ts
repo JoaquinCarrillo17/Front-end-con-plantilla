@@ -13,6 +13,10 @@ import { HabitacionesService } from '../services/habitaciones.service';
 export class RoomListComponent implements OnInit {
 
   public habitaciones: Habitacion[];
+  public totalItems: number = 0;
+  public query: string = '';
+  public pageNumber: number = 0;
+  public itemsPerPage: number = 5;
 
   constructor(private HabitacionesService: HabitacionesService){ }
 

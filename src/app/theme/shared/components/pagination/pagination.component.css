@@ -1,12 +1,39 @@
 .pagination-container {
   display: flex;
   justify-content: flex-end;
+  padding: 15px 15px 0px 15px;
 }
 
 .pagination-info {
   margin-right: 20px;
 }
 
-.pagination-buttons button {
+.pagination-buttons .pagination-button , .pagination-button-NaN{
   margin-left: 5px;
+  border: none;
+  border-radius: 50%;
+  height: 30px;
+  background-color: transparent;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-button-NaN {
+  width: 45px;
+}
+
+.pagination-button {
+  width: 30px;
+}
+
+.pagination-buttons .pagination-button.disabled , .pagination-button-NaN.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-buttons .pagination-button.active , .pagination-button-NaN.active {
+  background-color: #04a9f5;
+  color: #fff;
 }
