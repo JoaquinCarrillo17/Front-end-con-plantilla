@@ -14,6 +14,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 // third party
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [SpinnerComponent],
@@ -26,6 +27,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     NgScrollbarModule,
     NgbCollapseModule,
     BreadcrumbsComponent,
+    SearchBarComponent,
   ],
   exports: [
     CommonModule,
@@ -37,6 +39,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     NgScrollbarModule,
     NgbCollapseModule,
     BreadcrumbsComponent,
+    SearchBarComponent,
   ],
 })
 export class SharedModule {}
