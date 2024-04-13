@@ -28,6 +28,7 @@ export class LinkHotelServiceComponent implements OnInit {
   }
 
   onSubmit() {
+    // ! EL REQUIRED SOLO FUNCIONA SI PONGO EL BOTON SUBMIT PERO SI HAGO ESTO NO PUEDO HACER EL ROUTER NI VER LOS PRINTS
     const nombre = this.nombreInput.nativeElement.value;
     const descripcion = this.descripcionInput.nativeElement.value;
     const categoria = this.categoriaSelect.nativeElement.value;
