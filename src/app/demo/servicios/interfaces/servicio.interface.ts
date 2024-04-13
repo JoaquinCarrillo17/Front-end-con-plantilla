@@ -1,5 +1,5 @@
 
-enum CategoriaServicio {
+export enum CategoriaServicio {
   GIMNASIO = "GIMNASIO",
   BAR = "BAR",
   LAVANDERIA = "LAVANDERIA",
@@ -8,7 +8,7 @@ enum CategoriaServicio {
 }
 
 export interface Servicio {
-  id: number;
+  id?: number;
   nombre: string;
   descripcion: string;
   categoria: CategoriaServicio;

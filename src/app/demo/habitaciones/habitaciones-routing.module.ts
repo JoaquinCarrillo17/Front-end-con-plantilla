@@ -18,7 +18,7 @@ const routes: Routes = [
         component: AddRoomComponent,
       },
       {
-        path: ':id/huespedes',
+        path: 'huespedes',
         component: LinkRoomGuestComponent,
       },
     ]

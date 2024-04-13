@@ -1,1 +1,48 @@
-<p>link-hotel-service works!</p>
+<div class="col-md-6">
+  <h5 class="mt-5">Añadir servicio a hotel</h5>
+  <hr />
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="descripcion" class="col-sm-3 col-form-label">Descripción</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="categoria" class="col-sm-3 col-form-label">Categoría</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="categoria" #categoriaSelect required>
+          <option value="" selected disabled>Elige una categoría</option>
+          <option value="GIMNASIO">Gimnasio</option>
+          <option value="BAR">Bar</option>
+          <option value="LAVANDERIA">Lavandería</option>
+          <option value="KARAOKE">Karaoke</option>
+          <option value="CASINO">Casino</option>
+          <!-- Opciones de categoría -->
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="hotel" class="col-sm-3 col-form-label">Hotel</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="hotel" #hotelSelect required>
+          <option value="" selected disabled>Elige un hotel</option>
+          <option *ngFor="let hotel of hoteles" [value]="hotel.id">{{ hotel.nombre }}</option>
+          <!-- Opciones de hotel -->
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <!-- TODO Cambiar a submit para que se recargue y quitar el click (se hace automatico), lo dejo en button para pruebas -->
+        <button type="button" (click)="onSubmit()" class="btn btn-primary">Crear Servicio</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -22,7 +22,7 @@ export class HotelListComponent implements OnInit {
   constructor(private hotelesService: HotelesService) { }
 
   ngOnInit(): void {
-    this.hotelesService.getAllHoteles(this.pageNumber, this.itemsPerPage).subscribe(response => {
+    this.hotelesService.getAllHotelesMagicFilter(this.pageNumber, this.itemsPerPage).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
     });
