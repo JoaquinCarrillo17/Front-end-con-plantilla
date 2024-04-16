@@ -2,19 +2,20 @@
   top: 0;
   position: relative;
   margin: auto;
-  width: 100%;
+  width: 40px; /* Ancho del spinner */
+  height: 40px; /* Altura del spinner */
 }
 
 .sk-line-material .sk-child {
   width: 100%;
-  height: 4px;
-  position: absolute;
-  top: 0;
-  display: inline-block;
-  transform-origin: 0% 0%;
-  -webkit-animation: sk-line-material 2s ease-in-out 0s infinite both;
-  animation: sk-line-material 2s ease-in-out 0s infinite both;
+  height: 100%;
+  border-radius: 50%; /* Para hacerlo circular */
+  border: 4px solid transparent; /* Grosor del borde */
+  border-top: 4px solid #1dc4e9; /* Color del borde superior */
+  animation: spin 1s linear infinite; /* Animación de rotación */
+  animation-fill-mode: forwards; /* Mantener la última posición de la animación */
 }
+
 
 @-webkit-keyframes sk-line-material {
   0%,
@@ -41,6 +42,9 @@
 }
 
 #http-loader {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
   top: 0;
   left: 0;
   height: 100%;
@@ -49,13 +53,31 @@
   z-index: 9999;
 }
 
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px solid rgba(0, 0, 0, .1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #09f;
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); } /* Rotación inicial */
+  100% { transform: rotate(360deg); } /* Rotación completa */
+}
+
 .loader-bg {
-  height: 100%;
-  width: 100%;
+  height: 50%;
+  width: 50%;
   position: absolute;
   filter: alpha(opacity=70);
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
 }
 
 .colored-parent,

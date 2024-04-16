@@ -1,10 +1,10 @@
 <div class="col-xl-12">
-  <app-card
-    cardTitle="Lista de Hoteles"
-    [options]="false"
-    blockClass="table-border-style"
-  >
-  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
+  <!-- Mostrar el spinner mientras se cargan los datos -->
+
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+
+  <app-card cardTitle="Lista de Hoteles" [options]="false" blockClass="table-border-style">
+    <app-search-bar (searchEvent)="search($event)"></app-search-bar>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -35,6 +35,7 @@
         </tbody>
       </table>
     </div>
-    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
+      (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
 </div>

@@ -12,6 +12,7 @@ import { HuespedesService } from '../services/huespedes.service';
 })
 export class GuestListComponent implements OnInit{
 
+  isSpinnerVisible: boolean = true;
   public huespedes: Huesped[];
   public totalItems: number = 0;
   public query: string = '';
@@ -25,31 +26,38 @@ export class GuestListComponent implements OnInit{
       .subscribe(response => {
         this.huespedes = response.huespedes;
         this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
       });
   }
 
   search(value: string): void {
+    this.isSpinnerVisible = true;
     this.huespedesService.getHuespedesFilteredByQuery(value, this.pageNumber, this.itemsPerPage)
       .subscribe(response => {
         this.huespedes = response.huespedes;
         this.totalItems = response.totalItems;
         this.query = value;
+        this.isSpinnerVisible =  false;
       });
   }
 
   onPageChange(value: number): void {
+    this.isSpinnerVisible = true;
     this.huespedesService.getHuespedesFilteredByQuery(this.query, value, this.itemsPerPage)
       .subscribe(response => {
         this.huespedes = response.huespedes;
         this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
       });
   }
 
   onItemPerPageChange(value: number): void {
+    this.isSpinnerVisible = true;
     this.huespedesService.getHuespedesFilteredByQuery(this.query, this.pageNumber, value)
       .subscribe(response => {
         this.huespedes = response.huespedes;
         this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
       });
   }
 

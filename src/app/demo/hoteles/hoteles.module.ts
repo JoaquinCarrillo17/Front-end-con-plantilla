@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   imports: [
     CommonModule,
     HotelesRoutingModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class HotelesModule { }

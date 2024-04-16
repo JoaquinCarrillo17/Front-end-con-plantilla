@@ -12,6 +12,7 @@ import { Servicio } from '../interfaces/servicio.interface';
 })
 export class ServiceListComponent implements OnInit {
 
+  isSpinnerVisible: boolean = true;
   public servicios: Servicio[];
   public totalItems: number = 0;
   public query: string = '';
@@ -25,31 +26,38 @@ export class ServiceListComponent implements OnInit {
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
       });
   }
 
   search(value: string): void {
+    this.isSpinnerVisible = true;
     this.serviciosService.getServiciosFilteredByQuery(value, this.pageNumber, this.itemsPerPage)
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
         this.query = value;
+        this.isSpinnerVisible = false;
       });
   }
 
   onPageChange(value: number): void {
+    this.isSpinnerVisible = true;
     this.serviciosService.getServiciosFilteredByQuery(this.query, value, this.itemsPerPage)
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
       });
   }
 
   onItemPerPageChange(value: number): void {
+    this.isSpinnerVisible = true;
     this.serviciosService.getServiciosFilteredByQuery(this.query, this.pageNumber, value)
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
       });
   }
 

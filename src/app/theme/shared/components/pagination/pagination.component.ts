@@ -29,7 +29,6 @@ export class PaginationComponent {
   }
 
   changeItemsPerPage() {
-    console.log(this.itemsPerPage)
     this.itemsPerPageChange.emit(this.itemsPerPage);
     this.currentPage = 1; // Para que cuando cambie de pagina y este en la 3 por ejemplo me vaya a la 1
     this.ngOnChanges(); // Para que me calcule el numero de paginas y de esta manera me genere las opciones 1, 2, 3...
@@ -42,7 +41,6 @@ export class PaginationComponent {
   }
 
   prevPage() {
-    console.log(this.currentPage);
     if (this.currentPage > 0) { // Agregado control para evitar ir a una página negativa
       this.pageChange.emit(this.currentPage - 2);
       this.currentPage = this.currentPage - 1;
@@ -51,7 +49,6 @@ export class PaginationComponent {
   }
 
   nextPage() {
-    console.log(this.currentPage);
     if (this.currentPage <= this.totalPages - 1) { // Evitar ir a una página más allá de la última
       this.pageChange.emit(this.currentPage);
       this.currentPage = this.currentPage + 1;
@@ -77,10 +74,7 @@ export class PaginationComponent {
   }
 
   calculateTotalPages() {
-    console.log("Total items: " + this.totalItems)
-    console.log("Items per page: " + this.itemsPerPage)
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    console.log("Total pages: " + this.totalPages)
   }
 
   generatePageArray() {
