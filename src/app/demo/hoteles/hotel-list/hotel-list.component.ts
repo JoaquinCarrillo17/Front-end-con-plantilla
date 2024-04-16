@@ -44,6 +44,7 @@ export class HotelListComponent implements OnInit {
   }
 
   onItemPerPageChange(value: number) {
+    this.itemsPerPage = value;
     this.hotelesService.getHotelesFilteredByQuery(this.query, this.pageNumber, value).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;

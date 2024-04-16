@@ -29,13 +29,15 @@ export class PaginationComponent {
   }
 
   changeItemsPerPage() {
+    console.log(this.itemsPerPage)
     this.itemsPerPageChange.emit(this.itemsPerPage);
-    this.calculateIndexes();
+    this.currentPage = 1; // Para que cuando cambie de pagina y este en la 3 por ejemplo me vaya a la 1
+    this.ngOnChanges(); // Para que me calcule el numero de paginas y de esta manera me genere las opciones 1, 2, 3...
   }
 
   firstPage() {
     this.pageChange.emit(0);
-    this.currentPage = 1;
+    this.currentPage = 1; // El disable y el pageNumber se diferencian en 1
     this.calculateIndexes();
   }
 
@@ -75,7 +77,10 @@ export class PaginationComponent {
   }
 
   calculateTotalPages() {
+    console.log("Total items: " + this.totalItems)
+    console.log("Items per page: " + this.itemsPerPage)
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+    console.log("Total pages: " + this.totalPages)
   }
 
   generatePageArray() {

@@ -22,22 +22,7 @@ export interface Navigation extends NavigationItem {
 }
 
 const NavigationItems = [
-  {
-    id: 'chart-maps',
-    title: 'Estadísticas',
-    type: 'group',
-    icon: 'icon-charts',
-    children: [
-      {
-        id: 'apexChart',
-        title: 'Hoteles Chart',
-        type: 'item',
-        url: '/hotel-chart',
-        classes: 'nav-item',
-        icon: 'feather icon-pie-chart',
-      },
-    ],
-  },
+
   {
     id: 'entidades',
     title: 'Entidades',
@@ -123,6 +108,22 @@ const NavigationItems = [
             url: '/servicios',
           },
         ],
+      },
+    ],
+  },
+  {
+    id: 'chart-maps',
+    title: 'Estadísticas',
+    type: 'group',
+    icon: 'icon-charts',
+    children: [
+      {
+        id: 'apexChart',
+        title: 'Hoteles Chart',
+        type: 'item',
+        url: '/hotel-chart',
+        classes: 'nav-item',
+        icon: 'feather icon-pie-chart',
       },
     ],
   },
