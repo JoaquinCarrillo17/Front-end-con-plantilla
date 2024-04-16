@@ -2,7 +2,7 @@ import { Habitacion } from "../../habitaciones/interfaces/habitacion.interface";
 import { Servicio } from "../../servicios/interfaces/servicio.interface";
 
 export interface Hotel {
-  id: number;
+  id?: number;
   nombre: string;
   direccion: string;
   telefono: string;
@@ -10,7 +10,7 @@ export interface Hotel {
   sitioWeb: string;
   servicios: Servicio[];
   habitaciones: Habitacion[];
-  numeroHabitaciones: number,
-  numeroHabitacionesDisponibles: number,
-  numeroHabitacionesReservadas: number
+  numeroHabitaciones?: number,
+  numeroHabitacionesDisponibles?: number,
+  numeroHabitacionesReservadas?: number
 }

@@ -1,0 +1,7 @@
+.formulario {
+  display: none;
+}
+
+.formulario.mostrar {
+  display: block;
+}

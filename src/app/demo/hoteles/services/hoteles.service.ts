@@ -37,6 +37,10 @@ export class HotelesService {
     return this.http.post(`${this.baseUrl}/hoteles/${idHotel}/habitaciones`, habitacion);
   }
 
+  // ? INFO: Para crear un hotel
+  addHotel(hotel: Hotel): Observable<any> {
+    return this.http.post(`${this.baseUrl}/hoteles`, hotel);
+  }
 
 
 }

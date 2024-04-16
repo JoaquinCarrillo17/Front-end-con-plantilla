@@ -24,7 +24,7 @@ export interface Navigation extends NavigationItem {
 const NavigationItems = [
   {
     id: 'chart-maps',
-    title: 'Chart',
+    title: 'Estadísticas',
     type: 'group',
     icon: 'icon-charts',
     children: [
@@ -126,7 +126,7 @@ const NavigationItems = [
       },
     ],
   },
-  {
+  /*{
     id: 'navigation',
     title: 'Navigation',
     type: 'group',
@@ -265,7 +265,7 @@ const NavigationItems = [
         ],
       },
     ],
-  },
+  },*/
 ];
 
 @Injectable()

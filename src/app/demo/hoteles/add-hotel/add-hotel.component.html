@@ -1,1 +1,94 @@
-<p>add-hotel works!</p>
+<div class="container">
+  <h5 class="mt-5">Registrar Hotel</h5>
+  <hr>
+  <form (ngSubmit)="onSubmit()">
+    <div class="row">
+      <!-- Primera columna para datos básicos del hotel -->
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <input type="text" class="form-control" id="direccion" placeholder="Dirección" #direccionInput required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" class="form-control" id="telefono" placeholder="Teléfono" #telefonoInput required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required>
+        </div>
+        <div class="form-group">
+          <label for="sitioWeb">Sitio Web</label>
+          <input type="text" class="form-control" id="sitioWeb" placeholder="Sitio Web" #sitioWebInput required>
+        </div>
+      </div>
+      <!-- Segunda columna para servicios, habitaciones y huéspedes -->
+      <div class="col-sm-6">
+        <h6 (click)="mostrarFormularioServicio()">Añadir Servicio</h6>
+        <div id="formulario-servicio" class="formulario">
+        <div class="form-group row">
+          <label for="nombre">Nombre</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreServicio required />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="descripcion">Descripción</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionServicio required />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="categoria">Categoría</label>
+          <div class="col-sm-9">
+            <select class="form-control" id="categoria" #categoriaServicio required>
+              <option value="" selected disabled>Elige una categoría</option>
+              <option value="GIMNASIO">Gimnasio</option>
+              <option value="BAR">Bar</option>
+              <option value="LAVANDERIA">Lavandería</option>
+              <option value="KARAOKE">Karaoke</option>
+              <option value="CASINO">Casino</option>
+              <!-- Opciones de categoría -->
+            </select>
+          </div>
+        </div>
+        <button type="button" (click)="agregarServicio()" class="btn btn-glow-primary btn-primary">Agregar servicio</button>
+      </div>
+      <hr>
+      <h6 (click)="mostrarFormularioHabitacion()">Añadir habitación</h6>
+      <div id="formulario-habitacion" class="formulario">
+        <div class="form-group row">
+          <label for="numero">Número</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" id="numero" placeholder="Número" #numeroHabitacion required />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="tipo">Tipo de habitación</label>
+          <div class="col-sm-9">
+            <select class="form-control" id="tipo" #tipoHabitacion required>
+              <option value="" selected disabled>Elige un tipo de habitación</option>
+              <option value="INDIVIDUAL">Individual</option>
+              <option value="DOBLE">Doble</option>
+              <option value="CUADRUPLE">Cuádruple</option>
+              <option value="SUITE">Suite</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="precio">Precio</label>
+          <div class="col-sm-9">
+            <input type="number" class="form-control" id="precio" placeholder="Precio por noche" #precioHabitacion required />
+          </div>
+        </div>
+        <button type="button" (click)="agregarHabitacion()" class="btn btn-glow-primary btn-primary">Agregar habitación</button>
+      </div>
+      </div>
+    </div>
+    <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary">Crear Hotel</button>
+  </form>
+</div>
