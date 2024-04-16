@@ -21,7 +21,7 @@ export class RoomListComponent implements OnInit {
   constructor(private habitacionesService: HabitacionesService){ }
 
   ngOnInit(): void {
-    this.habitacionesService.getAllHabitaciones(this.pageNumber, this.itemsPerPage)
+    this.habitacionesService.getAllHabitacionesMagicFilter(this.pageNumber, this.itemsPerPage)
       .subscribe(response => {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;

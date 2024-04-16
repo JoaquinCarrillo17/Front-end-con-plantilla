@@ -22,7 +22,7 @@ export class HotelesService {
     return this.http.get<{ hoteles: Hotel[], totalItems: number }>(`${this.baseUrl}/hoteles/magicFilter?query=${query}&pageNumber=${page || 0}&itemsPerPage=${items || 5}`);
   }
 
-  // ? INFO: Para el select de añadir servicio
+  // ? INFO: Para el select de asociar servicio
   getAllHoteles(): Observable<Hotel[]> {
     return this.http.get<Hotel[]>(`${this.baseUrl}/hoteles`);
   }
@@ -36,5 +36,7 @@ export class HotelesService {
   addHabitacion(idHotel: number, habitacion: Habitacion): Observable<any> {
     return this.http.post(`${this.baseUrl}/hoteles/${idHotel}/habitaciones`, habitacion);
   }
+
+
 
 }

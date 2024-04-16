@@ -1,5 +1,5 @@
 export interface Huesped {
-  id: number;
+  id?: number;
   nombreCompleto: string;
   dni: string;
   email: string;

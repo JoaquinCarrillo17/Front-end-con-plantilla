@@ -1,1 +1,55 @@
-<p>link-room-guest works!</p>
+<div class="col-md-6">
+  <h5 class="mt-5">Añadir huésped</h5>
+  <hr />
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="nombreCompleto" class="col-sm-3 col-form-label">Nombre Completo</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" #nombreCompletoInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="dni" class="col-sm-3 col-form-label">DNI</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="dni" placeholder="DNI" #dniInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label">Email</label>
+      <div class="col-sm-9">
+        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="fechaCheckIn" class="col-sm-3 col-form-label">Fecha Check-In</label>
+      <div class="col-sm-9">
+        <input type="datetime-local" class="form-control" id="fechaCheckIn" placeholder="Fecha Check-In" #fechaCheckInInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="fechaCheckOut" class="col-sm-3 col-form-label">Fecha Check-Out</label>
+      <div class="col-sm-9">
+        <input type="datetime-local" class="form-control" id="fechaCheckOut" placeholder="Fecha Check-Out" #fechaCheckOutInput required />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="habitacion" class="col-sm-3 col-form-label">Habitación</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="habitacion" #habitacionSelect required>
+          <option value="" selected disabled>Elige una habitación</option>
+          <option *ngFor="let habitacion of habitaciones" [value]="habitacion.id">{{ habitacion.numero }} - {{ habitacion.tipoHabitacion }}</option>
+          <!-- Opciones de habitación -->
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <!-- TODO Cambiar a submit para que se recargue y quitar el click (se hace automatico), lo dejo en button para pruebas -->
+        <button type="button" (click)="onSubmit()"
+        class="btn btn-glow-primary btn-primary"
+        title="btn btn-glow-primary btn-primary"
+        data-toggle="tooltip">Crear Huésped</button>
+      </div>
+    </div>
+  </form>
+</div>
