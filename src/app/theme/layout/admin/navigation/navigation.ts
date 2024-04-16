@@ -62,18 +62,6 @@ const NavigationItems = [
             type: 'item',
             url: '/hoteles',
           },
-          {
-            id: 'registrarServicioHoteles',
-            title: 'Registrar Servicio',
-            type: 'item',
-            url: '/hoteles/servicios',
-          },
-          {
-            id: 'registrarHabitacionHoteles',
-            title: 'Registrar Habitación',
-            type: 'item',
-            url: '/hoteles/habitaciones',
-          },
         ],
       },
       {
@@ -93,12 +81,6 @@ const NavigationItems = [
             title: 'Registrar Habitación',
             type: 'item',
             url: '/habitaciones',
-          },
-          {
-            id: 'registrarHuespedHabitaciones',
-            title: 'Registrar Huésped',
-            type: 'item',
-            url: '/habitaciones/huespedes',
           },
         ],
       },
@@ -120,12 +102,6 @@ const NavigationItems = [
             type: 'item',
             url: '/huespedes',
           },
-          // {
-          //   id: 'registrarHuespedHabitacion',
-          //   title: 'Registrar Huésped en Habitación',
-          //   type: 'item',
-          //   url: '/huespedes/:id',
-          // },
         ],
       },
       {

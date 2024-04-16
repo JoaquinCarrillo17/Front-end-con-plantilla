@@ -17,10 +17,6 @@ const routes: Routes = [
         path: '',
         component: AddGuestComponent,
       },
-      {
-        path: ':id',
-        component: RegisterGuestRoomComponent,
-      },
     ]
   }
 ]

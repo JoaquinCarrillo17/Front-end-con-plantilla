@@ -17,14 +17,6 @@ const routes: Routes = [
         path: '',
         component: AddHotelComponent,
       },
-      {
-        path: 'servicios',
-        component: LinkHotelServiceComponent,
-      },
-      {
-        path: 'habitaciones',
-        component: LinkHotelRoomComponent,
-      }
     ]
   }
 ]
