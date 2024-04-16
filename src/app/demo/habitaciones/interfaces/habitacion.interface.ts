@@ -1,6 +1,6 @@
 import { Huesped } from "../../huespedes/interfaces/huesped.interface";
 
-enum TipoHabitacion {
+export enum TipoHabitacion {
   INDIVIDUAL = "iNDIVIDUAL",
   DOBLE = "DOBLE",
   CUADRUPLE = "CUADRUPLE",
@@ -8,8 +8,9 @@ enum TipoHabitacion {
 }
 
 export interface Habitacion {
-  id: number;
-  numero: string;
+  id?: number;
+  numero: number;
   tipoHabitacion: TipoHabitacion;
   precioNoche: number;
+  huespedes?: Huesped[];
 }
