@@ -42,5 +42,10 @@ export class HotelesService {
     return this.http.post(`${this.baseUrl}/hoteles`, hotel);
   }
 
+  // ? INFO: Para borrar un hotel
+  deleteHotel(idHotel: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/hoteles/${idHotel}`);
+  }
+
 
 }

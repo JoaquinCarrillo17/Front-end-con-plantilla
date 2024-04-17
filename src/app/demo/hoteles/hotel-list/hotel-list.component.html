@@ -32,8 +32,8 @@
             <td>{{ hotel.numeroHabitaciones }}</td>
             <td>{{ hotel.numeroHabitacionesDisponibles }}</td>
             <td>{{ hotel.numeroHabitacionesReservadas }}</td>
-            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
-              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            <td><span class="material-icons edit-icon" style="color: orange;" (click)="mostrarModalEditarHotel(hotel.id)"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;" (click)="mostrarModalEliminarHotel(hotel.id)"> delete </span>
             </td>
 
           </tr>
@@ -42,5 +42,20 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
       (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+      <ng-container *ngIf="mostrarModalEliminar">
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close" (click)="ocultarModalEliminarHotel()">&times;</span>
+            <p>¿Estás seguro de que deseas eliminar el hotel? Esta operación es irreversible.</p>
+            <div class="button-container">
+              <button class="btn btn-glow-danger btn-danger" (click)="deleteHotel()">Aceptar</button>
+              <button class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEliminarHotel()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
   </app-card>
 </div>
+
+<!-- Modal eliminar -->
+

@@ -20,6 +20,12 @@ export class HotelListComponent implements OnInit {
   public pageNumber: number = 0;
   public itemsPerPage: number = 5;
 
+  public mostrarModalEliminar = false;
+  public mostrarModalEditar = false;
+
+  public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
+
+
   constructor(private hotelesService: HotelesService) { }
 
   ngOnInit(): void {
@@ -47,7 +53,7 @@ export class HotelListComponent implements OnInit {
 
   onPageChange(value: number) {
     this.isSpinnerVisible = true;
-    this.hotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => { // TODO : cuando cambio de la pagina 1 a la 2, siempre mando coger 5 items por pagina (por defecto), si antes de cambiar de pagina he cambiado los items por pagina se me jode
+    this.hotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;
@@ -64,6 +70,35 @@ export class HotelListComponent implements OnInit {
     });
   }
 
+  deleteHotel() {
+    this.hotelesService.deleteHotel(this.idHotel).subscribe(response => {
+      window.location.reload();
+    },
+    error => {
+      console.error(`Error al eliminar el hotel ${this.idHotel}`, error);
+    }
+  )
+  this.mostrarModalEliminar = false;
+  }
+
+  // ? Gestion de los modales
+  mostrarModalEliminarHotel(idHotel: number) {
+    this.idHotel = idHotel;
+    this.mostrarModalEliminar = true;
+  }
+
+  ocultarModalEliminarHotel() {
+    this.mostrarModalEliminar = false;
+  }
+
+  mostrarModalEditarHotel(idHotel: number) {
+    this.idHotel = idHotel;
+    this.mostrarModalEditar = true;
+  }
+
+  ocultarModalEditarHotel() {
+    this.mostrarModalEditar = false;
+  }
 
 
 }
