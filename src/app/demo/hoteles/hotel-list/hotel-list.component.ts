@@ -139,5 +139,9 @@ export class HotelListComponent implements OnInit {
     this.hotel = null;
   }
 
+  onFloatingButtonClick() {
+    console.log("pulso el boton")
+  }
+
 
 }

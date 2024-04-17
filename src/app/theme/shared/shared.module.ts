@@ -16,6 +16,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 
 @NgModule({
   declarations: [SpinnerComponent],
@@ -30,6 +31,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     BreadcrumbsComponent,
     SearchBarComponent,
     PaginationComponent,
+    FloatingButtonComponent
   ],
   exports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     BreadcrumbsComponent,
     SearchBarComponent,
     PaginationComponent,
+    FloatingButtonComponent
   ],
 })
 export class SharedModule {}

@@ -1,0 +1,18 @@
+.floating-button {
+  position: fixed; /* Fija la posición del botón */
+  bottom: 30px; /* Ajusta la distancia desde la parte inferior */
+  right: 30px; /* Ajusta la distancia desde la derecha */
+  width: 55px;
+  height: 55px;
+  background-color: #04a9f5;
+  border-radius: 50%; /* Hace que el botón sea circular */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra estilizada */
+}
+
+.add-icon {
+  color: white;
+}
