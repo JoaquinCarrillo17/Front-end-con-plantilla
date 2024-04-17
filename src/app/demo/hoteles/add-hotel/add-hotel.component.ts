@@ -52,7 +52,7 @@ export class AddHotelComponent {
       telefono: telefono,
       email: email,
       sitioWeb: sitioWeb,
-      servicios: this.hotel.servicios, // ! CAMBIAR
+      servicios: this.hotel.servicios,
       habitaciones: this.hotel.habitaciones,
     };
 

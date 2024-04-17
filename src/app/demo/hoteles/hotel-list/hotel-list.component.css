@@ -54,14 +54,30 @@
   background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
 }
 
-.modal-content {
+.modal-content.delete-modal {
+  max-width: 400px;
+}
+
+.modal-content.delete-modal {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
-  max-width: 400px; /* Ancho máximo del contenido del modal */
   margin: auto;
 }
+
+.modal-content.edit-modal {
+  max-width: 800px;
+}
+
+.modal-content.edit-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+  margin: auto;
+}
+
 
 .close {
   position: absolute;
@@ -85,3 +101,13 @@
   margin-right: 10px; /* Espacio entre los botones */
 }
 
+.modal-columns {
+  display: flex;
+}
+
+.modal-column {
+  flex: 1;
+  padding: 0 15px;
+  overflow-y: auto;
+  max-height: 430px; /* Altura máxima para permitir el desplazamiento */
+}

@@ -47,5 +47,16 @@ export class HotelesService {
     return this.http.delete(`${this.baseUrl}/hoteles/${idHotel}`);
   }
 
+  // ? INFO: Retorna el hotel con todos sus campos (incluidos servicios y habitaicones)
+  getHotelFull(idHotel: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/hoteles/${idHotel}/full`);
+  }
+
+  // ? INFO: Para editar un hotel
+  editHotel(idHotel: number, hotel: Hotel): Observable<any> {
+    return this.http.put(`${this.baseUrl}/hoteles/${idHotel}`, hotel);
+  }
+
+
 
 }

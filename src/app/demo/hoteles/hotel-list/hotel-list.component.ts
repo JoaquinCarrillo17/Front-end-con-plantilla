@@ -24,7 +24,16 @@ export class HotelListComponent implements OnInit {
   public mostrarModalEditar = false;
 
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
-
+  public hotel: Hotel = { // ? cuando abro el modal editar actualizo este hotel para que me aparezcan los campos
+    id: 0,
+    nombre: '',
+    direccion: '',
+    telefono: '',
+    email: '',
+    sitioWeb: '',
+    servicios: [],
+    habitaciones: []
+  };
 
   constructor(private hotelesService: HotelesService) { }
 
@@ -72,13 +81,35 @@ export class HotelListComponent implements OnInit {
 
   deleteHotel() {
     this.hotelesService.deleteHotel(this.idHotel).subscribe(response => {
-      window.location.reload();
+      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
+    },
+      error => {
+        console.error(`Error al eliminar el hotel ${this.idHotel}`, error);
+      }
+    )
+    this.ocultarModalEliminarHotel();
+  }
+
+  editHotel() {
+    this.hotelesService.editHotel(this.idHotel, this.hotel).subscribe(response => {
+      console.log("El hotel se editó correctamente")
+      this.hotel = {
+        id: 0,
+        nombre: '',
+        direccion: '',
+        telefono: '',
+        email: '',
+        sitioWeb: '',
+        servicios: [],
+        habitaciones: []
+      };
+      this.ocultarModalEditarHotel();
+      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
     },
     error => {
-      console.error(`Error al eliminar el hotel ${this.idHotel}`, error);
+      console.error(`Error al editar el hotel` + error)
     }
-  )
-  this.mostrarModalEliminar = false;
+    )
   }
 
   // ? Gestion de los modales
@@ -93,11 +124,19 @@ export class HotelListComponent implements OnInit {
 
   mostrarModalEditarHotel(idHotel: number) {
     this.idHotel = idHotel;
+    this.hotelesService.getHotelFull(idHotel).subscribe(data => {
+      this.hotel = data;
+    },
+    error => {
+      console.log("Error al obtener el hotel: " + error);
+    }
+  );
     this.mostrarModalEditar = true;
   }
 
   ocultarModalEditarHotel() {
     this.mostrarModalEditar = false;
+    this.hotel = null;
   }
 
 
