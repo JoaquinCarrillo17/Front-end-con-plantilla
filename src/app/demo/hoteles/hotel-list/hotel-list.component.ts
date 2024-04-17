@@ -3,13 +3,14 @@ import { Hotel } from '../interfaces/hotel.interface';
 import { HotelesService } from '../services/hoteles.service';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { AddHotelComponent } from "../add-hotel/add-hotel.component";
 
 @Component({
-  selector: 'app-hotel-list',
-  standalone: true,
-  imports: [CommonModule, SharedModule],
-  templateUrl: './hotel-list.component.html',
-  styleUrls: ['./hotel-list.component.scss', './hotel-list.component.css']
+    selector: 'app-hotel-list',
+    standalone: true,
+    templateUrl: './hotel-list.component.html',
+    styleUrls: ['./hotel-list.component.scss', './hotel-list.component.css'],
+    imports: [CommonModule, SharedModule, AddHotelComponent]
 })
 export class HotelListComponent implements OnInit {
 
@@ -21,7 +22,8 @@ export class HotelListComponent implements OnInit {
   public itemsPerPage: number = 5;
 
   public mostrarModalEliminar = false;
-  public mostrarModalEditar = false;
+  public mostrarModalEditarCrear = false;
+  accionModal: 'editar' | 'crear' = 'editar';
 
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
   public hotel: Hotel = { // ? cuando abro el modal editar actualizo este hotel para que me aparezcan los campos
@@ -124,23 +126,28 @@ export class HotelListComponent implements OnInit {
 
   mostrarModalEditarHotel(idHotel: number) {
     this.idHotel = idHotel;
+    this.isSpinnerVisible = true;
     this.hotelesService.getHotelFull(idHotel).subscribe(data => {
       this.hotel = data;
+      this.isSpinnerVisible = false;
     },
     error => {
       console.log("Error al obtener el hotel: " + error);
     }
   );
-    this.mostrarModalEditar = true;
+    this.mostrarModalEditarCrear = true;
+    this.accionModal = 'editar';
   }
 
   ocultarModalEditarHotel() {
-    this.mostrarModalEditar = false;
+    this.mostrarModalEditarCrear = false;
     this.hotel = null;
   }
 
   onFloatingButtonClick() {
     console.log("pulso el boton")
+    this.mostrarModalEditarCrear = true;
+    this.accionModal = 'crear'
   }
 
 

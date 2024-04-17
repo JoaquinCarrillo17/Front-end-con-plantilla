@@ -62,11 +62,14 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="mostrarModalEditar">
+<!-- Modal editar/crear -->
+
+<ng-container *ngIf="mostrarModalEditarCrear">
   <div class="modal">
     <div class="modal-content edit-modal">
       <span class="close" (click)="ocultarModalEditarHotel()">&times;</span>
-      <h5>Editar Hotel</h5>
+      <h5>{{ accionModal === 'editar' ? 'Editar Hotel' : 'Añadir Hotel' }}</h5>
+      <ng-container *ngIf="accionModal === 'editar'; else addHotelForm">
       <form (ngSubmit)="editHotel()">
       <div class="modal-columns">
         <!-- Primera columna -->
@@ -94,7 +97,6 @@
               <input type="url" class="form-control" id="sitioWeb" [(ngModel)]="hotel.sitioWeb" name="sitioWeb"
                 required>
             </div>
-          <!-- </form> -->
         </div>
         <!-- Fin de la primera columna -->
 
@@ -147,11 +149,15 @@
       </div>
 
       <div class="button-container">
-        <button type="submit" class="btn btn-glow-primary btn-primary">Guardar Cambios</button>
+        <button type="submit" class="btn btn-glow-primary btn-primary">Editar</button>
         <button type="button" class="btn btn-glow-secondary btn-secondary"
           (click)="ocultarModalEditarHotel()">Cancelar</button>
       </div>
     </form>
+  </ng-container>
+  <ng-template #addHotelForm>
+    <app-add-hotel></app-add-hotel>
+  </ng-template>
     </div>
   </div>
 </ng-container>

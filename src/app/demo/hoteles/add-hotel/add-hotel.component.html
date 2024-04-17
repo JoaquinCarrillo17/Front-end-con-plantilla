@@ -2,9 +2,9 @@
   <h5 class="mt-5">Registrar Hotel</h5>
   <hr>
   <form (ngSubmit)="onSubmit()">
-    <div class="row">
+    <div class="row modal-columns">
       <!-- Primera columna para datos básicos del hotel -->
-      <div class="col-sm-6">
+      <div class="col-sm-6 modal-column">
         <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required>
@@ -27,7 +27,7 @@
         </div>
       </div>
       <!-- Segunda columna para servicios, habitaciones y huéspedes -->
-      <div class="col-sm-6">
+      <div class="col-sm-6 modal-column">
         <h6 class="añadir-servicio" (click)="mostrarFormularioServicio()">Añadir Servicio</h6>
         <div id="formulario-servicio" class="formulario">
         <div class="form-group row">
@@ -52,7 +52,6 @@
               <option value="LAVANDERIA">Lavandería</option>
               <option value="KARAOKE">Karaoke</option>
               <option value="CASINO">Casino</option>
-              <!-- Opciones de categoría -->
             </select>
           </div>
         </div>
