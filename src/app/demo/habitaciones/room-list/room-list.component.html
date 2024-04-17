@@ -14,6 +14,7 @@
             <th>Número</th>
             <th>Tipo de Habitación</th>
             <th>Precio por Noche</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,9 @@
             <td>{{ habitacion.numero }}</td>
             <td>{{ habitacion.tipoHabitacion }}</td>
             <td>{{ habitacion.precioNoche }}</td>
+            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            </td>
           </tr>
         </tbody>
       </table>

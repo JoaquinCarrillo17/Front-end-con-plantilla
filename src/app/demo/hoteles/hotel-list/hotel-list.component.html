@@ -18,6 +18,7 @@
             <th>Habitaciones totales</th>
             <th>Habitaciones Disponibles</th>
             <th>Habitaciones Reservadas</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -31,6 +32,10 @@
             <td>{{ hotel.numeroHabitaciones }}</td>
             <td>{{ hotel.numeroHabitacionesDisponibles }}</td>
             <td>{{ hotel.numeroHabitacionesReservadas }}</td>
+            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            </td>
+
           </tr>
         </tbody>
       </table>

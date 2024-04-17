@@ -14,6 +14,7 @@
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Categoría</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +23,9 @@
             <td>{{ servicio.nombre }}</td>
             <td>{{ servicio.descripcion }}</td>
             <td>{{ servicio.categoria }}</td>
+            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            </td>
           </tr>
         </tbody>
       </table>

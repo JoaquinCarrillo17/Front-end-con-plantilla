@@ -5,3 +5,7 @@
 .formulario.mostrar {
   display: block;
 }
+
+.añadir-servicio, .añadir-habitacion {
+  cursor: pointer;
+}

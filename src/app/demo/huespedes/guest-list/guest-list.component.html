@@ -16,6 +16,7 @@
             <th>Email</th>
             <th>Fecha de Check-In</th>
             <th>Fecha de Check-Out</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@
             <td>{{ huesped.email }}</td>
             <td>{{ huesped.fechaCheckIn }}</td>
             <td>{{ huesped.fechaCheckOut }}</td>
+            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            </td>
           </tr>
         </tbody>
       </table>
