@@ -1,0 +1,37 @@
+<form (ngSubmit)="editServicio()">
+  <div class="modal-columns">
+    <!-- Primera columna -->
+    <div class="modal-column">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" id="nombre" [(ngModel)]="servicio.nombre" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input type="text" class="form-control" id="descripcion" [(ngModel)]="servicio.descripcion" name="descripcion"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="categoria">Categoría</label>
+          <select class="form-control" id="categoria" #categoriaServicio required>
+            <option value="" selected disabled>Elige una categoría</option>
+            <option value="GIMNASIO">Gimnasio</option>
+            <option value="BAR">Bar</option>
+            <option value="LAVANDERIA">Lavandería</option>
+            <option value="KARAOKE">Karaoke</option>
+            <option value="CASINO">Casino</option>
+          </select>
+        </div>
+
+
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button type="submit" class="btn btn-glow-primary btn-primary">Editar</button>
+    <button type="button" class="btn btn-glow-secondary btn-secondary"
+      (click)="ocultarModalEditarServicio()">Cancelar</button>
+  </div>
+</form>

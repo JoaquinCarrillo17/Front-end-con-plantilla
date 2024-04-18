@@ -27,8 +27,10 @@
             <td>{{ huesped.email }}</td>
             <td>{{ huesped.fechaCheckIn }}</td>
             <td>{{ huesped.fechaCheckOut }}</td>
-            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
-              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            <td><span class="material-icons edit-icon" style="color: orange;"
+              (click)="mostrarModalEditarHuesped(huesped.id)"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;"
+              (click)="mostrarModalEliminarHuesped(huesped.id)"> delete </span>
             </td>
           </tr>
         </tbody>
@@ -36,4 +38,36 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
+  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
+
+<!-- Modal eliminar -->
+<ng-container *ngIf="mostrarModalEliminar">
+  <div class="modal">
+    <div class="modal-content delete-modal">
+      <span class="close" (click)="ocultarModalEliminarHuesped()">&times;</span>
+      <p>¿Estás seguro de que deseas eliminar el huésped? Esta operación es irreversible.</p>
+      <div class="button-container">
+        <button class="btn btn-glow-danger btn-danger" (click)="deleteHuesped()">Aceptar</button>
+        <button class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEliminarHuesped()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Modal editar/crear -->
+
+<ng-container *ngIf="mostrarModalEditarCrear">
+  <div class="modal">
+    <div class="modal-content edit-modal">
+      <span class="close" (click)="ocultarModalEditarHuesped()">&times;</span>
+      <h5>{{ accionModal === 'editar' ? 'Editar Huésped' : 'Añadir Huésped' }}</h5>
+      <ng-container *ngIf="accionModal === 'editar'; else addHuespedForm">
+        <app-edit-guest [idHuesped]="idHuesped" (editComplete)="ocultarModalEditarHuesped()"></app-edit-guest>
+  </ng-container>
+  <ng-template #addHuespedForm>
+    <app-add-guest></app-add-guest>
+  </ng-template>
+    </div>
+  </div>
+</ng-container>

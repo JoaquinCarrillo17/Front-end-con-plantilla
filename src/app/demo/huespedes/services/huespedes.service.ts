@@ -23,4 +23,19 @@ export class HuespedesService {
     );
   }
 
+  // ? INFO: Borrar Huesped
+  deleteHuesped(idHuesped: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/huespedes/${idHuesped}`);
+  }
+
+  // ? INFO: Retorna la Huesped con todos sus campos (incluidos huespedes)
+  getHuesped(idHuesped: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/huespedes/${idHuesped}`);
+  }
+
+  // ? INFO: Para editar una Huesped
+  editHuesped(idHuesped: number, huesped: Huesped): Observable<any> {
+    return this.http.put(`${this.baseUrl}/huespedes/${idHuesped}`, huesped);
+  }
+
 }

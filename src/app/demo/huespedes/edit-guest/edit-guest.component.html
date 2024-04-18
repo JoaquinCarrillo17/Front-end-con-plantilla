@@ -1,1 +1,42 @@
-<p>edit-guest works!</p>
+<form (ngSubmit)="editHuesped()">
+  <div class="modal-columns">
+    <!-- Primera columna -->
+    <div class="modal-column">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo</label>
+          <input type="text" class="form-control" id="nombre" [(ngModel)]="huesped.nombreCompleto" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="dni">DNI</label>
+          <input type="text" class="form-control" id="dni" [(ngModel)]="huesped.dni" name="dni"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" id="email" [(ngModel)]="huesped.email" name="email"
+            required>
+        </div>
+
+        <div class="form-group">
+        <label for="fechaCheckInHuesped">Fecha de entrada del Huésped</label>
+        <input type="text" class="form-control" id="fechaCheckInHuesped" [(ngModel)]="huesped.fechaCheckIn"
+          name="fechaCheckInHuesped" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaCheckOutHuesped">Fecha de entrada del Huésped</label>
+        <input type="text" class="form-control" id="fechaCheckOutHuesped" [(ngModel)]="huesped.fechaCheckOut"
+          name="fechaCheckOutHuesped" required>
+        </div>
+
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button type="submit" class="btn btn-glow-primary btn-primary">Editar</button>
+    <button type="button" class="btn btn-glow-secondary btn-secondary"
+      (click)="ocultarModalEditarHuesped()">Cancelar</button>
+  </div>
+</form>

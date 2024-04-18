@@ -23,4 +23,19 @@ export class ServiciosService {
     );
   }
 
+  // ? INFO: Borrar Servicio
+  deleteServicio(idServicio: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/servicios/${idServicio}`);
+  }
+
+  // ? INFO: Retorna la Servicio con todos sus campos (incluidos Servicioes)
+  getServicio(idServicio: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/servicios/${idServicio}`);
+  }
+
+  // ? INFO: Para editar una Servicio
+  editServicio(idServicio: number, servicio: Servicio): Observable<any> {
+    return this.http.put(`${this.baseUrl}/servicios/${idServicio}`, servicio);
+  }
+
 }
