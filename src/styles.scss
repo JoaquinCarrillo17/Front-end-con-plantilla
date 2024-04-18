@@ -4,7 +4,9 @@
 
 /* fonts-icon */
 @import "scss/fonts/fontawesome/scss/fontawesome";
-@import "scss/fonts/feather/iconfont";
+// @import "scss/fonts/feather/iconfont";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
 
 @import "scss/general";
 @import "scss/generic";
