@@ -4,13 +4,14 @@ import { HotelesService } from '../services/hoteles.service';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { AddHotelComponent } from "../add-hotel/add-hotel.component";
+import { EditHotelComponent } from '../edit-hotel/edit-hotel.component';
 
 @Component({
     selector: 'app-hotel-list',
     standalone: true,
     templateUrl: './hotel-list.component.html',
     styleUrls: ['./hotel-list.component.scss', './hotel-list.component.css'],
-    imports: [CommonModule, SharedModule, AddHotelComponent]
+    imports: [CommonModule, SharedModule, AddHotelComponent, EditHotelComponent]
 })
 export class HotelListComponent implements OnInit {
 
@@ -26,16 +27,6 @@ export class HotelListComponent implements OnInit {
   accionModal: 'editar' | 'crear' = 'editar';
 
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
-  public hotel: Hotel = { // ? cuando abro el modal editar actualizo este hotel para que me aparezcan los campos
-    id: 0,
-    nombre: '',
-    direccion: '',
-    telefono: '',
-    email: '',
-    sitioWeb: '',
-    servicios: [],
-    habitaciones: []
-  };
 
   constructor(private hotelesService: HotelesService) { }
 
@@ -92,28 +83,6 @@ export class HotelListComponent implements OnInit {
     this.ocultarModalEliminarHotel();
   }
 
-  editHotel() {
-    this.hotelesService.editHotel(this.idHotel, this.hotel).subscribe(response => {
-      console.log("El hotel se editó correctamente")
-      this.hotel = {
-        id: 0,
-        nombre: '',
-        direccion: '',
-        telefono: '',
-        email: '',
-        sitioWeb: '',
-        servicios: [],
-        habitaciones: []
-      };
-      this.ocultarModalEditarHotel();
-      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
-    },
-    error => {
-      console.error(`Error al editar el hotel` + error)
-    }
-    )
-  }
-
   // ? Gestion de los modales
   mostrarModalEliminarHotel(idHotel: number) {
     this.idHotel = idHotel;
@@ -126,22 +95,12 @@ export class HotelListComponent implements OnInit {
 
   mostrarModalEditarHotel(idHotel: number) {
     this.idHotel = idHotel;
-    this.isSpinnerVisible = true;
-    this.hotelesService.getHotelFull(idHotel).subscribe(data => {
-      this.hotel = data;
-      this.isSpinnerVisible = false;
-    },
-    error => {
-      console.log("Error al obtener el hotel: " + error);
-    }
-  );
     this.mostrarModalEditarCrear = true;
     this.accionModal = 'editar';
   }
 
   ocultarModalEditarHotel() {
     this.mostrarModalEditarCrear = false;
-    this.hotel = null;
   }
 
   onFloatingButtonClick() {
