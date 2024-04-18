@@ -23,8 +23,10 @@
             <td>{{ habitacion.numero }}</td>
             <td>{{ habitacion.tipoHabitacion }}</td>
             <td>{{ habitacion.precioNoche }}</td>
-            <td><span class="material-icons edit-icon" style="color: orange;"> edit </span>
-              <span class="material-icons delete-icon" style="color: red;"> delete </span>
+            <td><span class="material-icons edit-icon" style="color: orange;"
+              (click)="mostrarModalEditarHabitacion(habitacion.id)"> edit </span>
+              <span class="material-icons delete-icon" style="color: red;"
+              (click)="mostrarModalEliminarHabitacion(habitacion.id)"> delete </span>
             </td>
           </tr>
         </tbody>
@@ -32,4 +34,36 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
+  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
+
+<!-- Modal eliminar -->
+<ng-container *ngIf="mostrarModalEliminar">
+  <div class="modal">
+    <div class="modal-content delete-modal">
+      <span class="close" (click)="ocultarModalEliminarHabitacion()">&times;</span>
+      <p>¿Estás seguro de que deseas eliminar la habitacion? Esta operación es irreversible.</p>
+      <div class="button-container">
+        <button class="btn btn-glow-danger btn-danger" (click)="deleteHabitacion()">Aceptar</button>
+        <button class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEliminarHabitacion()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Modal editar/crear -->
+
+<ng-container *ngIf="mostrarModalEditarCrear">
+  <div class="modal">
+    <div class="modal-content edit-modal">
+      <span class="close" (click)="ocultarModalEditarHabitacion()">&times;</span>
+      <h5>{{ accionModal === 'editar' ? 'Editar Habitación' : 'Añadir Habitación' }}</h5>
+      <ng-container *ngIf="accionModal === 'editar'; else addHabitacionForm">
+        <app-edit-room [idHabitacion]="idHabitacion" (editComplete)="ocultarModalEditarHabitacion()"></app-edit-room>
+  </ng-container>
+  <ng-template #addHabitacionForm>
+    <app-add-room></app-add-room>
+  </ng-template>
+    </div>
+  </div>
+</ng-container>

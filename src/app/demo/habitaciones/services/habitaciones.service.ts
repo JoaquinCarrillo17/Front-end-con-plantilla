@@ -34,4 +34,19 @@ export class HabitacionesService {
     return this.http.post(`${this.baseUrl}/habitaciones/${idHabitacion}/huespedes`, huesped);
   }
 
+  // ? INFO: Borrar habitacion
+  deleteHabitacion(idHabitacion: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/habitaciones/${idHabitacion}`);
+  }
+
+  // ? INFO: Retorna la habitacion con todos sus campos (incluidos huespedes)
+  getHabitacionFull(idHabitacion: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/habitaciones/${idHabitacion}/full`);
+  }
+
+  // ? INFO: Para editar una habitacion
+  editHabitacion(idHabitacion: number, habitacion: Habitacion): Observable<any> {
+    return this.http.put(`${this.baseUrl}/habitaciones/${idHabitacion}`, habitacion);
+  }
+
 }
