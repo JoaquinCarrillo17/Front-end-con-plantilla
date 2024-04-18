@@ -1,11 +1,7 @@
 <div class="col-xl-12">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
-  <app-card
-    cardTitle="Lista de Huéspedes"
-    [options]="false"
-    blockClass="table-border-style"
-  >
-  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
+  <app-card cardTitle="Lista de Huéspedes" [options]="false" blockClass="table-border-style">
+    <app-search-bar (searchEvent)="search($event)"></app-search-bar>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -25,18 +21,19 @@
             <td>{{ huesped.nombreCompleto }}</td>
             <td>{{ huesped.dni }}</td>
             <td>{{ huesped.email }}</td>
-            <td>{{ huesped.fechaCheckIn }}</td>
-            <td>{{ huesped.fechaCheckOut }}</td>
+            <td>{{ huesped.fechaCheckIn | date:'dd-MM-yyyy HH:mm' }}</td>
+            <td>{{ huesped.fechaCheckOut | date:'dd-MM-yyyy HH:mm' }}</td>
             <td><span class="material-icons edit-icon" style="color: orange;"
-              (click)="mostrarModalEditarHuesped(huesped.id)"> edit </span>
+                (click)="mostrarModalEditarHuesped(huesped.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
-              (click)="mostrarModalEliminarHuesped(huesped.id)"> delete </span>
+                (click)="mostrarModalEliminarHuesped(huesped.id)"> delete </span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
+      (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
   <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
@@ -65,10 +62,10 @@
       <hr>
       <ng-container *ngIf="accionModal === 'editar'; else addHuespedForm">
         <app-edit-guest [idHuesped]="idHuesped" (editComplete)="ocultarModalEditarHuesped()"></app-edit-guest>
-  </ng-container>
-  <ng-template #addHuespedForm>
-    <app-add-guest></app-add-guest>
-  </ng-template>
+      </ng-container>
+      <ng-template #addHuespedForm>
+        <app-add-guest></app-add-guest>
+      </ng-template>
     </div>
   </div>
 </ng-container>

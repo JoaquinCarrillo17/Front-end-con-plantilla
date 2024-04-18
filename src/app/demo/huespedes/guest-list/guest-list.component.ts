@@ -4,6 +4,7 @@ import { Huesped } from '../interfaces/huesped.interface';
 import { HuespedesService } from '../services/huespedes.service';
 import { AddGuestComponent } from '../add-guest/add-guest.component';
 import { EditGuestComponent } from '../edit-guest/edit-guest.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-guest-list',
