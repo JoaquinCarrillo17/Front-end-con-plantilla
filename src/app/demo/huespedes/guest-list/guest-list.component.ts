@@ -101,7 +101,6 @@ export class GuestListComponent implements OnInit{
   }
 
   onFloatingButtonClick() {
-    console.log("pulso el boton")
     this.mostrarModalEditarCrear = true;
     this.accionModal = 'crear'
   }

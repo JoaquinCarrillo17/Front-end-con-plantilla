@@ -69,6 +69,7 @@
     <div class="modal-content edit-modal">
       <span class="close" (click)="ocultarModalEditarHotel()">&times;</span>
       <h5>{{ accionModal === 'editar' ? 'Editar Hotel' : 'Añadir Hotel' }}</h5>
+      <hr>
       <ng-container *ngIf="accionModal === 'editar'; else addHotelForm">
         <app-edit-hotel [idHotel]="idHotel" (editComplete)="ocultarModalEditarHotel()"></app-edit-hotel>
   </ng-container>

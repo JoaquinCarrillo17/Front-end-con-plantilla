@@ -71,7 +71,7 @@ const NavigationItems = [
         type: 'item',
         url: '/hotel-chart',
         classes: 'nav-item',
-        icon: 'feather icon-pie-chart',
+        icon: 'fa fa-chart-line',
       },
     ],
   },
