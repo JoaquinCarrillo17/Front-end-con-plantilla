@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Hotel } from '../../hoteles/interfaces/hotel.interface';
 import { HotelesService } from '../../hoteles/services/hoteles.service';
 import { TipoHabitacion, Habitacion } from '../interfaces/habitacion.interface';
@@ -21,7 +20,7 @@ export class AddRoomComponent {
 
   public hoteles: Hotel[];
 
-  constructor(private hotelesService: HotelesService, private router: Router) { }
+  constructor(private hotelesService: HotelesService) { }
 
   ngOnInit(): void {
     this.hotelesService.getAllHoteles().subscribe(hoteles => this.hoteles = hoteles);
@@ -64,7 +63,7 @@ export class AddRoomComponent {
     this.hotelesService.addHabitacion(idHotel, habitacion).subscribe(
       response => {
         console.log('Habitación añadida con éxito:', response);
-        this.router.navigate(['/habitaciones/list']);
+        window.location.reload();
       },
       error => {
         console.error('Error al añadir habitación:', error);

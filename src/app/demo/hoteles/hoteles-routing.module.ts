@@ -1,19 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HotelListComponent } from './hotel-list/hotel-list.component';
-import { AddHotelComponent } from './add-hotel/add-hotel.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
       {
-        path: 'list',
-        component: HotelListComponent,
-      },
-      {
         path: '',
-        component: AddHotelComponent,
+        component: HotelListComponent,
       },
     ]
   }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { ServiceListComponent } from './service-list/service-list.component';
-import { AddServiceComponent } from './add-service/add-service.component';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
@@ -8,12 +7,8 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'list',
-        component: ServiceListComponent,
-      },
-      {
         path: '',
-        component: AddServiceComponent,
+        component: ServiceListComponent,
       },
     ]
   }

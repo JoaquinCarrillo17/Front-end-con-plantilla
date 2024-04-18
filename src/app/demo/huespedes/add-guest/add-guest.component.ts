@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { Habitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
 import { Huesped } from '../interfaces/huesped.interface';
@@ -23,7 +22,7 @@ export class AddGuestComponent {
 
   public habitaciones: Habitacion[];
 
-  constructor(private habitacionesService: HabitacionesService, private router: Router) { }
+  constructor(private habitacionesService: HabitacionesService) { }
 
   ngOnInit(): void {
     this.habitacionesService.getAllHabitaciones().subscribe(habitaciones => this.habitaciones = habitaciones);
@@ -52,7 +51,7 @@ export class AddGuestComponent {
     this.habitacionesService.addHuesped(idHabitacion, huesped).subscribe(
       response => {
         console.log('Huésped añadido con éxito:', response);
-        this.router.navigate(['/huespedes/list']);
+        window.location.reload();
       },
       error => {
         console.error('Error al añadir huésped:', error);

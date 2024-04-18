@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Hotel } from '../interfaces/hotel.interface';
 import { HotelesService } from '../services/hoteles.service';
-import { Router } from '@angular/router';
 import { CategoriaServicio } from '../../servicios/interfaces/servicio.interface';
 import { TipoHabitacion } from '../../habitaciones/interfaces/habitacion.interface';
 
@@ -36,7 +35,7 @@ export class AddHotelComponent {
     habitaciones: [],
   };
 
-  constructor(private hotelesService: HotelesService, private router: Router) {}
+  constructor(private hotelesService: HotelesService) {}
 
   onSubmit() {
 
@@ -59,7 +58,7 @@ export class AddHotelComponent {
     this.hotelesService.addHotel(this.hotel).subscribe(
       response => {
         console.log('Hotel creado con exito:', response);
-        this.router.navigate(['/hoteles/list']);
+        window.location.reload();
       },
       error => {
         console.error('Error al crear el hotel:', error);
