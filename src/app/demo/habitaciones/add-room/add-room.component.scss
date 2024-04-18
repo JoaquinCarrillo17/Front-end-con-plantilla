@@ -1,0 +1,22 @@
+.formulario {
+  display: none;
+}
+
+.formulario.mostrar {
+  display: block;
+}
+
+.añadir-huesped {
+  cursor: pointer;
+}
+
+.modal-columns {
+  display: flex;
+}
+
+.modal-column {
+  flex: 1;
+  padding: 0 15px;
+  overflow-y: auto;
+  max-height: 430px; /* Altura máxima para permitir el desplazamiento */
+}

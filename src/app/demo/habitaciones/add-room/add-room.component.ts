@@ -17,8 +17,20 @@ export class AddRoomComponent {
   @ViewChild('tipoSelect') tipoSelect: { nativeElement: { value: string; }; };
   @ViewChild('precioInput') precioInput: { nativeElement: { value: number; }; };
   @ViewChild('hotelSelect') hotelSelect: { nativeElement: { value: number; }; };
+  @ViewChild('nombreHuesped') nombreHuesped: { nativeElement: { value: string; }; };
+  @ViewChild('dniHuesped') dniHuesped: { nativeElement: { value: string; }; };
+  @ViewChild('emailHuesped') emailHuesped: { nativeElement: { value: string; }; };
+  @ViewChild('fechaEntrada') fechaEntrada: { nativeElement: { value: string; }; };
+  @ViewChild('fechaSalida') fechaSalida: { nativeElement: { value: string; }; };
+
 
   public hoteles: Hotel[];
+  public habitacion: Habitacion = {
+    numero: 0,
+    tipoHabitacion: null,
+    precioNoche: 0,
+    huespedes: [],
+  }
 
   constructor(private hotelesService: HotelesService) { }
 
@@ -57,7 +69,7 @@ export class AddRoomComponent {
       numero: numero,
       tipoHabitacion: tipoHabitacion,
       precioNoche: precio,
-      huespedes: [],
+      huespedes: this.habitacion.huespedes,
     };
 
     this.hotelesService.addHabitacion(idHotel, habitacion).subscribe(
@@ -69,6 +81,43 @@ export class AddRoomComponent {
         console.error('Error al añadir habitación:', error);
       }
     );
+  }
+
+  agregarHuesped() {
+    const nombre = this.nombreHuesped.nativeElement.value;
+    const dni = this.dniHuesped.nativeElement.value;
+    const email = this.emailHuesped.nativeElement.value;
+    const fechaEntrada = this.fechaEntrada.nativeElement.value;
+    const fechaSalida = this.fechaSalida.nativeElement.value;
+
+    this.habitacion.huespedes.push({
+      nombreCompleto: nombre,
+      dni: dni,
+      email: email,
+      fechaCheckIn: new Date(fechaEntrada),
+      fechaCheckOut: new Date(fechaSalida),
+    })
+
+    this.nombreHuesped.nativeElement.value = '';
+    this.dniHuesped.nativeElement.value = '';
+    this.emailHuesped.nativeElement.value = '';
+    this.fechaEntrada.nativeElement.value = '';
+    this.fechaSalida.nativeElement.value = '';
+
+    this.ocultarFormularioHuesped();
+
+  }
+
+  // * Para el comportamiento de los forms del servicio y habitacion
+
+  mostrarFormularioHuesped() {
+    const formularioServicio = document.getElementById('formulario-huesped');
+    formularioServicio.classList.add('mostrar');
+  }
+
+  ocultarFormularioHuesped() {
+    const formularioServicio = document.getElementById('formulario-huesped');
+    formularioServicio.classList.remove('mostrar');
   }
 
 }
