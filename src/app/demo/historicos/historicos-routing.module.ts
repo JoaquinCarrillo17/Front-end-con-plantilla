@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RoomListComponent } from './room-list/room-list.component';
+import HistoricoComponent from './historico/historico.component';
 
 const routes: Routes = [
   {
@@ -8,7 +8,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: RoomListComponent,
+        component: HistoricoComponent,
       },
     ]
   }
@@ -18,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HabitacionesRoutingModule { }
+export class HistoricoRoutingModule { }

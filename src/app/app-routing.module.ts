@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'hotel-chart',
+        redirectTo: 'hoteles',
         pathMatch: 'full',
       },
       {
@@ -43,34 +43,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'dashboard',
-        loadComponent: () => import('./demo/dashboard/dashboard.component'),
-      },
-      {
-        path: 'basic',
-        loadChildren: () =>
-          import('./demo/ui-elements/ui-basic/ui-basic.module').then(
-            (m) => m.UiBasicModule,
-          ),
-      },
-      {
-        path: 'forms',
-        loadChildren: () =>
-          import('./demo/pages/form-elements/form-elements.module').then(
-            (m) => m.FormElementsModule,
-          ),
-      },
-      {
-        path: 'tables',
-        loadChildren: () =>
-          import('./demo/pages/tables/tables.module').then(
-            (m) => m.TablesModule,
-          ),
-      },
-      {
         path: 'hotel-chart',
         loadComponent: () =>
-          import('./demo/chart/apex-chart/apex-chart.component'),
+          import('./demo/historicos/historico/historico.component'),
       },
     ],
   },
