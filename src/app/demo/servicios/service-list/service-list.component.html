@@ -63,7 +63,7 @@
         <app-edit-service [idServicio]="idServicio" (editComplete)="ocultarModalEditarServicio()"></app-edit-service>
   </ng-container>
   <ng-template #addServicioForm>
-    <app-add-service></app-add-service>
+    <app-add-service (cancelarCrear)="ocultarModalEditarServicio()"></app-add-service>
   </ng-template>
     </div>
   </div>

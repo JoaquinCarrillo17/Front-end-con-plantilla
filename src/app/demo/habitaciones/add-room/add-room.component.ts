@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Hotel } from '../../hoteles/interfaces/hotel.interface';
 import { HotelesService } from '../../hoteles/services/hoteles.service';
 import { TipoHabitacion, Habitacion } from '../interfaces/habitacion.interface';
@@ -12,6 +12,8 @@ import { TipoHabitacion, Habitacion } from '../interfaces/habitacion.interface';
   styleUrl: './add-room.component.scss'
 })
 export class AddRoomComponent {
+
+  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>(); // Para cerrar el modal con el boton de cancelar
 
   @ViewChild('numeroInput') numeroInput: { nativeElement: { value: number; }; };
   @ViewChild('tipoSelect') tipoSelect: { nativeElement: { value: string; }; };
@@ -118,6 +120,10 @@ export class AddRoomComponent {
   ocultarFormularioHuesped() {
     const formularioServicio = document.getElementById('formulario-huesped');
     formularioServicio.classList.remove('mostrar');
+  }
+
+  ocultarModalEditarHabitacion() {
+    this.cancelarCrear.emit();
   }
 
 }

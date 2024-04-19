@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Hotel } from '../../hoteles/interfaces/hotel.interface';
 import { HotelesService } from '../../hoteles/services/hoteles.service';
 import { CategoriaServicio, Servicio } from '../interfaces/servicio.interface';
@@ -12,6 +12,8 @@ import { CategoriaServicio, Servicio } from '../interfaces/servicio.interface';
   styleUrl: './add-service.component.scss'
 })
 export class AddServiceComponent {
+
+  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>(); // Para cerrar el modal con el boton de cancelar
 
   @ViewChild('nombreInput') nombreInput: { nativeElement: { value: string; }; };
   @ViewChild('descripcionInput') descripcionInput: { nativeElement: { value: string; }; };
@@ -77,6 +79,10 @@ export class AddServiceComponent {
         console.error('Error al añadir servicio:', error);
       }
     );
+  }
+
+  ocultarModalEditarServicio() {
+    this.cancelarCrear.emit();
   }
 
 }

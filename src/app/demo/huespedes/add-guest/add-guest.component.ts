@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Habitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
 import { Huesped } from '../interfaces/huesped.interface';
@@ -12,6 +12,8 @@ import { Huesped } from '../interfaces/huesped.interface';
   styleUrl: './add-guest.component.scss'
 })
 export class AddGuestComponent {
+
+  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>(); // Para cerrar el modal con el boton de cancelar
 
   @ViewChild('nombreCompletoInput') nombreCompletoInput: { nativeElement: { value: string; }; };
   @ViewChild('dniInput') dniInput: { nativeElement: { value: string; }; };
@@ -57,6 +59,10 @@ export class AddGuestComponent {
         console.error('Error al añadir huésped:', error);
       }
     );
+  }
+
+  ocultarModalEditarHuesped() {
+    this.cancelarCrear.emit();
   }
 
 }

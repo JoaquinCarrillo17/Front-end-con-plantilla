@@ -64,7 +64,7 @@
         <app-edit-guest [idHuesped]="idHuesped" (editComplete)="ocultarModalEditarHuesped()"></app-edit-guest>
       </ng-container>
       <ng-template #addHuespedForm>
-        <app-add-guest></app-add-guest>
+        <app-add-guest (cancelarCrear)="ocultarModalEditarHuesped()"></app-add-guest>
       </ng-template>
     </div>
   </div>

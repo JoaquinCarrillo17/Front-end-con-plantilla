@@ -74,7 +74,7 @@
         <app-edit-hotel [idHotel]="idHotel" (editComplete)="ocultarModalEditarHotel()"></app-edit-hotel>
       </ng-container>
       <ng-template #addHotelForm>
-        <app-add-hotel></app-add-hotel>
+        <app-add-hotel (cancelarCrear)="ocultarModalEditarHotel()"></app-add-hotel>
       </ng-template>
     </div>
   </div>
