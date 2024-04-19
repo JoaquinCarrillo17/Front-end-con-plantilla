@@ -22,13 +22,13 @@ export default class HistoricoComponent {
   @ViewChild('chart') chart: ChartComponent;
 
   areaAngleChart: Partial<ChartOptions>;
-  categories: string[] = ["Primera"];
-  hotelesData: number[] = [1];
-  habitacionesData: number[] = [1];
-  habitacionesDisponiblesData: number[] = [1];
-  habitacionesReservadasData: number[] = [1];
-  huespedesData: number[] = [1];
-  serviciosData: number[] = [1];
+  categories: string[] = [];
+  hotelesData: number[] = [];
+  habitacionesData: number[] = [];
+  habitacionesDisponiblesData: number[] = [];
+  habitacionesReservadasData: number[] = [];
+  huespedesData: number[] = [];
+  serviciosData: number[] = [];
 
   constructor(private historicoService: HistoricoService) {}
 
@@ -38,8 +38,16 @@ export default class HistoricoComponent {
 
   loadDataForChart() {
     this.historicoService.getAllHistoricos().subscribe((historicos: Historico[]) => {
+      console.log(historicos);
       historicos.forEach((historico: Historico) => {
-        this.categories.push(historico.fecha.toString());
+        const fecha = new Date(historico.fecha);
+        // Obtener día, mes y año
+        const dia = fecha.getDate();
+        const mes = fecha.getMonth() + 1;
+        const año = fecha.getFullYear();
+        // Formatear la fecha en "dd/mm/yyyy"
+        const fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${año}`;
+        this.categories.push(fechaFormateada);
         this.hotelesData.push(historico.hotelesTotales)
         this.habitacionesData.push(historico.habitacionesTotales);
         this.habitacionesDisponiblesData.push(historico.habitacionesDisponibles);
