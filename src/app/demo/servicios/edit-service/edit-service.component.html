@@ -15,7 +15,7 @@
 
         <div class="form-group">
           <label for="categoria">Categoría</label>
-          <select class="form-control" id="categoria" #categoriaServicio required>
+          <select class="form-control" id="categoria" [(ngModel)]="servicio.categoria"  required>
             <option value="" selected disabled>Elige una categoría</option>
             <option value="GIMNASIO">Gimnasio</option>
             <option value="BAR">Bar</option>
