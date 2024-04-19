@@ -10,10 +10,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Número</th>
-            <th>Tipo de Habitación</th>
-            <th>Precio por Noche</th>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('numero')" class="cursor-pointer">Número</th>
+            <th (click)="order('tipoHabitacion')" class="cursor-pointer">Tipo de Habitación</th>
+            <th (click)="order('precioNoche')" class="cursor-pointer">Precio por Noche</th>
             <th>Acciones</th>
           </tr>
         </thead>

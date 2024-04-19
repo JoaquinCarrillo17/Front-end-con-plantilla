@@ -12,16 +12,13 @@ export class HabitacionesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllHabitacionesMagicFilter(page?: number, items?: number) : Observable<{ habitaciones: Habitacion[], totalItems: number }> {
-    return this.http.get<{ habitaciones: Habitacion[], totalItems: number }>(`${this.baseUrl}/habitaciones/magicFilter?pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
-      tap(habitaciones => console.log(habitaciones)) // Loggea las habitaciones emitidas por el observable
-    );
+  getAllHabitacionesMagicFilter() : Observable<{ habitaciones: Habitacion[], totalItems: number }> {
+    return this.http.get<{ habitaciones: Habitacion[], totalItems: number }>(`${this.baseUrl}/habitaciones/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }
 
-  getHabitacionesFilteredByQuery(query: string, page?: number, items?: number): Observable<{ habitaciones: Habitacion[], totalItems: number }> {
-    return this.http.get<{ habitaciones: Habitacion[], totalItems: number }>(`${this.baseUrl}/habitaciones/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
-      tap(habitaciones => console.log(habitaciones))
-    );
+  getHabitacionesFilteredByQuery(query: string, valueSortOrder: string, sortBy: string, page: number, items: number): Observable<{ habitaciones: Habitacion[], totalItems: number }> {
+    const url = `${this.baseUrl}/habitaciones/magicFilter?query=${query}&valueSortOrder=${valueSortOrder}&sortBy=${sortBy}&pageNumber=${page}&itemsPerPage=${items}`;
+    return this.http.get<{ habitaciones: Habitacion[], totalItems: number }>(url);
   }
 
   // ? INFO: Para el select de asociar huesped

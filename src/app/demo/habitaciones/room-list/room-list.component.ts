@@ -20,6 +20,8 @@ export class RoomListComponent implements OnInit {
   public query: string = '';
   public pageNumber: number = 0;
   public itemsPerPage: number = 5;
+  public valueSortOrder: string = 'ASC';
+  public sortBy: string = 'id';
 
   public mostrarModalEliminar = false;
   public mostrarModalEditarCrear = false;
@@ -30,7 +32,7 @@ export class RoomListComponent implements OnInit {
   constructor(private habitacionesService: HabitacionesService){ }
 
   ngOnInit(): void {
-    this.habitacionesService.getAllHabitacionesMagicFilter(this.pageNumber, this.itemsPerPage)
+    this.habitacionesService.getAllHabitacionesMagicFilter()
       .subscribe(response => {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
@@ -40,7 +42,7 @@ export class RoomListComponent implements OnInit {
 
   search(value: string): void {
     this.isSpinnerVisible = true;
-    this.habitacionesService.getHabitacionesFilteredByQuery(value, this.pageNumber, this.itemsPerPage)
+    this.habitacionesService.getHabitacionesFilteredByQuery(value, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage)
       .subscribe(response => {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
@@ -49,9 +51,25 @@ export class RoomListComponent implements OnInit {
       });
   }
 
+  order(columnName: string) {
+    let direction = 'ASC';
+    if (this.sortBy === columnName) {
+      if (this.valueSortOrder === 'ASC') {
+        direction = 'DESC';
+      } else direction = 'ASC';
+    }
+    this.sortBy = columnName;
+    this.valueSortOrder = direction;
+    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
+      this.habitaciones = response.habitaciones;
+      this.totalItems = response.totalItems;
+    });
+  }
+
+
   onPageChange(value: number): void {
     this.isSpinnerVisible = true;
-    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, value, this.itemsPerPage)
+    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, value, this.itemsPerPage)
       .subscribe(response => {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
@@ -61,7 +79,7 @@ export class RoomListComponent implements OnInit {
 
   onItemPerPageChange(value: number): void {
     this.isSpinnerVisible = true;
-    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.pageNumber, value)
+    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, value)
       .subscribe(response => {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
