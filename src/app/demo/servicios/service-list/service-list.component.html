@@ -10,10 +10,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Categoría</th>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('nombre')" class="cursor-pointer">Nombre</th>
+            <th (click)="order('descripcion')" class="cursor-pointer">Descripción</th>
+            <th (click)="order('categoria')" class="cursor-pointer">Categoría</th>
             <th>Acciones</th>
           </tr>
         </thead>

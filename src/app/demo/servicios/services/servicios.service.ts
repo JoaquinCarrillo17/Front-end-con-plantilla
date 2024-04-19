@@ -11,16 +11,13 @@ export class ServiciosService {
 
   constructor(private http: HttpClient) { }
 
-  getAllServicios(page?: number, items?: number) : Observable<{ servicios: Servicio[], totalItems: number }> {
-    return this.http.get<{ servicios: Servicio[], totalItems: number }>(`${this.baseUrl}/servicios/magicFilter?pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
-      tap(servicios => console.log(servicios)) // Loggea los servicios emitidos por el observable
-    );
+  getAllServiciosMagicFilter() : Observable<{ servicios: Servicio[], totalItems: number }> {
+    return this.http.get<{ servicios: Servicio[], totalItems: number }>(`${this.baseUrl}/servicios/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }
 
-  getServiciosFilteredByQuery(query: string, page?: number, items?: number): Observable<{ servicios: Servicio[], totalItems: number }> {
-    return this.http.get<{ servicios: Servicio[], totalItems: number }>(`${this.baseUrl}/servicios/magicFilter?query=${ query }&pageNumber=${page || 0}&itemsPerPage=${items || 5}`).pipe(
-      tap(servicios => console.log(servicios))
-    );
+  getServiciosFilteredByQuery(query: string, valueSortOrder: string, sortBy: string, page: number, items: number): Observable<{ servicios: Servicio[], totalItems: number }> {
+    const url = `${this.baseUrl}/servicios/magicFilter?query=${query}&valueSortOrder=${valueSortOrder}&sortBy=${sortBy}&pageNumber=${page}&itemsPerPage=${items}`;
+    return this.http.get<{ servicios: Servicio[], totalItems: number }>(url);
   }
 
   // ? INFO: Borrar Servicio

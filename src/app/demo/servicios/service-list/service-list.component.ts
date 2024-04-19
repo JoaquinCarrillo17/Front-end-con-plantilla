@@ -20,6 +20,8 @@ export class ServiceListComponent implements OnInit {
   public query: string = '';
   public pageNumber: number = 0;
   public itemsPerPage: number = 5;
+  public valueSortOrder: string = 'ASC';
+  public sortBy: string = 'id';
 
   public mostrarModalEliminar = false;
   public mostrarModalEditarCrear = false;
@@ -30,7 +32,7 @@ export class ServiceListComponent implements OnInit {
   constructor(private serviciosService: ServiciosService) { }
 
   ngOnInit(): void {
-    this.serviciosService.getAllServicios(this.pageNumber, this.itemsPerPage)
+    this.serviciosService.getAllServiciosMagicFilter()
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
@@ -40,7 +42,7 @@ export class ServiceListComponent implements OnInit {
 
   search(value: string): void {
     this.isSpinnerVisible = true;
-    this.serviciosService.getServiciosFilteredByQuery(value, this.pageNumber, this.itemsPerPage)
+    this.serviciosService.getServiciosFilteredByQuery(value, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage)
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
@@ -49,9 +51,24 @@ export class ServiceListComponent implements OnInit {
       });
   }
 
+  order(columnName: string) {
+    let direction = 'ASC';
+    if (this.sortBy === columnName) {
+      if (this.valueSortOrder === 'ASC') {
+        direction = 'DESC';
+      } else direction = 'ASC';
+    }
+    this.sortBy = columnName;
+    this.valueSortOrder = direction;
+    this.serviciosService.getServiciosFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
+      this.servicios = response.servicios;
+      this.totalItems = response.totalItems;
+    });
+  }
+
   onPageChange(value: number): void {
     this.isSpinnerVisible = true;
-    this.serviciosService.getServiciosFilteredByQuery(this.query, value, this.itemsPerPage)
+    this.serviciosService.getServiciosFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, value, this.itemsPerPage)
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
@@ -61,7 +78,7 @@ export class ServiceListComponent implements OnInit {
 
   onItemPerPageChange(value: number): void {
     this.isSpinnerVisible = true;
-    this.serviciosService.getServiciosFilteredByQuery(this.query, this.pageNumber, value)
+    this.serviciosService.getServiciosFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, value)
       .subscribe(response => {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
