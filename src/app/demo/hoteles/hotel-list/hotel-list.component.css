@@ -112,3 +112,7 @@
   max-height: 430px; /* Altura máxima para permitir el desplazamiento */
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+

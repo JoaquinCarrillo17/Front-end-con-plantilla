@@ -9,12 +9,12 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Sitio Web</th>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('nombre')" class="cursor-pointer">Nombre</th>
+            <th (click)="order('direccion')" class="cursor-pointer">Dirección</th>
+            <th (click)="order('telefono')" class="cursor-pointer">Teléfono</th>
+            <th (click)="order('email')" class="cursor-pointer">Email</th>
+            <th (click)="order('sitioWeb')" class="cursor-pointer">Sitio Web</th>
             <th>Habitaciones totales</th>
             <th>Habitaciones Disponibles</th>
             <th>Habitaciones Reservadas</th>
@@ -72,11 +72,10 @@
       <hr>
       <ng-container *ngIf="accionModal === 'editar'; else addHotelForm">
         <app-edit-hotel [idHotel]="idHotel" (editComplete)="ocultarModalEditarHotel()"></app-edit-hotel>
-  </ng-container>
-  <ng-template #addHotelForm>
-    <app-add-hotel></app-add-hotel>
-  </ng-template>
+      </ng-container>
+      <ng-template #addHotelForm>
+        <app-add-hotel></app-add-hotel>
+      </ng-template>
     </div>
   </div>
 </ng-container>
-

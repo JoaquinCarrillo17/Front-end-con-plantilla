@@ -17,10 +17,12 @@ export class HotelListComponent implements OnInit {
 
   isSpinnerVisible: boolean = true; // Agrega una variable para controlar la visibilidad del spinner
   public hoteles: Hotel[];
-  public totalItems: number = 0;
+  public totalItems: number = 0; // Para el pagination component
   public query: string = '';
   public pageNumber: number = 0;
   public itemsPerPage: number = 5;
+  public valueSortOrder: string = 'ASC';
+  public sortBy: string = 'id';
 
   public mostrarModalEliminar = false;
   public mostrarModalEditarCrear = false;
@@ -31,7 +33,7 @@ export class HotelListComponent implements OnInit {
   constructor(private hotelesService: HotelesService) { }
 
   ngOnInit(): void {
-    this.hotelesService.getAllHotelesMagicFilter(this.pageNumber, this.itemsPerPage).subscribe(response => {
+    this.hotelesService.getAllHotelesMagicFilter().subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;
@@ -45,17 +47,32 @@ export class HotelListComponent implements OnInit {
 
   search(value: string) {
     this.isSpinnerVisible = true;
-    this.hotelesService.getHotelesFilteredByQuery(value, this.pageNumber, this.itemsPerPage).subscribe(response => {
+    this.hotelesService.getHotelesFilteredByQuery(value, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.query = value;
-      this.isSpinnerVisible = false;
+    });
+    this.isSpinnerVisible = false;
+  }
+
+  order(columnName: string) {
+    let direction = 'ASC';
+    if (this.sortBy === columnName) {
+      if (this.valueSortOrder === 'ASC') {
+        direction = 'DESC';
+      } else direction = 'ASC';
+    }
+    this.sortBy = columnName;
+    this.valueSortOrder = direction;
+    this.hotelesService.getHotelesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
+      this.hoteles = response.hoteles;
+      this.totalItems = response.totalItems;
     });
   }
 
   onPageChange(value: number) {
     this.isSpinnerVisible = true;
-    this.hotelesService.getHotelesFilteredByQuery(this.query, value, this.itemsPerPage).subscribe(response => {
+    this.hotelesService.getHotelesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, value, this.itemsPerPage).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;
@@ -65,7 +82,7 @@ export class HotelListComponent implements OnInit {
   onItemPerPageChange(value: number) {
     this.isSpinnerVisible = true
     this.itemsPerPage = value; // Para que me actualice el valor que por defecto tengo a 5
-    this.hotelesService.getHotelesFilteredByQuery(this.query, this.pageNumber, value).subscribe(response => {
+    this.hotelesService.getHotelesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, value).subscribe(response => {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;

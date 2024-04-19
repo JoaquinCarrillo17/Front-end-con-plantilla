@@ -14,12 +14,13 @@ export class HotelesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllHotelesMagicFilter(page?: number, items?: number): Observable<{ hoteles: Hotel[], totalItems: number }> {
-    return this.http.get<{ hoteles: Hotel[], totalItems: number }>(`${this.baseUrl}/hoteles/magicFilter?pageNumber=${page || 0}&itemsPerPage=${items || 5}`);
+  getAllHotelesMagicFilter(): Observable<{ hoteles: Hotel[], totalItems: number }> {
+    return this.http.get<{ hoteles: Hotel[], totalItems: number }>(`${this.baseUrl}/hoteles/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }
 
-  getHotelesFilteredByQuery(query: string, page?: number, items?: number): Observable<{ hoteles: Hotel[], totalItems: number }> {
-    return this.http.get<{ hoteles: Hotel[], totalItems: number }>(`${this.baseUrl}/hoteles/magicFilter?query=${query}&pageNumber=${page || 0}&itemsPerPage=${items || 5}`);
+  getHotelesFilteredByQuery(query: string, valueSortOrder: string, sortBy: string, page: number, items: number): Observable<{ hoteles: Hotel[], totalItems: number }> {
+    const url = `${this.baseUrl}/hoteles/magicFilter?query=${query}&valueSortOrder=${valueSortOrder}&sortBy=${sortBy}&pageNumber=${page}&itemsPerPage=${items}`;
+    return this.http.get<{ hoteles: Hotel[], totalItems: number }>(url);
   }
 
   // ? INFO: Para el select de asociar servicio
@@ -56,7 +57,6 @@ export class HotelesService {
   editHotel(idHotel: number, hotel: Hotel): Observable<any> {
     return this.http.put(`${this.baseUrl}/hoteles/${idHotel}`, hotel);
   }
-
 
 
 }
