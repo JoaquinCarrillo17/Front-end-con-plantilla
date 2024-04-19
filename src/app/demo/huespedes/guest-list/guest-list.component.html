@@ -6,12 +6,12 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nombre Completo</th>
-            <th>DNI</th>
-            <th>Email</th>
-            <th>Fecha de Check-In</th>
-            <th>Fecha de Check-Out</th>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('nombreCompleto')" class="cursor-pointer">Nombre Completo</th>
+            <th (click)="order('dni')" class="cursor-pointer">DNI</th>
+            <th (click)="order('email')" class="cursor-pointer">Email</th>
+            <th (click)="order('fechaCheckIn')" class="cursor-pointer">Fecha de Check-In</th>
+            <th (click)="order('fechaCheckOut')" class="cursor-pointer">Fecha de Check-Out</th>
             <th>Acciones</th>
           </tr>
         </thead>

@@ -37,6 +37,10 @@ export class RoomListComponent implements OnInit {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar las habitaciones:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
@@ -47,7 +51,11 @@ export class RoomListComponent implements OnInit {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
         this.query = value;
-        this.isSpinnerVisible = false;
+        this.isSpinnerVisible =  false;
+      },
+      (error) => {
+        console.error('Error al cargar los huespedes:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
@@ -74,6 +82,10 @@ export class RoomListComponent implements OnInit {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar los huespedes:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
@@ -84,6 +96,10 @@ export class RoomListComponent implements OnInit {
         this.habitaciones = response.habitaciones;
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar las habitaciones:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 

@@ -51,8 +51,12 @@ export class HotelListComponent implements OnInit {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.query = value;
+      this.isSpinnerVisible = false;
+    },
+    (error) => {
+      console.error('Error al cargar los hoteles:', error);
+      this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
     });
-    this.isSpinnerVisible = false;
   }
 
   order(columnName: string) {
@@ -76,6 +80,10 @@ export class HotelListComponent implements OnInit {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;
+    },
+    (error) => {
+      console.error('Error al cargar los hoteles:', error);
+      this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
     });
   }
 
@@ -86,6 +94,10 @@ export class HotelListComponent implements OnInit {
       this.hoteles = response.hoteles;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;
+    },
+    (error) => {
+      console.error('Error al cargar los hoteles:', error);
+      this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
     });
   }
 

@@ -37,6 +37,10 @@ export class ServiceListComponent implements OnInit {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar los servicios:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
@@ -48,6 +52,10 @@ export class ServiceListComponent implements OnInit {
         this.totalItems = response.totalItems;
         this.query = value;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar los servicios:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
@@ -73,6 +81,10 @@ export class ServiceListComponent implements OnInit {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar los huespedes:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
@@ -83,6 +95,10 @@ export class ServiceListComponent implements OnInit {
         this.servicios = response.servicios;
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
+      },
+      (error) => {
+        console.error('Error al cargar los huespedes:', error);
+        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }
 
