@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6">
-    <app-card cardTitle="Area Angle Chart" [options]="false">
+    <app-card cardTitle="Entidades" [options]="false">
       <apx-chart
         [series]="areaAngleChart.series"
         [chart]="areaAngleChart.chart"
@@ -8,6 +8,19 @@
         [stroke]="areaAngleChart.stroke"
         [xaxis]="areaAngleChart.xaxis"
         [tooltip]="areaAngleChart.tooltip"
+      ></apx-chart>
+    </app-card>
+  </div>
+  
+  <div class="col-md-6">
+    <app-card cardTitle="Habitaciones" [options]="false">
+      <apx-chart
+        [series]="habitacionesChart.series"
+        [chart]="habitacionesChart.chart"
+        [fill]="habitacionesChart.fill"
+        [stroke]="habitacionesChart.stroke"
+        [xaxis]="habitacionesChart.xaxis"
+        [tooltip]="habitacionesChart.tooltip"
       ></apx-chart>
     </app-card>
   </div>
