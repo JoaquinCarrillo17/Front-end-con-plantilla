@@ -30,6 +30,12 @@ export class AddHotelComponent {
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
 
+  public servicioForm: FormGroup = this.formBuilder.group({
+    nombre: ['', [Validators.required]],
+    descripcion: ['', [Validators.required]],
+    categoria: ['Elige una categoría', [Validators.required]]
+  })
+
   public hotelForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required]],
     direccion: ['', [Validators.required]],
@@ -56,11 +62,41 @@ export class AddHotelComponent {
 
   // Para el validator
 
-  isValidField(field: string) {
+  isValidFieldServicio(field: string) {
+    return this.servicioForm.controls[field].errors && this.servicioForm.controls[field].touched
+  }
+
+  getFieldErrorServicio(field: string) {
+
+    if (!this.servicioForm.controls[field]) return null;
+
+    const errors = this.servicioForm.controls[field].errors;
+    console.log(errors);
+
+    for (const key of Object.keys(errors)) {
+      console.log(key);
+      switch (key) {
+        case 'required':
+          return 'Este campo es obligatorio'
+        case 'minlength':
+          return 'Este campo debe tener 9 caracteres'
+        case 'maxlength':
+          return 'Este campo debe tener 9 caracteres'
+        case 'email':
+          return 'Este campo debe contener "@"';
+        case 'pattern':
+          return 'Este campo debe empezar con "www"';
+      }
+    }
+
+    return null;
+  }
+
+  isValidFieldHotel(field: string) {
     return this.hotelForm.controls[field].errors && this.hotelForm.controls[field].touched
   }
 
-  getFieldError(field: string) {
+  getFieldErrorHotel(field: string) {
 
     if (!this.hotelForm.controls[field]) return null;
 
@@ -68,12 +104,13 @@ export class AddHotelComponent {
     console.log(errors);
 
     for (const key of Object.keys(errors)) {
+      console.log(key);
       switch (key) {
         case 'required':
           return 'Este campo es obligatorio'
-        case 'minLength':
+        case 'minlength':
           return 'Este campo debe tener 9 caracteres'
-        case 'maxLength':
+        case 'maxlength':
           return 'Este campo debe tener 9 caracteres'
         case 'email':
           return 'Este campo debe contener "@"';

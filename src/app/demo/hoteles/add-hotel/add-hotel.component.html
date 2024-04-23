@@ -1,98 +1,95 @@
-<form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
-  <div class="modal-columns">
+<div class="modal-columns">
+
     <!-- Primera columna para datos básicos del hotel -->
     <div class="modal-column">
+      <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required
-          formControlName="nombre">
-          <span *ngIf="isValidField('nombre')" class="form-text text-danger">{{ getFieldError('nombre') }}</span>
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required formControlName="nombre">
+        <span *ngIf="isValidFieldHotel('nombre')" class="form-text text-danger">{{ getFieldErrorHotel('nombre') }}</span>
       </div>
       <div class="form-group">
         <label for="direccion">Dirección</label>
-        <input type="text" class="form-control" id="direccion" placeholder="Dirección" #direccionInput required
-          formControlName="direccion">
-          <span *ngIf="isValidField('direccion')" class="form-text text-danger">{{ getFieldError('direccion') }}</span>
+        <input type="text" class="form-control" id="direccion" placeholder="Dirección" #direccionInput required formControlName="direccion">
+        <span *ngIf="isValidFieldHotel('direccion')" class="form-text text-danger">{{ getFieldErrorHotel('direccion') }}</span>
       </div>
       <div class="form-group">
         <label for="telefono">Teléfono</label>
-        <input type="text" class="form-control" id="telefono" placeholder="Teléfono" #telefonoInput required
-          formControlName="telefono">
-          <span *ngIf="isValidField('telefono')" class="form-text text-danger">{{ getFieldError('telefono') }}</span>
+        <input type="text" class="form-control" id="telefono" placeholder="Teléfono" #telefonoInput required formControlName="telefono">
+        <span *ngIf="isValidFieldHotel('telefono')" class="form-text text-danger">{{ getFieldErrorHotel('telefono') }}</span>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required
-          formControlName="email">
-          <span *ngIf="isValidField('email')" class="form-text text-danger">{{ getFieldError('email') }}</span>
+        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required formControlName="email">
+        <span *ngIf="isValidFieldHotel('email')" class="form-text text-danger">{{ getFieldErrorHotel('email') }}</span>
       </div>
       <div class="form-group">
         <label for="sitioWeb">Sitio Web</label>
-        <input type="text" class="form-control" id="sitioWeb" placeholder="Sitio Web" #sitioWebInput required
-          formControlName="sitioWeb">
-          <span *ngIf="isValidField('sitioWeb')" class="form-text text-danger">{{ getFieldError('sitioWeb') }}</span>
+        <input type="text" class="form-control" id="sitioWeb" placeholder="Sitio Web" #sitioWebInput required formControlName="sitioWeb">
+        <span *ngIf="isValidFieldHotel('sitioWeb')" class="form-text text-danger">{{ getFieldErrorHotel('sitioWeb') }}</span>
       </div>
+    </form>
     </div>
-    <!-- Segunda columna para servicios, habitaciones y huéspedes -->
-    <div class="modal-column">
-      <h6 class="añadir-servicio" (click)="mostrarFormularioServicio()">Añadir Servicio</h6>
-      <div id="formulario-servicio" class="formulario">
-        <div class="form-group">
-          <label for="nombre">Nombre</label>
-          <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreServicio required />
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción</label>
-          <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionServicio
-            required />
-        </div>
-        <div class="form-group">
-          <label for="categoria">Categoría</label>
-          <select class="form-control" id="categoria" #categoriaServicio required>
-            <option value="" selected disabled>Elige una categoría</option>
-            <option value="GIMNASIO">Gimnasio</option>
-            <option value="BAR">Bar</option>
-            <option value="LAVANDERIA">Lavandería</option>
-            <option value="KARAOKE">Karaoke</option>
-            <option value="CASINO">Casino</option>
-          </select>
-        </div>
-        <div *ngIf="errorServicio" class="alert alert-danger">{{ errorServicio }}</div>
-        <button type="button" (click)="agregarServicio()" class="btn btn-glow-primary btn-primary">Agregar
-          servicio</button>
+
+  <!-- Segunda columna para servicios, habitaciones y huéspedes -->
+  <div class="modal-column">
+    <h6 class="añadir-servicio" (click)="mostrarFormularioServicio()">Añadir Servicio</h6>
+    <div id="formulario-servicio" class="formulario">
+      <form [formGroup]="servicioForm">
+      <div class="form-group">
+        <label for="nombreServicio">Nombre</label>
+        <input type="text" class="form-control" id="nombreServicio" placeholder="Nombre" #nombreServicio required formControlName="nombre"/>
+        <span *ngIf="isValidFieldServicio('nombre')" class="form-text text-danger">{{ getFieldErrorServicio('nombre') }}</span>
       </div>
-      <hr>
-      <h6 class="añadir-habitacion" (click)="mostrarFormularioHabitacion()">Añadir habitación</h6>
-      <div id="formulario-habitacion" class="formulario">
-        <div class="form-group">
-          <label for="numero">Número</label>
-          <input type="number" class="form-control" id="numero" placeholder="Número" #numeroHabitacion required />
-        </div>
-        <div class="form-group">
-          <label for="tipo">Tipo de habitación</label>
-          <select class="form-control" id="tipo" #tipoHabitacion required>
-            <option value="" selected disabled>Elige un tipo de habitación</option>
-            <option value="INDIVIDUAL">Individual</option>
-            <option value="DOBLE">Doble</option>
-            <option value="CUADRUPLE">Cuádruple</option>
-            <option value="SUITE">Suite</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="precio">Precio</label>
-          <input type="number" class="form-control" id="precio" placeholder="Precio por noche" #precioHabitacion
-            required />
-        </div>
-        <div *ngIf="errorHabitacion" class="alert alert-danger">{{ errorHabitacion }}</div>
-        <button type="button" (click)="agregarHabitacion()" class="btn btn-glow-primary btn-primary">Agregar
-          habitación</button>
+      <div class="form-group">
+        <label for="descripcionServicio">Descripción</label>
+        <input type="text" class="form-control" id="descripcionServicio" placeholder="Descripción" #descripcionServicio required formControlName="descripcion"/>
+        <span *ngIf="isValidFieldServicio('descripcion')" class="form-text text-danger">{{ getFieldErrorServicio('descripcion') }}</span>
       </div>
+      <div class="form-group">
+        <label for="categoriaServicio">Categoría</label>
+        <select class="form-control" id="categoriaServicio" #categoriaServicio required formControlName="categoria">
+          <option value="" selected disabled>Elige una categoría</option>
+          <option value="GIMNASIO">Gimnasio</option>
+          <option value="BAR">Bar</option>
+          <option value="LAVANDERIA">Lavandería</option>
+          <option value="KARAOKE">Karaoke</option>
+          <option value="CASINO">Casino</option>
+        </select>
+        <span *ngIf="isValidFieldServicio('categoria')" class="form-text text-danger">{{ getFieldErrorServicio('categoria') }}</span>
+      </div>
+      <div *ngIf="errorServicio" class="alert alert-danger">{{ errorServicio }}</div>
+      <button type="button" (click)="agregarServicio()" class="btn btn-glow-primary btn-primary">Agregar servicio</button>
+    </form>
+    </div>
+    <hr>
+    <h6 class="añadir-habitacion" (click)="mostrarFormularioHabitacion()">Añadir habitación</h6>
+    <div id="formulario-habitacion" class="formulario">
+      <div class="form-group">
+        <label for="numeroHabitacion">Número</label>
+        <input type="number" class="form-control" id="numeroHabitacion" placeholder="Número" #numeroHabitacion required />
+      </div>
+      <div class="form-group">
+        <label for="tipoHabitacion">Tipo de habitación</label>
+        <select class="form-control" id="tipoHabitacion" #tipoHabitacion required>
+          <option value="" selected disabled>Elige un tipo de habitación</option>
+          <option value="INDIVIDUAL">Individual</option>
+          <option value="DOBLE">Doble</option>
+          <option value="CUADRUPLE">Cuádruple</option>
+          <option value="SUITE">Suite</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="precioHabitacion">Precio</label>
+        <input type="number" class="form-control" id="precioHabitacion" placeholder="Precio por noche" #precioHabitacion required />
+      </div>
+      <div *ngIf="errorHabitacion" class="alert alert-danger">{{ errorHabitacion }}</div>
+      <button type="button" (click)="agregarHabitacion()" class="btn btn-glow-primary btn-primary">Agregar habitación</button>
     </div>
   </div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div class="button-container">
-    <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary">Crear Hotel</button>
-    <button type="button" class="btn btn-glow-secondary btn-secondary"
-      (click)="ocultarModalEditarHotel()">Cancelar</button>
-  </div>
-</form>
+</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+<div class="button-container">
+  <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary">Crear Hotel</button>
+  <button type="button" class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEditarHotel()">Cancelar</button>
+</div>
