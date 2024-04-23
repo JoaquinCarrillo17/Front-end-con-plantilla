@@ -57,13 +57,14 @@
             <label for="fechaSalida" class="col-sm-3 col-form-label">Fecha Salida</label>
             <input type="datetime-local" class="form-control" id="fechaSalida" #fechaSalida required />
           </div>
+          <div *ngIf="errorHuesped" class="alert alert-danger">{{ errorHuesped }}</div>
           <button type="button" (click)="agregarHuesped()" class="btn btn-glow-primary btn-primary">Agregar
             Huésped</button>
         </form>
       </div>
     </div>
   </div>
-
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div class="button-container">
     <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary" title="Crear Habitación">Crear
       Habitación</button>

@@ -47,6 +47,7 @@
             <option value="CASINO">Casino</option>
           </select>
         </div>
+        <div *ngIf="errorServicio" class="alert alert-danger">{{ errorServicio }}</div>
         <button type="button" (click)="agregarServicio()" class="btn btn-glow-primary btn-primary">Agregar
           servicio</button>
       </div>
@@ -72,11 +73,13 @@
           <input type="number" class="form-control" id="precio" placeholder="Precio por noche" #precioHabitacion
             required />
         </div>
+        <div *ngIf="errorHabitacion" class="alert alert-danger">{{ errorHabitacion }}</div>
         <button type="button" (click)="agregarHabitacion()" class="btn btn-glow-primary btn-primary">Agregar
           habitación</button>
       </div>
     </div>
   </div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div class="button-container">
     <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary">Crear Hotel</button>
     <button type="button" class="btn btn-glow-secondary btn-secondary"

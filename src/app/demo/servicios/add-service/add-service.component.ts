@@ -19,6 +19,7 @@ export class AddServiceComponent {
   @ViewChild('descripcionInput') descripcionInput: { nativeElement: { value: string; }; };
   @ViewChild('categoriaSelect') categoriaSelect: { nativeElement: { value: string; }; };
   @ViewChild('hotelSelect') hotelSelect: { nativeElement: { value: number; }; };
+  error: string = ''; // Variable para almacenar mensajes de error
 
   public hoteles: Hotel[];
 
@@ -29,17 +30,20 @@ export class AddServiceComponent {
   }
 
   onSubmit() {
-    // ! EL REQUIRED SOLO FUNCIONA SI PONGO EL BOTON SUBMIT PERO SI HAGO ESTO NO PUEDO HACER EL ROUTER NI VER LOS PRINTS
     const nombre = this.nombreInput.nativeElement.value;
     const descripcion = this.descripcionInput.nativeElement.value;
     const categoria = this.categoriaSelect.nativeElement.value;
     const idHotel = this.hotelSelect.nativeElement.value;
 
-    // Aquí puedes hacer lo que quieras con los datos, como enviarlos a tu servicio para crear el servicio
-    console.log('Nombre:', nombre);
-    console.log('Descripción:', descripcion);
-    console.log('Categoría:', categoria);
-    console.log('Hotel:', idHotel);
+    // Validar campos requeridos manualmente
+    if (!nombre || !descripcion || !categoria || !idHotel) {
+      // Mostrar mensaje de error
+      this.error = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+  }
+
+  // Si no hay errores, limpiar el mensaje de error
+  this.error = '';
 
     let cat: CategoriaServicio;
     switch (categoria) {

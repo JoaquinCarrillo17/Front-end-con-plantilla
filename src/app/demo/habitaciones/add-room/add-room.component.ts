@@ -24,6 +24,8 @@ export class AddRoomComponent {
   @ViewChild('emailHuesped') emailHuesped: { nativeElement: { value: string; }; };
   @ViewChild('fechaEntrada') fechaEntrada: { nativeElement: { value: string; }; };
   @ViewChild('fechaSalida') fechaSalida: { nativeElement: { value: string; }; };
+  error: string = ''; // Variable para almacenar mensajes de error
+  errorHuesped: string = ''; // Variable para almacenar mensajes de error
 
 
   public hoteles: Hotel[];
@@ -41,13 +43,20 @@ export class AddRoomComponent {
   }
 
   onSubmit() {
-
-    // ! EL REQUIRED SOLO FUNCIONA SI PONGO EL BOTON SUBMIT PERO SI HAGO ESTO NO PUEDO HACER EL ROUTER NI VER LOS PRINTS
-
     const numero = this.numeroInput.nativeElement.value;
     const tipo = this.tipoSelect.nativeElement.value;
     const precio = this.precioInput.nativeElement.value;
     const idHotel = this.hotelSelect.nativeElement.value;
+
+    // Validar campos requeridos manualmente
+    if (!numero || !tipo || !precio || !idHotel) {
+      // Mostrar mensaje de error
+      this.error = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+    }
+
+    // Si no hay errores, limpiar el mensaje de error
+    this.error = '';
 
     let tipoHabitacion: TipoHabitacion;
     switch (tipo) {
@@ -91,6 +100,16 @@ export class AddRoomComponent {
     const email = this.emailHuesped.nativeElement.value;
     const fechaEntrada = this.fechaEntrada.nativeElement.value;
     const fechaSalida = this.fechaSalida.nativeElement.value;
+
+    // Validar campos requeridos manualmente
+    if (!nombre || !dni || !email || !fechaEntrada || !fechaSalida) {
+      // Mostrar mensaje de error
+      this.errorHuesped = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+    }
+
+    // Si no hay errores, limpiar el mensaje de error
+    this.errorHuesped = '';
 
     this.habitacion.huespedes.push({
       nombreCompleto: nombre,

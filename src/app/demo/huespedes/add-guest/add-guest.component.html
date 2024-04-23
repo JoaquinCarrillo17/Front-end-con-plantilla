@@ -42,6 +42,7 @@
     </div>
   </div>
 
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div class="button-container">
     <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary"
       title="btn btn-glow-primary btn-primary" data-toggle="tooltip">Crear Huésped</button>

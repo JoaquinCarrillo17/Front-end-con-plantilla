@@ -3,11 +3,12 @@ import { Hotel } from '../interfaces/hotel.interface';
 import { HotelesService } from '../services/hoteles.service';
 import { CategoriaServicio } from '../../servicios/interfaces/servicio.interface';
 import { TipoHabitacion } from '../../habitaciones/interfaces/habitacion.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-hotel',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './add-hotel.component.html',
   styleUrls: ['./add-hotel.component.scss', './add-hotel.component.css']
 })
@@ -27,6 +28,9 @@ export class AddHotelComponent {
   @ViewChild('numeroHabitacion') numeroHabitacion: { nativeElement: { value: number; }; };
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
+  error: string = ''; // Variable para almacenar mensajes de error
+  errorServicio: string = ''; // Variable para almacenar mensajes de error
+  errorHabitacion: string = ''; // Variable para almacenar mensajes de error
 
   hotel: Hotel = {
     nombre: '',
@@ -38,7 +42,7 @@ export class AddHotelComponent {
     habitaciones: [],
   };
 
-  constructor(private hotelesService: HotelesService) {}
+  constructor(private hotelesService: HotelesService) { }
 
   onSubmit() {
 
@@ -47,6 +51,16 @@ export class AddHotelComponent {
     const telefono = this.telefonoInput.nativeElement.value;
     const email = this.emailInput.nativeElement.value;
     const sitioWeb = this.sitioWebInput.nativeElement.value;
+
+    // Validar campos requeridos manualmente
+    if (!nombre || !direccion || !email || !telefono || !sitioWeb) {
+      // Mostrar mensaje de error
+      this.error = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+    }
+
+    // Si no hay errores, limpiar el mensaje de error
+    this.error = '';
 
     this.hotel = {
       nombre: nombre,
@@ -73,6 +87,16 @@ export class AddHotelComponent {
     const nombre = this.nombreServicio.nativeElement.value;
     const descripcion = this.descripcionServicio.nativeElement.value;
     const categoria = this.categoriaServicio.nativeElement.value;
+
+    // Validar campos requeridos manualmente
+    if (!nombre || !descripcion || !categoria) {
+      // Mostrar mensaje de error
+      this.errorServicio = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+    }
+
+    // Si no hay errores, limpiar el mensaje de error
+    this.errorServicio = '';
 
     let cat: CategoriaServicio;
     switch (categoria) {
@@ -114,6 +138,16 @@ export class AddHotelComponent {
     const numero = this.numeroHabitacion.nativeElement.value;
     const tipo = this.tipoHabitacion.nativeElement.value;
     const precio = this.precioHabitacion.nativeElement.value;
+
+    // Validar campos requeridos manualmente
+    if (!numero || !tipo || !precio) {
+      // Mostrar mensaje de error
+      this.errorHabitacion = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+    }
+
+    // Si no hay errores, limpiar el mensaje de error
+    this.errorHabitacion = '';
 
     let tipoHabitacion: TipoHabitacion;
     switch (tipo) {

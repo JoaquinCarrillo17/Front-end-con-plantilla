@@ -21,6 +21,7 @@ export class AddGuestComponent {
   @ViewChild('fechaCheckInInput') fechaCheckInInput: { nativeElement: { value: string; }; };
   @ViewChild('fechaCheckOutInput') fechaCheckOutInput: { nativeElement: { value: string; }; };
   @ViewChild('habitacionSelect') habitacionSelect: { nativeElement: { value: number; }; };
+  error: string = ''; // Variable para almacenar mensajes de error
 
   public habitaciones: Habitacion[];
 
@@ -31,15 +32,22 @@ export class AddGuestComponent {
   }
 
   onSubmit() {
-
-    // ! EL REQUIRED SOLO FUNCIONA SI PONGO EL BOTON SUBMIT PERO SI HAGO ESTO NO PUEDO HACER EL ROUTER NI VER LOS PRINTS
-
     const nombreCompleto = this.nombreCompletoInput.nativeElement.value;
     const dni = this.dniInput.nativeElement.value;
     const email = this.emailInput.nativeElement.value;
     const fechaCheckIn = this.fechaCheckInInput.nativeElement.value;
     const fechaCheckOut = this.fechaCheckOutInput.nativeElement.value;
     const idHabitacion = this.habitacionSelect.nativeElement.value;
+
+    // Validar campos requeridos manualmente
+    if (!nombreCompleto || !dni || !email || !fechaCheckIn || !fechaCheckOut || !idHabitacion) {
+      // Mostrar mensaje de error
+      this.error = 'Por favor complete todos los campos requeridos.';
+      return; // Detener la ejecución del método
+    }
+
+    // Si no hay errores, limpiar el mensaje de error
+    this.error = '';
 
     // Llamar al servicio para crear el huésped con los datos recopilados
     const huesped: Huesped = {
