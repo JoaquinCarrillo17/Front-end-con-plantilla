@@ -1,26 +1,36 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
   <div class="modal-columns">
     <!-- Primera columna para datos básicos del hotel -->
     <div class="modal-column">
       <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required>
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required
+          formControlName="nombre">
+          <span *ngIf="isValidField('nombre')" class="form-text text-danger">{{ getFieldError('nombre') }}</span>
       </div>
       <div class="form-group">
         <label for="direccion">Dirección</label>
-        <input type="text" class="form-control" id="direccion" placeholder="Dirección" #direccionInput required>
+        <input type="text" class="form-control" id="direccion" placeholder="Dirección" #direccionInput required
+          formControlName="direccion">
+          <span *ngIf="isValidField('direccion')" class="form-text text-danger">{{ getFieldError('direccion') }}</span>
       </div>
       <div class="form-group">
         <label for="telefono">Teléfono</label>
-        <input type="text" class="form-control" id="telefono" placeholder="Teléfono" #telefonoInput required>
+        <input type="text" class="form-control" id="telefono" placeholder="Teléfono" #telefonoInput required
+          formControlName="telefono">
+          <span *ngIf="isValidField('telefono')" class="form-text text-danger">{{ getFieldError('telefono') }}</span>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required>
+        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required
+          formControlName="email">
+          <span *ngIf="isValidField('email')" class="form-text text-danger">{{ getFieldError('email') }}</span>
       </div>
       <div class="form-group">
         <label for="sitioWeb">Sitio Web</label>
-        <input type="text" class="form-control" id="sitioWeb" placeholder="Sitio Web" #sitioWebInput required>
+        <input type="text" class="form-control" id="sitioWeb" placeholder="Sitio Web" #sitioWebInput required
+          formControlName="sitioWeb">
+          <span *ngIf="isValidField('sitioWeb')" class="form-text text-danger">{{ getFieldError('sitioWeb') }}</span>
       </div>
     </div>
     <!-- Segunda columna para servicios, habitaciones y huéspedes -->

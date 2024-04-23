@@ -4,11 +4,12 @@ import { HotelesService } from '../services/hoteles.service';
 import { CategoriaServicio } from '../../servicios/interfaces/servicio.interface';
 import { TipoHabitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-hotel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-hotel.component.html',
   styleUrls: ['./add-hotel.component.scss', './add-hotel.component.css']
 })
@@ -28,6 +29,15 @@ export class AddHotelComponent {
   @ViewChild('numeroHabitacion') numeroHabitacion: { nativeElement: { value: number; }; };
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
+
+  public hotelForm: FormGroup = this.formBuilder.group({
+    nombre: ['', [Validators.required]],
+    direccion: ['', [Validators.required]],
+    telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+    email: ['', [Validators.required, Validators.email]], // Validar formato de email
+    sitioWeb: ['', [Validators.required, Validators.pattern(/^(www\..*)$/)]], // Validar que empiece con 'www'
+  });
+
   error: string = ''; // Variable para almacenar mensajes de error
   errorServicio: string = ''; // Variable para almacenar mensajes de error
   errorHabitacion: string = ''; // Variable para almacenar mensajes de error
@@ -42,9 +52,52 @@ export class AddHotelComponent {
     habitaciones: [],
   };
 
-  constructor(private hotelesService: HotelesService) { }
+  constructor(private hotelesService: HotelesService, private formBuilder: FormBuilder) { }
+
+  // Para el validator
+
+  isValidField(field: string) {
+    return this.hotelForm.controls[field].errors && this.hotelForm.controls[field].touched
+  }
+
+  getFieldError(field: string) {
+
+    if (!this.hotelForm.controls[field]) return null;
+
+    const errors = this.hotelForm.controls[field].errors;
+    console.log(errors);
+
+    for (const key of Object.keys(errors)) {
+      switch (key) {
+        case 'required':
+          return 'Este campo es obligatorio'
+        case 'minLength':
+          return 'Este campo debe tener 9 caracteres'
+        case 'maxLength':
+          return 'Este campo debe tener 9 caracteres'
+        case 'email':
+          return 'Este campo debe contener "@"';
+        case 'pattern':
+          return 'Este campo debe empezar con "www"';
+      }
+    }
+
+    return null;
+  }
 
   onSubmit() {
+
+    if (this.hotelForm.valid) {
+      console.log(this.hotelForm.value)
+      console.log(this.hotelForm.controls['nombre']);
+      this.hotelForm.reset();
+      return;
+    }
+
+    if (this.hotelForm.invalid) {
+      this.hotelForm.markAllAsTouched();
+      return;
+    }
 
     const nombre = this.nombreInput.nativeElement.value;
     const direccion = this.direccionInput.nativeElement.value;
