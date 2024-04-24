@@ -1,33 +1,38 @@
-<form (ngSubmit)="onSubmit()">
+
   <div class="modal-columns">
     <!-- Primera columna -->
     <div class="modal-column">
-
+      <form [formGroup]="habitacionForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="numero" class="col-sm-3 col-form-label">Número</label>
-        <input type="number" class="form-control" id="numero" placeholder="Número" #numeroInput required />
+        <input type="number" class="form-control" id="numero" placeholder="Número" #numeroInput required formControlName="numero" />
+        <span *ngIf="isValidFieldHabitacion('numero')" class="form-text text-danger">{{ getFieldErrorHabitacion('numero') }}</span>
       </div>
       <div class="form-group">
         <label for="tipo" class="col-sm-3 col-form-label">Tipo de habitación</label>
-        <select class="form-control" id="tipo" #tipoSelect required>
+        <select class="form-control" id="tipo" #tipoSelect required formControlName="tipoHabitacion">
           <option value="" selected disabled>Elige un tipo de habitación</option>
           <option value="INDIVIDUAL">Individual</option>
           <option value="DOBLE">Doble</option>
           <option value="CUADRUPLE">Cuádruple</option>
           <option value="SUITE">Suite</option>
         </select>
+        <span *ngIf="isValidFieldHabitacion('tipoHabitacion')" class="form-text text-danger">{{ getFieldErrorHabitacion('tipoHabitacion') }}</span>
       </div>
       <div class="form-group">
         <label for="precio" class="col-sm-3 col-form-label">Precio por noche</label>
-        <input type="number" class="form-control" id="precio" placeholder="Precio por noche" #precioInput required />
+        <input type="number" class="form-control" id="precio" placeholder="Precio por noche" #precioInput required formControlName="precio"/>
+        <span *ngIf="isValidFieldHabitacion('precio')" class="form-text text-danger">{{ getFieldErrorHabitacion('precio') }}</span>
       </div>
       <div class="form-group">
         <label for="hotel" class="col-sm-3 col-form-label">Hotel</label>
-        <select class="form-control" id="hotel" #hotelSelect required>
+        <select class="form-control" id="hotel" #hotelSelect required formControlName="idHotel">
           <option value="" selected disabled>Elige un hotel</option>
           <option *ngFor="let hotel of hoteles" [value]="hotel.id">{{ hotel.nombre }}</option>
         </select>
+        <span *ngIf="isValidFieldHabitacion('idHotel')" class="form-text text-danger">{{ getFieldErrorHabitacion('idHotel') }}</span>
       </div>
+    </form>
     </div>
 
 
@@ -35,36 +40,39 @@
       <h6 class="añadir-huesped" (click)="mostrarFormularioHuesped()">Añadir Huésped</h6>
       <hr />
       <div id="formulario-huesped" class="formulario">
-        <form (ngSubmit)="agregarHuesped()">
+        <form [formGroup]="huespedForm" (ngSubmit)="agregarHuesped()">
           <div class="form-group">
             <label for="nombreHuesped" class="col-sm-3 col-form-label">Nombre Completo</label>
             <input type="text" class="form-control" id="nombreHuesped" placeholder="Nombre Completo" #nombreHuesped
-              required />
+              required formControlName="nombreCompleto"/>
+              <span *ngIf="isValidFieldHuesped('nombreCompleto')" class="form-text text-danger">{{ getFieldErrorHuesped('nombreCompleto') }}</span>
           </div>
           <div class="form-group">
             <label for="dniHuesped" class="col-sm-3 col-form-label">DNI</label>
-            <input type="text" class="form-control" id="dniHuesped" placeholder="DNI" #dniHuesped required />
+            <input type="text" class="form-control" id="dniHuesped" placeholder="DNI" #dniHuesped required formControlName="dni" />
+            <span *ngIf="isValidFieldHuesped('dni')" class="form-text text-danger">{{ getFieldErrorHuesped('dni') }}</span>
           </div>
           <div class="form-group">
             <label for="emailHuesped" class="col-sm-3 col-form-label">Email</label>
-            <input type="email" class="form-control" id="emailHuesped" placeholder="Email" #emailHuesped required />
+            <input type="email" class="form-control" id="emailHuesped" placeholder="Email" #emailHuesped required formControlName="email"/>
+            <span *ngIf="isValidFieldHuesped('email')" class="form-text text-danger">{{ getFieldErrorHuesped('email') }}</span>
           </div>
           <div class="form-group">
             <label for="fechaEntrada" class="col-sm-3 col-form-label">Fecha Entrada</label>
-            <input type="datetime-local" class="form-control" id="fechaEntrada" #fechaEntrada required />
+            <input type="datetime-local" class="form-control" id="fechaEntrada" #fechaEntrada required formControlName="fechaEntrada"/>
+            <span *ngIf="isValidFieldHuesped('fechaEntrada')" class="form-text text-danger">{{ getFieldErrorHuesped('fechaEntrada') }}</span>
           </div>
           <div class="form-group">
             <label for="fechaSalida" class="col-sm-3 col-form-label">Fecha Salida</label>
-            <input type="datetime-local" class="form-control" id="fechaSalida" #fechaSalida required />
+            <input type="datetime-local" class="form-control" id="fechaSalida" #fechaSalida required formControlName="fechaSalida"/>
+            <span *ngIf="isValidFieldHuesped('fechaSalida')" class="form-text text-danger">{{ getFieldErrorHuesped('fechaSalida') }}</span>
           </div>
-          <div *ngIf="errorHuesped" class="alert alert-danger">{{ errorHuesped }}</div>
           <button type="button" (click)="agregarHuesped()" class="btn btn-glow-primary btn-primary">Agregar
             Huésped</button>
         </form>
       </div>
     </div>
   </div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div class="button-container">
     <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary" title="Crear Habitación">Crear
       Habitación</button>
@@ -72,4 +80,4 @@
       (click)="ocultarModalEditarHabitacion()">Cancelar</button>
   </div>
 
-</form>
+

@@ -58,37 +58,39 @@
         </select>
         <span *ngIf="isValidFieldServicio('categoria')" class="form-text text-danger">{{ getFieldErrorServicio('categoria') }}</span>
       </div>
-      <div *ngIf="errorServicio" class="alert alert-danger">{{ errorServicio }}</div>
       <button type="button" (click)="agregarServicio()" class="btn btn-glow-primary btn-primary">Agregar servicio</button>
     </form>
     </div>
     <hr>
     <h6 class="añadir-habitacion" (click)="mostrarFormularioHabitacion()">Añadir habitación</h6>
     <div id="formulario-habitacion" class="formulario">
+      <form [formGroup]="habitacionForm">
       <div class="form-group">
         <label for="numeroHabitacion">Número</label>
-        <input type="number" class="form-control" id="numeroHabitacion" placeholder="Número" #numeroHabitacion required />
+        <input type="number" class="form-control" id="numeroHabitacion" placeholder="Número" #numeroHabitacion required formControlName="numero" />
+        <span *ngIf="isValidFieldHabitacion('numero')" class="form-text text-danger">{{ getFieldErrorHabitacion('numero') }}</span>
       </div>
       <div class="form-group">
         <label for="tipoHabitacion">Tipo de habitación</label>
-        <select class="form-control" id="tipoHabitacion" #tipoHabitacion required>
+        <select class="form-control" id="tipoHabitacion" #tipoHabitacion required formControlName="tipoHabitacion">
           <option value="" selected disabled>Elige un tipo de habitación</option>
           <option value="INDIVIDUAL">Individual</option>
           <option value="DOBLE">Doble</option>
           <option value="CUADRUPLE">Cuádruple</option>
           <option value="SUITE">Suite</option>
         </select>
+        <span *ngIf="isValidFieldHabitacion('tipoHabitacion')" class="form-text text-danger">{{ getFieldErrorHabitacion('tipoHabitacion') }}</span>
       </div>
       <div class="form-group">
         <label for="precioHabitacion">Precio</label>
-        <input type="number" class="form-control" id="precioHabitacion" placeholder="Precio por noche" #precioHabitacion required />
+        <input type="number" class="form-control" id="precioHabitacion" placeholder="Precio por noche" #precioHabitacion required formControlName="precio" />
+        <span *ngIf="isValidFieldHabitacion('precio')" class="form-text text-danger">{{ getFieldErrorHabitacion('precio') }}</span>
       </div>
-      <div *ngIf="errorHabitacion" class="alert alert-danger">{{ errorHabitacion }}</div>
       <button type="button" (click)="agregarHabitacion()" class="btn btn-glow-primary btn-primary">Agregar habitación</button>
+    </form>
     </div>
   </div>
 </div>
-<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 <div class="button-container">
   <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary">Crear Hotel</button>
   <button type="button" class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEditarHotel()">Cancelar</button>

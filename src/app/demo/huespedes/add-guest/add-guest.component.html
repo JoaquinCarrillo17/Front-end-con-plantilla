@@ -1,48 +1,53 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="huespedForm" (ngSubmit)="onSubmit()">
   <div class="modal-columns">
     <div class="modal-column">
 
       <div class="form-group">
         <label for="nombreCompleto">Nombre Completo</label>
         <input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" #nombreCompletoInput
-          required />
+          required formControlName="nombreCompleto"/>
+          <span *ngIf="isValidFieldHuesped('nombreCompleto')" class="form-text text-danger">{{ getFieldErrorHuesped('nombreCompleto') }}</span>
       </div>
 
       <div class="form-group">
         <label for="dni">DNI</label>
-        <input type="text" class="form-control" id="dni" placeholder="DNI" #dniInput required />
+        <input type="text" class="form-control" id="dni" placeholder="DNI" #dniInput required formControlName="dni"/>
+        <span *ngIf="isValidFieldHuesped('dni')" class="form-text text-danger">{{ getFieldErrorHuesped('dni') }}</span>
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required />
+        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required formControlName="email"/>
+        <span *ngIf="isValidFieldHuesped('email')" class="form-text text-danger">{{ getFieldErrorHuesped('email') }}</span>
       </div>
 
       <div class="form-group">
         <label for="fechaCheckIn">Fecha Check-In</label>
         <input type="datetime-local" class="form-control" id="fechaCheckIn" placeholder="Fecha Check-In"
-          #fechaCheckInInput required />
+          #fechaCheckInInput required formControlName="fechaEntrada"/>
+          <span *ngIf="isValidFieldHuesped('fechaEntrada')" class="form-text text-danger">{{ getFieldErrorHuesped('fechaEntrada') }}</span>
       </div>
 
       <div class="form-group">
         <label for="fechaCheckOut">Fecha Check-Out</label>
         <input type="datetime-local" class="form-control" id="fechaCheckOut" placeholder="Fecha Check-Out"
-          #fechaCheckOutInput required />
+          #fechaCheckOutInput required formControlName="fechaSalida"/>
+          <span *ngIf="isValidFieldHuesped('fechaSalida')" class="form-text text-danger">{{ getFieldErrorHuesped('fechaSalida') }}</span>
       </div>
 
       <div class="form-group">
         <label for="habitacion">Habitación</label>
-        <select class="form-control" id="habitacion" #habitacionSelect required>
+        <select class="form-control" id="habitacion" #habitacionSelect required formControlName="idHabitacion">
           <option value="" selected disabled>Elige una habitación</option>
           <option *ngFor="let habitacion of habitaciones" [value]="habitacion.id">{{ habitacion.numero }} - {{
             habitacion.tipoHabitacion }}</option>
         </select>
+        <span *ngIf="isValidFieldHuesped('idHabitacion')" class="form-text text-danger">{{ getFieldErrorHuesped('idHabitacion') }}</span>
       </div>
 
     </div>
   </div>
 
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
   <div class="button-container">
     <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary"
       title="btn btn-glow-primary btn-primary" data-toggle="tooltip">Crear Huésped</button>

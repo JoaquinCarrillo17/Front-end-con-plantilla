@@ -1,7 +1,7 @@
 import { Huesped } from "../../huespedes/interfaces/huesped.interface";
 
 export enum TipoHabitacion {
-  INDIVIDUAL = "iNDIVIDUAL",
+  INDIVIDUAL = "INDIVIDUAL",
   DOBLE = "DOBLE",
   CUADRUPLE = "CUADRUPLE",
   SUITE = "SUITE",

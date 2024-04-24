@@ -3,11 +3,13 @@ import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Hotel } from '../../hoteles/interfaces/hotel.interface';
 import { HotelesService } from '../../hoteles/services/hoteles.service';
 import { TipoHabitacion, Habitacion } from '../interfaces/habitacion.interface';
+import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Huesped } from '../../huespedes/interfaces/huesped.interface';
 
 @Component({
   selector: 'app-add-room',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-room.component.html',
   styleUrl: './add-room.component.scss'
 })
@@ -24,8 +26,40 @@ export class AddRoomComponent {
   @ViewChild('emailHuesped') emailHuesped: { nativeElement: { value: string; }; };
   @ViewChild('fechaEntrada') fechaEntrada: { nativeElement: { value: string; }; };
   @ViewChild('fechaSalida') fechaSalida: { nativeElement: { value: string; }; };
-  error: string = ''; // Variable para almacenar mensajes de error
-  errorHuesped: string = ''; // Variable para almacenar mensajes de error
+
+  public habitacionForm: FormGroup = this.formBuilder.group({
+    numero: ['', [Validators.required, Validators.min(0)]],
+    tipoHabitacion: ['', [Validators.required]],
+    precio: ['', [Validators.required, Validators.min(0)]],
+    idHotel: ['', [Validators.required]],
+  })
+
+  public huespedForm: FormGroup = this.formBuilder.group({
+    nombreCompleto: ['', [Validators.required]],
+    dni: ['', [Validators.required, this.dniValidator()]],
+    email: ['', [Validators.required, Validators.email]],
+    fechaEntrada: ['', [Validators.required, this.fechaValidator()]],
+    fechaSalida: ['', [Validators.required, this.fechaValidator()]],
+  })
+
+  // Función de validación para el formato del DNI
+  dniValidator() {
+    return (control) => {
+      const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
+      const valid = dniRegex.test(control.value);
+      return valid ? null : { invalidDNI: true };
+    };
+  }
+
+  // Función de validación para fechas
+  fechaValidator() {
+    return (control) => {
+      const currentDate = new Date();
+      const inputDate = new Date(control.value);
+      const valid = inputDate >= currentDate;
+      return valid ? null : { invalidDate: true };
+    };
+  }
 
 
   public hoteles: Hotel[];
@@ -36,27 +70,73 @@ export class AddRoomComponent {
     huespedes: [],
   }
 
-  constructor(private hotelesService: HotelesService) { }
+  constructor(private hotelesService: HotelesService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.hotelesService.getAllHoteles().subscribe(hoteles => this.hoteles = hoteles);
   }
 
+  // Para el validator
+
+  isValidFieldHabitacion(field: string) {
+    return this.habitacionForm.controls[field].errors && this.habitacionForm.controls[field].touched
+  }
+
+  getFieldErrorHabitacion(field: string) {
+
+    if (!this.habitacionForm.controls[field]) return null;
+
+    const errors = this.habitacionForm.controls[field].errors;
+
+    for (const key of Object.keys(errors)) {
+      switch (key) {
+        case 'required':
+          return 'Este campo es obligatorio'
+        case 'min':
+          return 'Este campo no puede ser menor que 0'
+      }
+    }
+
+    return null;
+  }
+
+  isValidFieldHuesped(field: string) {
+    return this.huespedForm.controls[field].errors && this.huespedForm.controls[field].touched
+  }
+
+  getFieldErrorHuesped(field: string) {
+
+    if (!this.huespedForm.controls[field]) return null;
+
+    const errors = this.huespedForm.controls[field].errors;
+
+    for (const key of Object.keys(errors)) {
+      switch (key) {
+        case 'required':
+          return 'Este campo es obligatorio'
+        case 'invalidDNI':
+          return 'Formato de DNI inválido'
+        case 'invalidDate':
+          return 'La fecha no puede ser anterior al momento actual'
+        case 'email':
+          return 'Este campo debe contener "@"';
+      }
+    }
+
+    return null;
+  }
+
   onSubmit() {
+
+    if (this.habitacionForm.invalid) {
+      this.habitacionForm.markAllAsTouched();
+      return;
+    }
+
     const numero = this.numeroInput.nativeElement.value;
     const tipo = this.tipoSelect.nativeElement.value;
     const precio = this.precioInput.nativeElement.value;
     const idHotel = this.hotelSelect.nativeElement.value;
-
-    // Validar campos requeridos manualmente
-    if (!numero || !tipo || !precio || !idHotel) {
-      // Mostrar mensaje de error
-      this.error = 'Por favor complete todos los campos requeridos.';
-      return; // Detener la ejecución del método
-    }
-
-    // Si no hay errores, limpiar el mensaje de error
-    this.error = '';
 
     let tipoHabitacion: TipoHabitacion;
     switch (tipo) {
@@ -95,36 +175,36 @@ export class AddRoomComponent {
   }
 
   agregarHuesped() {
+
+    if (this.huespedForm.invalid) {
+      this.huespedForm.markAllAsTouched();
+      return;
+    }
+
     const nombre = this.nombreHuesped.nativeElement.value;
     const dni = this.dniHuesped.nativeElement.value;
     const email = this.emailHuesped.nativeElement.value;
     const fechaEntrada = this.fechaEntrada.nativeElement.value;
     const fechaSalida = this.fechaSalida.nativeElement.value;
 
-    // Validar campos requeridos manualmente
-    if (!nombre || !dni || !email || !fechaEntrada || !fechaSalida) {
-      // Mostrar mensaje de error
-      this.errorHuesped = 'Por favor complete todos los campos requeridos.';
-      return; // Detener la ejecución del método
-    }
-
-    // Si no hay errores, limpiar el mensaje de error
-    this.errorHuesped = '';
-
-    this.habitacion.huespedes.push({
+    const huesped: Huesped = {
       nombreCompleto: nombre,
       dni: dni,
       email: email,
       fechaCheckIn: new Date(fechaEntrada),
       fechaCheckOut: new Date(fechaSalida),
-    })
+    };
+
+    this.habitacion.huespedes.push(huesped);
+
+    console.log(this.habitacion.huespedes)
 
     this.nombreHuesped.nativeElement.value = '';
     this.dniHuesped.nativeElement.value = '';
     this.emailHuesped.nativeElement.value = '';
     this.fechaEntrada.nativeElement.value = '';
     this.fechaSalida.nativeElement.value = '';
-
+    this.huespedForm.reset();
     this.ocultarFormularioHuesped();
 
   }

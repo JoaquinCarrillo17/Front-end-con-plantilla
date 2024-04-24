@@ -30,10 +30,16 @@ export class AddHotelComponent {
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
 
+  public habitacionForm: FormGroup = this.formBuilder.group({
+    numero: ['', [Validators.required, Validators.min(0)]],
+    tipoHabitacion: ['', [Validators.required]],
+    precio: ['', [Validators.required, Validators.min(0)]]
+  })
+
   public servicioForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required]],
     descripcion: ['', [Validators.required]],
-    categoria: ['Elige una categoría', [Validators.required]]
+    categoria: ['', [Validators.required]]
   })
 
   public hotelForm: FormGroup = this.formBuilder.group({
@@ -43,10 +49,6 @@ export class AddHotelComponent {
     email: ['', [Validators.required, Validators.email]], // Validar formato de email
     sitioWeb: ['', [Validators.required, Validators.pattern(/^(www\..*)$/)]], // Validar que empiece con 'www'
   });
-
-  error: string = ''; // Variable para almacenar mensajes de error
-  errorServicio: string = ''; // Variable para almacenar mensajes de error
-  errorHabitacion: string = ''; // Variable para almacenar mensajes de error
 
   hotel: Hotel = {
     nombre: '',
@@ -62,6 +64,29 @@ export class AddHotelComponent {
 
   // Para el validator
 
+  isValidFieldHabitacion(field: string) {
+    return this.habitacionForm.controls[field].errors && this.habitacionForm.controls[field].touched
+  }
+
+  getFieldErrorHabitacion(field: string) {
+
+    if (!this.habitacionForm.controls[field]) return null;
+
+    const errors = this.habitacionForm.controls[field].errors;
+
+    for (const key of Object.keys(errors)) {
+      switch (key) {
+        case 'required':
+          return 'Este campo es obligatorio'
+        case 'min':
+          return 'Este campo no puede ser menor que 0'
+      }
+    }
+
+    return null;
+  }
+
+
   isValidFieldServicio(field: string) {
     return this.servicioForm.controls[field].errors && this.servicioForm.controls[field].touched
   }
@@ -71,21 +96,11 @@ export class AddHotelComponent {
     if (!this.servicioForm.controls[field]) return null;
 
     const errors = this.servicioForm.controls[field].errors;
-    console.log(errors);
 
     for (const key of Object.keys(errors)) {
-      console.log(key);
       switch (key) {
         case 'required':
           return 'Este campo es obligatorio'
-        case 'minlength':
-          return 'Este campo debe tener 9 caracteres'
-        case 'maxlength':
-          return 'Este campo debe tener 9 caracteres'
-        case 'email':
-          return 'Este campo debe contener "@"';
-        case 'pattern':
-          return 'Este campo debe empezar con "www"';
       }
     }
 
@@ -101,10 +116,8 @@ export class AddHotelComponent {
     if (!this.hotelForm.controls[field]) return null;
 
     const errors = this.hotelForm.controls[field].errors;
-    console.log(errors);
 
     for (const key of Object.keys(errors)) {
-      console.log(key);
       switch (key) {
         case 'required':
           return 'Este campo es obligatorio'
@@ -124,13 +137,6 @@ export class AddHotelComponent {
 
   onSubmit() {
 
-    if (this.hotelForm.valid) {
-      console.log(this.hotelForm.value)
-      console.log(this.hotelForm.controls['nombre']);
-      this.hotelForm.reset();
-      return;
-    }
-
     if (this.hotelForm.invalid) {
       this.hotelForm.markAllAsTouched();
       return;
@@ -141,16 +147,6 @@ export class AddHotelComponent {
     const telefono = this.telefonoInput.nativeElement.value;
     const email = this.emailInput.nativeElement.value;
     const sitioWeb = this.sitioWebInput.nativeElement.value;
-
-    // Validar campos requeridos manualmente
-    if (!nombre || !direccion || !email || !telefono || !sitioWeb) {
-      // Mostrar mensaje de error
-      this.error = 'Por favor complete todos los campos requeridos.';
-      return; // Detener la ejecución del método
-    }
-
-    // Si no hay errores, limpiar el mensaje de error
-    this.error = '';
 
     this.hotel = {
       nombre: nombre,
@@ -174,19 +170,16 @@ export class AddHotelComponent {
   }
 
   agregarServicio() {
+
+    if (this.servicioForm.invalid) {
+      this.servicioForm.markAllAsTouched();
+      return;
+    }
+
     const nombre = this.nombreServicio.nativeElement.value;
     const descripcion = this.descripcionServicio.nativeElement.value;
     const categoria = this.categoriaServicio.nativeElement.value;
 
-    // Validar campos requeridos manualmente
-    if (!nombre || !descripcion || !categoria) {
-      // Mostrar mensaje de error
-      this.errorServicio = 'Por favor complete todos los campos requeridos.';
-      return; // Detener la ejecución del método
-    }
-
-    // Si no hay errores, limpiar el mensaje de error
-    this.errorServicio = '';
 
     let cat: CategoriaServicio;
     switch (categoria) {
@@ -221,23 +214,20 @@ export class AddHotelComponent {
     this.nombreServicio.nativeElement.value = '';
     this.descripcionServicio.nativeElement.value = '';
     this.categoriaServicio.nativeElement.value = '';
+    this.servicioForm.reset();
     this.ocultarFormularioServicio();
   }
 
   agregarHabitacion() {
+
+    if (this.habitacionForm.invalid) {
+      this.habitacionForm.markAllAsTouched();
+      return;
+    }
+
     const numero = this.numeroHabitacion.nativeElement.value;
     const tipo = this.tipoHabitacion.nativeElement.value;
     const precio = this.precioHabitacion.nativeElement.value;
-
-    // Validar campos requeridos manualmente
-    if (!numero || !tipo || !precio) {
-      // Mostrar mensaje de error
-      this.errorHabitacion = 'Por favor complete todos los campos requeridos.';
-      return; // Detener la ejecución del método
-    }
-
-    // Si no hay errores, limpiar el mensaje de error
-    this.errorHabitacion = '';
 
     let tipoHabitacion: TipoHabitacion;
     switch (tipo) {
@@ -269,6 +259,7 @@ export class AddHotelComponent {
     this.numeroHabitacion.nativeElement.value = null;
     this.tipoHabitacion.nativeElement.value = '';
     this.precioHabitacion.nativeElement.value = null;
+    this.habitacionForm.reset();
     this.ocultarFormularioHabitacion();
   }
 

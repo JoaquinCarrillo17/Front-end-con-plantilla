@@ -3,11 +3,12 @@ import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Habitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
 import { Huesped } from '../interfaces/huesped.interface';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-guest',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-guest.component.html',
   styleUrl: './add-guest.component.scss'
 })
@@ -21,33 +22,82 @@ export class AddGuestComponent {
   @ViewChild('fechaCheckInInput') fechaCheckInInput: { nativeElement: { value: string; }; };
   @ViewChild('fechaCheckOutInput') fechaCheckOutInput: { nativeElement: { value: string; }; };
   @ViewChild('habitacionSelect') habitacionSelect: { nativeElement: { value: number; }; };
-  error: string = ''; // Variable para almacenar mensajes de error
+
+  public huespedForm: FormGroup = this.formBuilder.group({
+    nombreCompleto: ['', [Validators.required]],
+    dni: ['', [Validators.required, this.dniValidator()]],
+    email: ['', [Validators.required, Validators.email]],
+    fechaEntrada: ['', [Validators.required, this.fechaValidator()]],
+    fechaSalida: ['', [Validators.required, this.fechaValidator()]],
+    idHabitacion: ['', [Validators.required]],
+  })
+
+  // Función de validación para el formato del DNI
+  dniValidator() {
+    return (control) => {
+      const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
+      const valid = dniRegex.test(control.value);
+      return valid ? null : { invalidDNI: true };
+    };
+  }
+
+  // Función de validación para fechas
+  fechaValidator() {
+    return (control) => {
+      const currentDate = new Date();
+      const inputDate = new Date(control.value);
+      const valid = inputDate >= currentDate;
+      return valid ? null : { invalidDate: true };
+    };
+  }
 
   public habitaciones: Habitacion[];
 
-  constructor(private habitacionesService: HabitacionesService) { }
+  constructor(private habitacionesService: HabitacionesService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.habitacionesService.getAllHabitaciones().subscribe(habitaciones => this.habitaciones = habitaciones);
   }
 
+  isValidFieldHuesped(field: string) {
+    return this.huespedForm.controls[field].errors && this.huespedForm.controls[field].touched
+  }
+
+  getFieldErrorHuesped(field: string) {
+
+    if (!this.huespedForm.controls[field]) return null;
+
+    const errors = this.huespedForm.controls[field].errors;
+
+    for (const key of Object.keys(errors)) {
+      switch (key) {
+        case 'required':
+          return 'Este campo es obligatorio'
+        case 'invalidDNI':
+          return 'Formato de DNI inválido'
+        case 'invalidDate':
+          return 'La fecha no puede ser anterior al momento actual'
+        case 'email':
+          return 'Este campo debe contener "@"';
+      }
+    }
+
+    return null;
+  }
+
   onSubmit() {
+
+    if (this.huespedForm.invalid) {
+      this.huespedForm.markAllAsTouched();
+      return;
+    }
+    
     const nombreCompleto = this.nombreCompletoInput.nativeElement.value;
     const dni = this.dniInput.nativeElement.value;
     const email = this.emailInput.nativeElement.value;
     const fechaCheckIn = this.fechaCheckInInput.nativeElement.value;
     const fechaCheckOut = this.fechaCheckOutInput.nativeElement.value;
     const idHabitacion = this.habitacionSelect.nativeElement.value;
-
-    // Validar campos requeridos manualmente
-    if (!nombreCompleto || !dni || !email || !fechaCheckIn || !fechaCheckOut || !idHabitacion) {
-      // Mostrar mensaje de error
-      this.error = 'Por favor complete todos los campos requeridos.';
-      return; // Detener la ejecución del método
-    }
-
-    // Si no hay errores, limpiar el mensaje de error
-    this.error = '';
 
     // Llamar al servicio para crear el huésped con los datos recopilados
     const huesped: Huesped = {
