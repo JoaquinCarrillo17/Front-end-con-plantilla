@@ -1,35 +1,37 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="servicioForm" (ngSubmit)="onSubmit()">
   <div class="modal-columns">
     <div class="modal-column">
 
       <div class="form-group">
         <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required />
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required formControlName="nombre"/>
+        <span *ngIf="isValidFieldServicio('nombre')" class="form-text text-danger">{{ getFieldErrorServicio('nombre') }}</span>
       </div>
       <div class="form-group">
         <label for="descripcion" class="col-sm-3 col-form-label">Descripción</label>
-        <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionInput required />
+        <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionInput required formControlName="descripcion"/>
+        <span *ngIf="isValidFieldServicio('descripcion')" class="form-text text-danger">{{ getFieldErrorServicio('descripcion') }}</span>
       </div>
       <div class="form-group">
         <label for="categoria" class="col-sm-3 col-form-label">Categoría</label>
-        <select class="form-control" id="categoria" #categoriaSelect required>
+        <select class="form-control" id="categoria" #categoriaSelect required formControlName="categoria">
           <option value="" selected disabled>Elige una categoría</option>
           <option value="GIMNASIO">Gimnasio</option>
           <option value="BAR">Bar</option>
           <option value="LAVANDERIA">Lavandería</option>
           <option value="KARAOKE">Karaoke</option>
           <option value="CASINO">Casino</option>
-          <!-- Opciones de categoría -->
         </select>
+        <span *ngIf="isValidFieldServicio('categoria')" class="form-text text-danger">{{ getFieldErrorServicio('categoria') }}</span>
       </div>
       <div class="form-group">
         <label for="hotel" class="col-sm-3 col-form-label">Hotel</label>
-        <select class="form-control" id="hotel" #hotelSelect required>
+        <select class="form-control" id="hotel" #hotelSelect required formControlName="idHotel">
           <option value="" selected disabled>Elige un hotel</option>
           <option *ngFor="let hotel of hoteles" [value]="hotel.id">{{ hotel.nombre }}</option>
         </select>
+        <span *ngIf="isValidFieldServicio('idHotel')" class="form-text text-danger">{{ getFieldErrorServicio('idHotel') }}</span>
       </div>
-      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
       <div class="button-container">
         <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary"
           title="btn btn-glow-primary btn-primary" data-toggle="tooltip">Crear Servicio</button>
