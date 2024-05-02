@@ -7,6 +7,11 @@ import { HabitacionesModule } from './demo/habitaciones/habitaciones.module';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: AdminComponent,
     children: [
       {
@@ -45,7 +50,10 @@ const routes: Routes = [
       {
         path: 'hotel-chart',
         loadComponent: () =>
-          import('./demo/historicos/historico/historico.component'),
+          import('./demo/historicos/historico/historico.component'), /* DECLARO EL HISTORICO CON PUBLIC DEFAULT CLASS.. PARA QUE PUEDA CARGARLO ASI */
+        // children: [
+
+        // ]
       },
     ],
   },
