@@ -10,36 +10,20 @@
 
 .modal-content {
   background-color: #fefefe;
-  margin: 20% auto;
-  padding: 20px;
-  border: 1px solid #888;
+  margin: auto;
   width: 80%;
-  max-width: 400px;
-}
-
-.modal-header, .modal-footer {
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ddd;
-}
-
-.modal-body {
-  padding: 10px;
-}
-
-.modal-footer {
-  text-align: right;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
+  max-width: 300px;
+  border-radius: 0;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  display: flex; /* Usar flexbox */
+  flex-direction: column; /* Establecer la dirección de la disposición como columna */
+  justify-content: center; /* Centrar verticalmente el contenido */
+  align-items: center; /* Centrar horizontalmente el contenido */
+  top: 50%; /* Posición vertical centrada */
+  transform: translateY(-50%); /* Ajuste para centrar completamente el modal */
 }
 
-button:hover {
-  background-color: #45a049;
+.card {
+  margin-bottom: 0;
 }
+

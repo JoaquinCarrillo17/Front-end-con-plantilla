@@ -1,14 +1,12 @@
+
 <div class="modal">
   <div class="modal-content">
-    <div class="modal-header">
-      <h2>¿Sigues aquí?</h2>
-    </div>
-    <div class="modal-body">
-      <p>Tu sesión está a punto de expirar debido a la inactividad.</p>
-      <p>Por favor, haz clic en "Continuar sesión" para mantener tu sesión activa.</p>
-    </div>
-    <div class="modal-footer">
-      <button (click)="continueSession()">Continuar sesión</button>
+    <div class="card">
+      <div class="card-body text-center mt-4 mb-3">
+        <h3 class="mb-4">¿Sigues aquí?</h3>
+        <p>Tu sesión está a punto de expirar debido a la inactividad.</p>
+        <button class="btn btn-primary" (click)="continueSession()">Mantenerme activo</button>
+      </div>
     </div>
   </div>
 </div>
