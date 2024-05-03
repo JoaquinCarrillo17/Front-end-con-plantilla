@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
         // Aquí puedes abrir el modal de tiempo de sesión
         // Por ejemplo, puedes establecer una bandera en tu componente principal que controle la visibilidad del modal
         this.showSessionTimeoutModal = true;
-      }
+      } else this.closeSessionTimeoutModal();
 
     });
   }
