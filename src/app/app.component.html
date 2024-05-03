@@ -1,1 +1,3 @@
 <router-outlet><app-spinner></app-spinner></router-outlet>
+<app-session-timeout-modal *ngIf="showSessionTimeoutModal" (closeModal)="handleContinueSession()"></app-session-timeout-modal>
+

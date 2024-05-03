@@ -26,6 +26,7 @@ import { ToggleFullScreenDirective } from './theme/shared/components/full-screen
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './demo/token/token.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { SessionTimeoutModalComponent } from './theme/shared/components/session-timeout-modal/session-timeout-modal.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     NavItemComponent,
     NavSearchComponent,
     ToggleFullScreenDirective,
+    SessionTimeoutModalComponent,
   ],
   imports: [
     BrowserModule,
