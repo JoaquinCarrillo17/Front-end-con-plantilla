@@ -24,6 +24,7 @@ export class NavRightComponent implements OnInit {
   }
 
   public mostrarModalEditarPerfil = false;
+  public showNotification = false;
 
   constructor(private tokenService: TokenService, private router: Router, private profileService: ProfileService) { }
 
@@ -46,6 +47,10 @@ export class NavRightComponent implements OnInit {
   editUsuario() {
     this.profileService.editUsuario(this.usuario.id, this.usuario).subscribe(response => {
       console.log("El usuario se editó correctamente");
+      this.showNotification = true; // Mostrar la notificación
+      setTimeout(() => {
+        this.showNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       this.profileService.getUsuarioByUsername(this.username).subscribe(data => {
         this.usuario = data;
       });

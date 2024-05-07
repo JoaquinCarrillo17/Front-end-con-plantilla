@@ -17,9 +17,10 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
-  declarations: [SpinnerComponent],
+  declarations: [SpinnerComponent, NotificationComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -45,7 +46,8 @@ import { FloatingButtonComponent } from './components/floating-button/floating-b
     BreadcrumbsComponent,
     SearchBarComponent,
     PaginationComponent,
-    FloatingButtonComponent
+    FloatingButtonComponent,
+    NotificationComponent,
   ],
 })
 export class SharedModule {}

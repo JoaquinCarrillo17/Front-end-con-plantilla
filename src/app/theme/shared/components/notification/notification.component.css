@@ -1,0 +1,25 @@
+.notification-wrapper {
+  position: fixed;
+  bottom: 20px; /* Distancia desde la parte inferior */
+  left: 50%; /* Centra horizontalmente */
+  transform: translateX(-50%);
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+.notification {
+  opacity: 1;
+  background-color: #44ff00; /* Fondo de la notificación */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+  padding: 10px 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  transition: opacity 0.5s ease-in-out; /* Define la transición de opacidad */
+}
+
+.notification.hidden {
+  opacity: 0; /* Cuando se aplica la clase 'hidden', la opacidad se establece en 0 */
+}
+
+p {
+  margin-bottom: 0;
+  font-weight: bold;
+}
