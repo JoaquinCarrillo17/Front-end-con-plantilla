@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-notification',
@@ -9,7 +9,7 @@ export class NotificationComponent {
   @Input() message: string;
   @Input() showNotification: boolean;
 
-  constructor() { }
-  
+  public hacerAnimacion: boolean = false;
+
 
 }

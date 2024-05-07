@@ -1,5 +1,5 @@
 <div class="notification-wrapper" *ngIf="showNotification">
-  <div class="notification">
+  <div class="notification" [ngClass]="{'desaparecer': hacerAnimacion}">
     <p>{{ message }}</p>
   </div>
 </div>
