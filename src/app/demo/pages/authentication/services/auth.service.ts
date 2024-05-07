@@ -13,7 +13,7 @@ export class AuthService {
 
   public baseUrl = environment.baseUrl;
 
-  private readonly ACTIVITY_TIMEOUT = 40000; //600000; // 10 minutes in milliseconds
+  private readonly ACTIVITY_TIMEOUT = 400000; //600000; // 10 minutes in milliseconds
   private readonly UPDATE_THRESHOLD = 30; // Umbral de tiempo en segundos para actualizar el token
 
   private activityTimer: any;

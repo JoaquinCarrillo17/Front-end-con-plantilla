@@ -15,7 +15,8 @@ export default class AuthSigninComponent {
 
   @ViewChild('loginForm') loginForm: NgForm;
 
-  constructor(private authService: AuthService, private router: Router, private tokenService: TokenService) { }
+  constructor(private authService: AuthService, private router: Router, private tokenService: TokenService) {
+   }
 
   login() {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
