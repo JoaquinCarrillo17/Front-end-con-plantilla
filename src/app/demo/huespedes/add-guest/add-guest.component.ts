@@ -4,11 +4,12 @@ import { Habitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
 import { Huesped } from '../interfaces/huesped.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-guest',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule],
   templateUrl: './add-guest.component.html',
   styleUrl: './add-guest.component.scss'
 })
@@ -22,6 +23,9 @@ export class AddGuestComponent {
   @ViewChild('fechaCheckInInput') fechaCheckInInput: { nativeElement: { value: string; }; };
   @ViewChild('fechaCheckOutInput') fechaCheckOutInput: { nativeElement: { value: string; }; };
   @ViewChild('habitacionSelect') habitacionSelect: { nativeElement: { value: number; }; };
+
+  public showCrearHuespedNotification = false;
+  public showCrearHuespedErrorNotification = false;
 
   public huespedForm: FormGroup = this.formBuilder.group({
     nombreCompleto: ['', [Validators.required]],
@@ -91,7 +95,7 @@ export class AddGuestComponent {
       this.huespedForm.markAllAsTouched();
       return;
     }
-    
+
     const nombreCompleto = this.nombreCompletoInput.nativeElement.value;
     const dni = this.dniInput.nativeElement.value;
     const email = this.emailInput.nativeElement.value;
@@ -110,14 +114,22 @@ export class AddGuestComponent {
 
     this.habitacionesService.addHuesped(idHabitacion, huesped).subscribe(
       response => {
-        console.log('Huésped añadido con éxito:', response);
+        this.showCrearHuespedNotification = true;
+        setTimeout(() => {
+          this.showCrearHuespedNotification = false;
+        }, 3000);
         window.location.reload();
       },
       error => {
-        console.error('Error al añadir huésped:', error);
+        this.showCrearHuespedErrorNotification = true;
+        setTimeout(() => {
+          this.showCrearHuespedErrorNotification = false;
+        }, 3000);
       }
     );
   }
+
+
 
   ocultarModalEditarHuesped() {
     this.cancelarCrear.emit();

@@ -69,3 +69,6 @@
     </div>
   </div>
 </ng-container>
+
+<app-notification [showNotification]="showBorrarHuespedNotification" message="Huésped borrado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showBorrarHuespedErrorNotification" message="No tienes permisos para borrar un huésped" [color]="false"></app-notification>

@@ -46,18 +46,17 @@ export class NavRightComponent implements OnInit {
 
   editUsuario() {
     this.profileService.editUsuario(this.usuario.id, this.usuario).subscribe(response => {
-      console.log("El usuario se editó correctamente");
-      this.showNotification = true; // Mostrar la notificación
-      setTimeout(() => {
-        this.showNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-      this.profileService.getUsuarioByUsername(this.username).subscribe(data => {
-        this.usuario = data;
-      });
       this.ocultarModal();
+      this.showNotification = true;
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
     },
       error => {
-        console.error(`Error al editar la huesped` + error)
+        this.showNotification = true;
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
       }
     );
   }

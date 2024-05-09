@@ -3,11 +3,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Huesped } from '../interfaces/huesped.interface';
 import { HuespedesService } from '../services/huespedes.service';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-edit-guest',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SharedModule],
   templateUrl: './edit-guest.component.html',
   styleUrl: './edit-guest.component.scss'
 })
@@ -24,6 +25,9 @@ export class EditGuestComponent {
     fechaCheckOut: null,
   };
 
+  public showEditarHuespedNotification = false;
+  public showEditarHuespedErrorNotification = false;
+
   constructor(private huespedesService: HuespedesService) { }
 
   ngOnInit(): void {
@@ -36,9 +40,9 @@ export class EditGuestComponent {
     );
   }
 
+
   editHuesped() {
     this.huespedesService.editHuesped(this.idHuesped, this.huesped).subscribe(response => {
-      console.log("La huesped se editó correctamente")
       this.huesped = {
         id: 0,
         nombreCompleto: '',
@@ -48,10 +52,17 @@ export class EditGuestComponent {
         fechaCheckOut: null,
       };
       this.ocultarModalEditarHuesped();
+      this.showEditarHuespedNotification = true;
+      setTimeout(() => {
+        this.showEditarHuespedNotification = false;
+      }, 3000);
       window.location.reload(); // ? Recargo la pagina para mostrar los cambios
     },
       error => {
-        console.error(`Error al editar la huesped` + error)
+        this.showEditarHuespedErrorNotification = true;
+        setTimeout(() => {
+          this.showEditarHuespedErrorNotification = false;
+        }, 3000);
       }
     )
   }

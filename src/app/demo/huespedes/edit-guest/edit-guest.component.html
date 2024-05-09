@@ -40,3 +40,6 @@
       (click)="ocultarModalEditarHuesped()">Cancelar</button>
   </div>
 </form>
+
+<app-notification [showNotification]="showEditarHuespedNotification" message="Huésped editado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showEditarHuespedErrorNotification" message="No tienes permisos para editar un huésped" [color]="false"></app-notification>

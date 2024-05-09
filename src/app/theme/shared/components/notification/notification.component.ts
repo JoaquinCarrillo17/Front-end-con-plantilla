@@ -8,8 +8,8 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 export class NotificationComponent {
   @Input() message: string;
   @Input() showNotification: boolean;
+  @Input() color: boolean; //true verde, false rojo
 
   public hacerAnimacion: boolean = false;
-
 
 }

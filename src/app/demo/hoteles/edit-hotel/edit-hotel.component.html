@@ -82,3 +82,7 @@
       (click)="ocultarModalEditarHotel()">Cancelar</button>
   </div>
 </form>
+
+
+<app-notification [showNotification]="showEditarHotelNotification" message="Hotel editado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showEditarHotelErrorNotification" message="No tienes permisos para editar un hotel" [color]="false"></app-notification>

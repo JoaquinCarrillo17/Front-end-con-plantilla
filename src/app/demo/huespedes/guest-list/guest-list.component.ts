@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './guest-list.component.html',
   styleUrl: './guest-list.component.scss'
 })
-export class GuestListComponent implements OnInit{
+export class GuestListComponent implements OnInit {
 
   isSpinnerVisible: boolean = true;
   public huespedes: Huesped[];
@@ -28,6 +28,9 @@ export class GuestListComponent implements OnInit{
   public mostrarModalEditarCrear = false;
   accionModal: 'editar' | 'crear' = 'editar';
 
+  public showBorrarHuespedNotification = false;
+  public showBorrarHuespedErrorNotification = false;
+
   public idHuesped: number; // ? cuando abro un modal actualizo este id para saber sobre que Huesped ejecuto la accion
 
   constructor(private huespedesService: HuespedesService) { }
@@ -39,10 +42,10 @@ export class GuestListComponent implements OnInit{
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
       },
-      (error) => {
-        console.error('Error al cargar los huespesdes:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+        (error) => {
+          console.error('Error al cargar los huespesdes:', error);
+          this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
+        });
   }
 
   search(value: string): void {
@@ -52,12 +55,12 @@ export class GuestListComponent implements OnInit{
         this.huespedes = response.huespedes;
         this.totalItems = response.totalItems;
         this.query = value;
-        this.isSpinnerVisible =  false;
+        this.isSpinnerVisible = false;
       },
-      (error) => {
-        console.error('Error al cargar los huespedes:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+        (error) => {
+          console.error('Error al cargar los huespedes:', error);
+          this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
+        });
 
   }
 
@@ -84,10 +87,10 @@ export class GuestListComponent implements OnInit{
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
       },
-      (error) => {
-        console.error('Error al cargar los huespedes:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+        (error) => {
+          console.error('Error al cargar los huespedes:', error);
+          this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
+        });
   }
 
   onItemPerPageChange(value: number): void {
@@ -98,21 +101,28 @@ export class GuestListComponent implements OnInit{
         this.totalItems = response.totalItems;
         this.isSpinnerVisible = false;
       },
-      (error) => {
-        console.error('Error al cargar los huespedes:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+        (error) => {
+          console.error('Error al cargar los huespedes:', error);
+          this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
+        });
   }
 
   deleteHuesped() {
     this.huespedesService.deleteHuesped(this.idHuesped).subscribe(response => {
+      this.showBorrarHuespedNotification = true;
+      setTimeout(() => {
+        this.showBorrarHuespedNotification = false;
+      }, 3000);
       window.location.reload(); // ? Recargo la pagina para mostrar los cambios
     },
-    error => {
-      console.error(`Error al eliminar la habitación ${this.idHuesped}`, error);
-    }
-  )
-  this.ocultarModalEliminarHuesped();
+      error => {
+        this.showBorrarHuespedErrorNotification = true;
+        setTimeout(() => {
+          this.showBorrarHuespedErrorNotification = false;
+        }, 3000);
+      }
+    )
+    this.ocultarModalEliminarHuesped();
   }
 
   // ? Gestion de los modales

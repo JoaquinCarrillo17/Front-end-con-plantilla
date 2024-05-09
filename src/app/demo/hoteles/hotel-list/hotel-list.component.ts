@@ -106,16 +106,16 @@ export class HotelListComponent implements OnInit {
 
   deleteHotel() {
     this.hotelesService.deleteHotel(this.idHotel).subscribe(response => {
-      this.showBorrarHotelNotification = true; // Mostrar la notificación
-        setTimeout(() => {
-        this.showBorrarHotelNotification = false; // Ocultar la notificación después de 2 segundos
+      this.showBorrarHotelNotification = true;
+      setTimeout(() => {
+        this.showBorrarHotelNotification = false;
       }, 3000);
       window.location.reload(); // ? Recargo la pagina para mostrar los cambios
     },
       error => {
-        this.showBorrarHotelErrorNotification = true; // Mostrar la notificación
-        setTimeout(() => {
-        this.showBorrarHotelErrorNotification = false; // Ocultar la notificación después de 2 segundos
+        this.showBorrarHotelErrorNotification = true;
+      setTimeout(() => {
+        this.showBorrarHotelErrorNotification = false;
       }, 3000);
       }
     )
