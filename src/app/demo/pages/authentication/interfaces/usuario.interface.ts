@@ -1,3 +1,5 @@
+import { Rol } from "src/app/demo/roles/interfaces/rol.interface";
+
 export interface Usuario {
   id?: number;
   nombre: string;
@@ -5,5 +7,5 @@ export interface Usuario {
   email: string;
   password: string;
   fechaNacimiento: Date;
-  roles?: string[];
+  roles?: Rol[];
 }

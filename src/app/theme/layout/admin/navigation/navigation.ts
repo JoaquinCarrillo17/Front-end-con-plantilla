@@ -72,6 +72,20 @@ const NavigationItems = [
         icon: 'fa fa-cogs',
         url: '/servicios',
       },
+      {
+        id: 'roles',
+        title: 'Roles',
+        type: 'item',
+        icon: 'fa fa-users',
+        url: '/roles',
+      },
+      {
+        id: 'usuarios',
+        title: 'Usuarios',
+        type: 'item',
+        icon: 'fa fa-user-circle',
+        url: '/usuarios',
+      },
     ],
   },
 ];

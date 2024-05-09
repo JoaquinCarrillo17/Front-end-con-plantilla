@@ -1,0 +1,45 @@
+<div class="col-xl-12">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+  <app-card
+    cardTitle="Lista de Roles"
+    [options]="false"
+    blockClass="table-border-style"
+  >
+  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('nombre')" class="cursor-pointer">Nombre</th>
+            <th (click)="order('username')" class="cursor-pointer">Username</th>
+            <th (click)="order('email')" class="cursor-pointer">Email</th>
+            <th (click)="order('fecha')" class="cursor-pointer">Fecha de nacimiento</th>
+            <th>Roles</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.fechaNacimiento }}</td>
+            <td>
+              <!-- Iterar sobre los roles del usuario -->
+              <span *ngFor="let rol of usuario.roles">{{ rol.nombre }}</span>
+            </td>
+            <td><span class="material-icons edit-icon" style="color: orange;"
+              > edit </span>
+              <span class="material-icons delete-icon" style="color: red;"
+              > delete </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+  </app-card>
+  <!-- <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button> -->
+</div>

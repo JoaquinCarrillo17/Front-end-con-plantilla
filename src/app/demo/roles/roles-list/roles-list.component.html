@@ -1,0 +1,36 @@
+<div class="col-xl-12">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+  <app-card
+    cardTitle="Lista de Roles"
+    [options]="false"
+    blockClass="table-border-style"
+  >
+  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('nombre')" class="cursor-pointer">Nombre</th>
+            <th (click)="order('descripcion')" class="cursor-pointer">Descripción</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rol of roles">
+            <td>{{ rol.id }}</td>
+            <td>{{ rol.nombre }}</td>
+            <td>{{ rol.descripcion }}</td>
+            <td><span class="material-icons edit-icon" style="color: orange;"
+              > edit </span>
+              <span class="material-icons delete-icon" style="color: red;"
+              > delete </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+  </app-card>
+  <!-- <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button> -->
+</div>

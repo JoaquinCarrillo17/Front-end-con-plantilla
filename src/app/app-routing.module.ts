@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { HabitacionesModule } from './demo/habitaciones/habitaciones.module';
+import { RolesModule } from './demo/roles/roles.module';
 
 const routes: Routes = [
   {
@@ -48,6 +49,20 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'roles',
+        loadChildren: () =>
+          import('./demo/roles/roles.module').then(
+            (m) => m.RolesModule,
+          ),
+      },
+      {
+        path: 'usuarios',
+        loadChildren: () =>
+          import('./demo/usuarios/usuarios.module').then(
+            (m) => m.UsuariosModule,
+          ),
+      },
+      {
         path: 'hotel-chart',
         loadComponent: () =>
           import('./demo/historicos/historico/historico.component'), /* DECLARO EL HISTORICO CON PUBLIC DEFAULT CLASS.. PARA QUE PUEDA CARGARLO ASI */
@@ -76,4 +91,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
