@@ -28,6 +28,9 @@ export class HotelListComponent implements OnInit {
   public mostrarModalEditarCrear = false;
   accionModal: 'editar' | 'crear' = 'editar';
 
+  public showBorrarHotelNotification = false;
+  public showBorrarHotelErrorNotification = false;
+
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
 
   constructor(private hotelesService: HotelesService) { }
@@ -103,10 +106,17 @@ export class HotelListComponent implements OnInit {
 
   deleteHotel() {
     this.hotelesService.deleteHotel(this.idHotel).subscribe(response => {
+      this.showBorrarHotelNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showBorrarHotelNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       window.location.reload(); // ? Recargo la pagina para mostrar los cambios
     },
       error => {
-        console.error(`Error al eliminar el hotel ${this.idHotel}`, error);
+        this.showBorrarHotelErrorNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showBorrarHotelErrorNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       }
     )
     this.ocultarModalEliminarHotel();

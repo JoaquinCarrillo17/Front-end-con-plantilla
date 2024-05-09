@@ -5,11 +5,13 @@ import { CategoriaServicio } from '../../servicios/interfaces/servicio.interface
 import { TipoHabitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NotificationComponent } from 'src/app/theme/shared/components/notification/notification.component';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-hotel',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule],
   templateUrl: './add-hotel.component.html',
   styleUrls: ['./add-hotel.component.scss', './add-hotel.component.css']
 })
@@ -29,6 +31,9 @@ export class AddHotelComponent {
   @ViewChild('numeroHabitacion') numeroHabitacion: { nativeElement: { value: number; }; };
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
+
+  public showCrearHotelNotification = false;
+  public showCrearHotelErrorNotification = false;
 
   public habitacionForm: FormGroup = this.formBuilder.group({
     numero: ['', [Validators.required, Validators.min(0)]],
@@ -160,11 +165,17 @@ export class AddHotelComponent {
 
     this.hotelesService.addHotel(this.hotel).subscribe(
       response => {
-        console.log('Hotel creado con exito:', response);
+        this.showCrearHotelNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showCrearHotelNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
         window.location.reload();
       },
       error => {
-        console.error('Error al crear el hotel:', error);
+        this.showCrearHotelErrorNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showCrearHotelErrorNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       }
     );
   }

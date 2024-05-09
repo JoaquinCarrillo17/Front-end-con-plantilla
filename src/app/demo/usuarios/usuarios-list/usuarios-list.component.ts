@@ -28,7 +28,6 @@ export class UsuariosListComponent implements OnInit{
       this.usuarios = response.usuarios;
       this.totalItems = response.totalItems;
       this.isSpinnerVisible = false;
-      console.log(this.usuarios)
     },
       (error) => {
         console.error('Error al cargar los roles: ' + error);
