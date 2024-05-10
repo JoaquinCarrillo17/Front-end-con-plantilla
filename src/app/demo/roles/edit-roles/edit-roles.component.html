@@ -2,7 +2,7 @@
   <div class="modal-columns">
 
     <div class="modal-column">
-      
+
         <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" class="form-control" id="nombre" [(ngModel)]="rol.nombre" name="nombre" required>
@@ -12,6 +12,13 @@
           <label for="descripcion">Descripción</label>
           <input type="text" class="form-control" id="descripcion" [(ngModel)]="rol.descripcion" name="descripcion"
             required>
+        </div>
+
+        <div *ngFor="let permiso of permisos">
+          <label>
+            <input type="checkbox" [checked]="rolTienePermiso(permiso)" (change)="anadirPermiso(permiso)">
+            {{ permiso.nombre }} - {{ permiso.descripcion }}
+          </label>
         </div>
 
     </div>

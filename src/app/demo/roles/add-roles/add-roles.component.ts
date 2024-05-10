@@ -23,7 +23,7 @@ export class AddRolesComponent {
     id: 0,
     nombre: "",
     descripcion: "",
-    rolesIndirectos: []
+    permisos: []
   }
 
   constructor(private rolesService: RolesService) { }
@@ -36,7 +36,7 @@ export class AddRolesComponent {
     this.rol = {
       nombre: nombre,
       descripcion: descripcion,
-      rolesIndirectos: []
+      permisos: []
     }
 
     this.rolesService.addRol(this.rol).subscribe(response => {

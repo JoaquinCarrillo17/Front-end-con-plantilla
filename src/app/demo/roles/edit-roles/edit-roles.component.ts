@@ -3,6 +3,8 @@ import { RolesService } from '../services/roles.service';
 import { Rol } from '../interfaces/rol.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PermisosService } from '../services/permisos.service';
+import { Permiso } from '../interfaces/permiso.interface';
 
 @Component({
   selector: 'app-edit-rol',
@@ -19,13 +21,15 @@ export class EditRolesComponent implements OnInit {
     id: 0,
     nombre: "",
     descripcion: "",
-    rolesIndirectos: []
+    permisos: []
   }
+
+  public permisos: Permiso[];
 
   public showEditarRolNotification = false;
   public showEditarRolErrorNotification = false;
 
-  constructor(private rolesService: RolesService) { }
+  constructor(private rolesService: RolesService, private permisosService: PermisosService) { }
 
   ngOnInit(): void {
     this.rolesService.getRol(this.idRol).subscribe(data => {
@@ -34,6 +38,13 @@ export class EditRolesComponent implements OnInit {
       error => {
         console.log("Error al obtener el rol: " + error)
       })
+
+    this.permisosService.getAllPermisos().subscribe(data => {
+      this.permisos = data;
+    },
+    error => {
+      console.log("Error al obtener los permisos: " + error);
+    })
   }
 
   editRol() {
@@ -42,7 +53,7 @@ export class EditRolesComponent implements OnInit {
         id: 0,
         nombre: "",
         descripcion: "",
-        rolesIndirectos: []
+        permisos: []
       }
       this.ocultarModalEditarRol();
       this.showEditarRolNotification = true;
@@ -57,6 +68,21 @@ export class EditRolesComponent implements OnInit {
       }, 3000);
     }
   )
+  }
+
+  rolTienePermiso(permiso: Permiso): boolean {
+    return this.rol.permisos.some(p => p.id === permiso.id);
+  }
+
+  anadirPermiso(permiso: Permiso): void {
+    const index = this.rol.permisos.findIndex(p => p.id === permiso.id);
+    if (index !== -1) {
+      // Si el permiso ya está en la lista, lo eliminamos
+      this.rol.permisos.splice(index, 1);
+    } else {
+      // Si el permiso no está en la lista, lo agregamos
+      this.rol.permisos.push(permiso);
+    }
   }
 
   ocultarModalEditarRol() {
