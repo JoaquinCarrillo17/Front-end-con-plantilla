@@ -1,15 +1,18 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Rol } from '../interfaces/rol.interface';
 import { RolesService } from '../services/roles.service';
+import { Permiso } from '../interfaces/permiso.interface';
+import { PermisosService } from '../services/permisos.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-rol',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './add-roles.component.html',
   styleUrl: './add-roles.component.scss'
 })
-export class AddRolesComponent {
+export class AddRolesComponent implements OnInit{
 
   @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>();
 
@@ -26,7 +29,18 @@ export class AddRolesComponent {
     permisos: []
   }
 
-  constructor(private rolesService: RolesService) { }
+  public permisos: Permiso[];
+
+  constructor(private rolesService: RolesService, private permisosService: PermisosService) { }
+
+  ngOnInit(): void {
+    this.permisosService.getAllPermisos().subscribe(data => {
+      this.permisos = data;
+    },
+    error => {
+      console.log("Error al obtener los permisos: " + error);
+    })
+  }
 
   onSubmit() {
 
@@ -36,7 +50,7 @@ export class AddRolesComponent {
     this.rol = {
       nombre: nombre,
       descripcion: descripcion,
-      permisos: []
+      permisos: this.rol.permisos
     }
 
     this.rolesService.addRol(this.rol).subscribe(response => {
@@ -52,6 +66,21 @@ export class AddRolesComponent {
       }, 3000);
     })
 
+  }
+
+  rolTienePermiso(permiso: Permiso): boolean {
+    return this.rol.permisos.some(p => p.id === permiso.id);
+  }
+
+  anadirPermiso(permiso: Permiso): void {
+    const index = this.rol.permisos.findIndex(p => p.id === permiso.id);
+    if (index !== -1) {
+      // Si el permiso ya está en la lista, lo eliminamos
+      this.rol.permisos.splice(index, 1);
+    } else {
+      // Si el permiso no está en la lista, lo agregamos
+      this.rol.permisos.push(permiso);
+    }
   }
 
   ocultarModalCrearRol() {

@@ -6,11 +6,20 @@
         <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required formControlName="nombre"/>
       </div>
+      
       <div class="form-group">
         <label for="descripcion" class="col-sm-3 col-form-label">Descripción</label>
         <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionInput required formControlName="descripcion"/>
       </div>
 
+      <div class="listaPermisos">
+      <div *ngFor="let permiso of permisos">
+        <label>
+          <input type="checkbox" [checked]="rolTienePermiso(permiso)" (change)="anadirPermiso(permiso)">
+          {{ permiso.nombre }} - {{ permiso.descripcion }}
+        </label>
+      </div>
+    </div>
 
       <div class="button-container">
         <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary"
