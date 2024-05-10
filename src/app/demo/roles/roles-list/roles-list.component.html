@@ -22,9 +22,9 @@
             <td>{{ rol.nombre }}</td>
             <td>{{ rol.descripcion }}</td>
             <td><span class="material-icons edit-icon" style="color: orange;"
-              > edit </span>
+              (click)="mostrarModalEditarCrearRol(rol.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
-              > delete </span>
+              (click)="mostrarModalEliminarRol(rol.id)"> delete </span>
             </td>
           </tr>
         </tbody>
@@ -32,5 +32,41 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <!-- <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button> -->
+  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
+
+<!-- Modal eliminar -->
+<ng-container *ngIf="mostrarModalEliminar">
+  <div class="modal">
+    <div class="modal-content delete-modal">
+      <span class="close" (click)="ocultarModalEliminarRol()">&times;</span>
+      <p>¿Estás seguro de que deseas eliminar el rol? Esta operación es irreversible.</p>
+      <div class="button-container">
+        <button class="btn btn-glow-danger btn-danger" (click)="deleteRol()">Aceptar</button>
+        <button class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEliminarRol()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Modal editar/crear -->
+
+<ng-container *ngIf="mostrarModalEditarCrear">
+  <div class="modal">
+    <div class="modal-content edit-modal">
+      <span class="close" (click)="ocultarModalEditarCrearRol()">&times;</span>
+      <h5>{{ accionModal === 'editar' ? 'Editar Rol' : 'Añadir Rol' }}</h5>
+      <hr>
+      <ng-container *ngIf="accionModal === 'editar'; else addRolForm">
+        <app-edit-rol [idRol]="idRol" (editComplete)="ocultarModalEditarCrearRol()"></app-edit-rol>
+      </ng-container>
+      <ng-template #addRolForm>
+        <app-add-rol (cancelarCrear)="ocultarModalEditarCrearRol()"></app-add-rol>
+      </ng-template>
+    </div>
+  </div>
+</ng-container>
+
+
+<app-notification [showNotification]="showBorrarRolNotification" message="Rol borrado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showBorrarRolErrorNotification" message="No tienes permisos para borrar un rol" [color]="false"></app-notification>

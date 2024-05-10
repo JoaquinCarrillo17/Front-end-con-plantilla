@@ -20,4 +20,20 @@ export class RolesService {
     return this.http.get<{ roles: Rol[], totalItems: number }>(url);
   }
 
+  deleteRol(idRol:number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/roles/${idRol}`);
+  }
+
+  getRol(idRol: number): Observable<Rol> {
+    return this.http.get<Rol>(`${this.baseUrl}/roles/${idRol}`);
+  }
+
+  editRol(idRol: number, rol: Rol): Observable<Rol> {
+    return this.http.put<Rol>(`${this.baseUrl}/roles/${idRol}`, rol);
+  }
+
+  addRol(rol: Rol): Observable<Rol> {
+    return this.http.post<Rol>(`${this.baseUrl}/roles`, rol);
+  }
+
 }

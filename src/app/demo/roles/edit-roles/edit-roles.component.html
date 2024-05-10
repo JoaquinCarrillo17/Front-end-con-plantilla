@@ -1,0 +1,25 @@
+<form (ngSubmit)="editRol()">
+  <div class="modal-columns">
+
+    <div class="modal-column">
+      
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" id="nombre" [(ngModel)]="rol.nombre" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input type="text" class="form-control" id="descripcion" [(ngModel)]="rol.descripcion" name="descripcion"
+            required>
+        </div>
+
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button type="submit" class="btn btn-glow-primary btn-primary">Editar</button>
+    <button type="button" class="btn btn-glow-secondary btn-secondary"
+      (click)="ocultarModalEditarRol()">Cancelar</button>
+  </div>
+</form>
