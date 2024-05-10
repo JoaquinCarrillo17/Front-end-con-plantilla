@@ -60,7 +60,6 @@ export class EditRolesComponent implements OnInit {
       setTimeout(() => {
         this.showEditarRolNotification = false;
       }, 3000);
-      window.location.reload();
     }, error => {
       this.showEditarRolErrorNotification = true;
       setTimeout(() => {

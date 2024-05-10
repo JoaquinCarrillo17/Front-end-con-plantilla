@@ -3,13 +3,14 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { Usuario } from '../../pages/authentication/interfaces/usuario.interface';
 import { UsuariosService } from '../services/usuarios.service';
 import { EditUsuarioComponent } from "../edit-usuario/edit-usuario.component";
+import { AddUsuarioComponent } from "../add-usuario/add-usuario.component";
 
 @Component({
     selector: 'app-usuarios-list',
     standalone: true,
     templateUrl: './usuarios-list.component.html',
     styleUrl: './usuarios-list.component.scss',
-    imports: [SharedModule, EditUsuarioComponent]
+    imports: [SharedModule, EditUsuarioComponent, AddUsuarioComponent]
 })
 export class UsuariosListComponent implements OnInit{
 

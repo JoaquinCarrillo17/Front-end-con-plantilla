@@ -18,7 +18,7 @@
         <div *ngFor="let permiso of permisos">
           <label>
             <input type="checkbox" [checked]="rolTienePermiso(permiso)" (change)="anadirPermiso(permiso)">
-            {{ permiso.nombre }} - {{ permiso.descripcion }}
+            {{ permiso.descripcion }}
           </label>
         </div>
       </div>

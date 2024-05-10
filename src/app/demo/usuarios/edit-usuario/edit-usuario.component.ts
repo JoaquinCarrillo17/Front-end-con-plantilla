@@ -67,7 +67,6 @@ export class EditUsuarioComponent implements OnInit {
       setTimeout(() => {
         this.showEditarUsuarioNotification = false;
       }, 3000);
-      window.location.reload();
     }, error => {
       this.showEditarUsuarioErrorNotification = true;
       setTimeout(() => {

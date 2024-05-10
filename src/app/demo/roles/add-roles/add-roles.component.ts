@@ -58,7 +58,6 @@ export class AddRolesComponent implements OnInit{
       setTimeout(() => {
         this.showCrearRolNotification = false; // Ocultar la notificación después de 2 segundos
       }, 3000);
-      window.location.reload();
     }, error => {
       this.showCrearRolErrorNotification = true; // Mostrar la notificación
       setTimeout(() => {
