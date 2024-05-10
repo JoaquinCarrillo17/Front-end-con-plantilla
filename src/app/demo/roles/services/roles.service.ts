@@ -15,6 +15,10 @@ export class RolesService {
     return this.http.get<{ roles: Rol[], totalItems: number }>(`${this.baseUrl}/roles/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }
 
+  getAllRoles() : Observable<Rol[]> {
+    return this.http.get<Rol[]>(`${this.baseUrl}/roles`);
+  }
+
   getRolesFilteredByQuery(query: string, valueSortOrder: string, sortBy: string, page: number, items: number): Observable<{ roles: Rol[], totalItems: number }> {
     const url = `${this.baseUrl}/roles/magicFilter?query=${query}&valueSortOrder=${valueSortOrder}&sortBy=${sortBy}&pageNumber=${page}&itemsPerPage=${items}`;
     return this.http.get<{ roles: Rol[], totalItems: number }>(url);

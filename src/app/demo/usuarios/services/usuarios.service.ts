@@ -20,4 +20,20 @@ export class UsuariosService {
     return this.http.get<{ usuarios: Usuario[], totalItems: number }>(url);
   }
 
+  deleteUsuario(idUsuario:number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/usuarios/${idUsuario}`);
+  }
+
+  getUsuario(idUsuario: number): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.baseUrl}/usuarios/${idUsuario}`);
+  }
+
+  editUsuario(idUsuario: number, usuario: Usuario): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.baseUrl}/usuarios/${idUsuario}`, usuario);
+  }
+
+  addUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.baseUrl}/usuarios`, usuario);
+  }
+
 }

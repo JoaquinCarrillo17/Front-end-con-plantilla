@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { Usuario } from '../../pages/authentication/interfaces/usuario.interface';
 import { UsuariosService } from '../services/usuarios.service';
+import { EditUsuarioComponent } from "../edit-usuario/edit-usuario.component";
 
 @Component({
-  selector: 'app-usuarios-list',
-  standalone: true,
-  imports: [SharedModule],
-  templateUrl: './usuarios-list.component.html',
-  styleUrl: './usuarios-list.component.scss'
+    selector: 'app-usuarios-list',
+    standalone: true,
+    templateUrl: './usuarios-list.component.html',
+    styleUrl: './usuarios-list.component.scss',
+    imports: [SharedModule, EditUsuarioComponent]
 })
 export class UsuariosListComponent implements OnInit{
 
@@ -20,6 +21,15 @@ export class UsuariosListComponent implements OnInit{
   public itemsPerPage: number = 5;
   public valueSortOrder: string = 'ASC';
   public sortBy: string = 'id';
+
+  public mostrarModalEliminar = false;
+  public mostrarModalEditarCrear = false;
+  accionModal: 'editar' | 'crear' = 'editar';
+
+  public showBorrarUsuarioNotification = false;
+  public showBorrarUsuarioErrorNotification = false;
+
+  public idUsuario: number; // ? Para saber que rol tiene que ser editado/creado
 
   constructor(private usuariosService: UsuariosService) { }
 
@@ -89,9 +99,50 @@ export class UsuariosListComponent implements OnInit{
         this.isSpinnerVisible = false;
       },
       (error) => {
-        console.error('Error al cargar los huespedes:', error);
+        console.error('Error al cargar los usuario:', error);
         this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
+  }
+
+  // ? Editar/crear/borrar rol
+
+  deleteUsuario(){
+    this.usuariosService.deleteUsuario(this.idUsuario).subscribe(response => {
+      this.showBorrarUsuarioNotification = true;
+      setTimeout(() => {
+        this.showBorrarUsuarioNotification = false;
+      }, 3000);
+      window.location.reload();
+    }, error => {
+      this.showBorrarUsuarioErrorNotification = true;
+      setTimeout(() => {
+        this.showBorrarUsuarioErrorNotification = false;
+      }, 3000);
+    })
+  }
+
+  mostrarModalEditarCrearUsuario(idUsuario: number) {
+    this.idUsuario = idUsuario;
+    this.mostrarModalEditarCrear = true;
+    this.accionModal = 'editar';
+  }
+
+  ocultarModalEditarCrearUsuario() {
+    this.mostrarModalEditarCrear = false;
+  }
+
+  mostrarModalEliminarUsuario(idUsuario: number) {
+    this.idUsuario = idUsuario;
+    this.mostrarModalEliminar = true;
+  }
+
+  ocultarModalEliminarUsuario() {
+    this.mostrarModalEliminar = false;
+  }
+
+  onFloatingButtonClick() {
+    this.mostrarModalEditarCrear = true;
+    this.accionModal = 'crear'
   }
 
 }

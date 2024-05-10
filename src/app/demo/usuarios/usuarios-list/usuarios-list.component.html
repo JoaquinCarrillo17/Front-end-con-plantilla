@@ -1,7 +1,7 @@
 <div class="col-xl-12">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
   <app-card
-    cardTitle="Lista de Roles"
+    cardTitle="Lista de Usuario"
     [options]="false"
     blockClass="table-border-style"
   >
@@ -28,12 +28,12 @@
             <td>{{ usuario.fechaNacimiento }}</td>
             <td>
               <!-- Iterar sobre los roles del usuario -->
-              <span *ngFor="let rol of usuario.roles">{{ rol.nombre }}</span>
+              <span *ngFor="let rol of usuario.roles">{{ rol.nombre }} </span>
             </td>
             <td><span class="material-icons edit-icon" style="color: orange;"
-              > edit </span>
+              (click)="mostrarModalEditarCrearUsuario(usuario.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
-              > delete </span>
+              (click)="mostrarModalEliminarUsuario(usuario.id)"> delete </span>
             </td>
           </tr>
         </tbody>
@@ -43,3 +43,39 @@
   </app-card>
   <!-- <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button> -->
 </div>
+
+
+<!-- Modal eliminar -->
+<ng-container *ngIf="mostrarModalEliminar">
+  <div class="modal">
+    <div class="modal-content delete-modal">
+      <span class="close" (click)="ocultarModalEliminarUsuario()">&times;</span>
+      <p>¿Estás seguro de que deseas eliminar el usuario? Esta operación es irreversible.</p>
+      <div class="button-container">
+        <button class="btn btn-glow-danger btn-danger" (click)="deleteUsuario()">Aceptar</button>
+        <button class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEliminarUsuario()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Modal editar/crear -->
+
+<ng-container *ngIf="mostrarModalEditarCrear">
+  <div class="modal">
+    <div class="modal-content edit-modal">
+      <span class="close" (click)="ocultarModalEditarCrearUsuario()">&times;</span>
+      <h5>{{ accionModal === 'editar' ? 'Editar Usuario' : 'Añadir Usuario' }}</h5>
+      <hr>
+      <ng-container *ngIf="accionModal === 'editar'; else addUsuarioForm">
+        <app-edit-usuario [idUsuario]="idUsuario" (editComplete)="ocultarModalEditarCrearUsuario()"></app-edit-usuario>
+      </ng-container>
+      <ng-template #addUsuarioForm>
+        <!-- <app-add-usuario (cancelarCrear)="ocultarModalEditarCrearUsuario()"></app-add-usuario> -->
+      </ng-template>
+    </div>
+  </div>
+</ng-container>
+
+<app-notification [showNotification]="showBorrarUsuarioNotification" message="Usuario borrado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showBorrarUsuarioErrorNotification" message="No tienes permisos para borrar un usuario" [color]="false"></app-notification>

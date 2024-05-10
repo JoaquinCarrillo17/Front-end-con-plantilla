@@ -1,0 +1,49 @@
+<form (ngSubmit)="editUsuario()">
+  <div class="modal-columns">
+
+    <div class="modal-column">
+
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" id="nombre" [(ngModel)]="usuario.nombre" name="nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" [(ngModel)]="usuario.username" name="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" [(ngModel)]="usuario.email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" class="form-control" id="password" [(ngModel)]="usuario.password" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento</label>
+        <input type="date" class="form-control" id="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento" name="fechaNacimiento" required>
+      </div>
+
+
+      <div class="listaRoles">
+        <div *ngFor="let rol of roles">
+          <label>
+            <input type="checkbox" [checked]="usuarioTieneRol(rol)" (change)="anadirRol(rol)">
+            {{ rol.nombre }} - {{ rol.descripcion }}
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button type="submit" class="btn btn-glow-primary btn-primary">Editar</button>
+    <button type="button" class="btn btn-glow-secondary btn-secondary"
+      (click)="ocultarModalEditarUsuario()">Cancelar</button>
+  </div>
+</form>
