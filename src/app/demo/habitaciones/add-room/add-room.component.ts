@@ -5,11 +5,12 @@ import { HotelesService } from '../../hoteles/services/hoteles.service';
 import { TipoHabitacion, Habitacion } from '../interfaces/habitacion.interface';
 import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Huesped } from '../../huespedes/interfaces/huesped.interface';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule],
   templateUrl: './add-room.component.html',
   styleUrl: './add-room.component.scss'
 })
@@ -26,6 +27,9 @@ export class AddRoomComponent {
   @ViewChild('emailHuesped') emailHuesped: { nativeElement: { value: string; }; };
   @ViewChild('fechaEntrada') fechaEntrada: { nativeElement: { value: string; }; };
   @ViewChild('fechaSalida') fechaSalida: { nativeElement: { value: string; }; };
+
+  public showCrearHabitacionNotification = false;
+  public showCrearHabitacionErrorNotification = false;
 
   public habitacionForm: FormGroup = this.formBuilder.group({
     numero: ['', [Validators.required, Validators.min(0)]],
@@ -165,11 +169,16 @@ export class AddRoomComponent {
 
     this.hotelesService.addHabitacion(idHotel, habitacion).subscribe(
       response => {
-        console.log('Habitación añadida con éxito:', response);
-        window.location.reload();
+        this.showCrearHabitacionNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showCrearHabitacionNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       },
       error => {
-        console.error('Error al añadir habitación:', error);
+        this.showCrearHabitacionErrorNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showCrearHabitacionErrorNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       }
     );
   }

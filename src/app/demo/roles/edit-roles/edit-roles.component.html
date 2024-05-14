@@ -32,3 +32,7 @@
       (click)="ocultarModalEditarRol()">Cancelar</button>
   </div>
 </form>
+
+<app-notification [showNotification]="showEditarRolNotification" message="Rol editado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showEditarRolErrorNotification" message="No tienes permisos para editar un rol" [color]="false"></app-notification>
+

@@ -47,3 +47,8 @@
       (click)="ocultarModalCrearUsuario()">Cancelar</button>
   </div>
 </form>
+
+
+<app-notification [showNotification]="showCrearUsuarioNotification" message="Usuario creado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showCrearUsuarioErrorNotification" message="No tienes permisos para crear un usuario" [color]="false"></app-notification>
+

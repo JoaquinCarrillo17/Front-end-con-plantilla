@@ -5,7 +5,6 @@ import { CategoriaServicio } from '../../servicios/interfaces/servicio.interface
 import { TipoHabitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NotificationComponent } from 'src/app/theme/shared/components/notification/notification.component';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
@@ -169,7 +168,6 @@ export class AddHotelComponent {
         setTimeout(() => {
         this.showCrearHotelNotification = false; // Ocultar la notificación después de 2 segundos
       }, 3000);
-        window.location.reload();
       },
       error => {
         this.showCrearHotelErrorNotification = true; // Mostrar la notificación

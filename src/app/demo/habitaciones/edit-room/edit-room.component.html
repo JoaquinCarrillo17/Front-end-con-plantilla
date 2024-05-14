@@ -59,3 +59,7 @@
       (click)="ocultarModalEditarHabitacion()">Cancelar</button>
   </div>
 </form>
+
+<app-notification [showNotification]="showEditarHabitacionNotification" message="Habitación editada con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showEditarHabitacionErrorNotification" message="No tienes permisos para editar una habitación" [color]="false"></app-notification>
+

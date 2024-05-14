@@ -35,3 +35,8 @@
       (click)="ocultarModalEditarServicio()">Cancelar</button>
   </div>
 </form>
+
+
+<app-notification [showNotification]="showEditarServicioNotification" message="Servicio editado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showEditarServicioErrorNotification" message="No tienes permisos para editar un servicio" [color]="false"></app-notification>
+

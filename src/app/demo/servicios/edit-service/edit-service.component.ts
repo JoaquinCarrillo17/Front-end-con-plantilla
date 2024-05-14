@@ -3,11 +3,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Servicio } from '../interfaces/servicio.interface';
 import { ServiciosService } from '../services/servicios.service';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-edit-service',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SharedModule],
   templateUrl: './edit-service.component.html',
   styleUrl: './edit-service.component.scss'
 })
@@ -21,6 +22,9 @@ export class EditServiceComponent {
     descripcion: '',
     categoria: null,
   };
+
+  public showEditarServicioNotification = false;
+  public showEditarServicioErrorNotification = false;
 
   constructor(private serviciosService: ServiciosService) { }
 
@@ -44,10 +48,16 @@ export class EditServiceComponent {
         categoria: null,
       };
       this.ocultarModalEditarServicio();
-      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
+      this.showEditarServicioNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showEditarServicioNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
     },
       error => {
-        console.error(`Error al editar el servicio` + error)
+        this.showEditarServicioErrorNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showEditarServicioErrorNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       }
     )
   }

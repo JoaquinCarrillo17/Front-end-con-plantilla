@@ -47,3 +47,8 @@
       (click)="ocultarModalEditarUsuario()">Cancelar</button>
   </div>
 </form>
+
+
+<app-notification [showNotification]="showEditarUsuarioNotification" message="Usuario editado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showEditarUsuarioErrorNotification" message="No tienes permisos para editar un usuario" [color]="false"></app-notification>
+

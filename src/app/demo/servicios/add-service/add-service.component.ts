@@ -4,11 +4,12 @@ import { Hotel } from '../../hoteles/interfaces/hotel.interface';
 import { HotelesService } from '../../hoteles/services/hoteles.service';
 import { CategoriaServicio, Servicio } from '../interfaces/servicio.interface';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-service',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SharedModule],
   templateUrl: './add-service.component.html',
   styleUrl: './add-service.component.scss'
 })
@@ -29,6 +30,9 @@ export class AddServiceComponent {
   })
 
   public hoteles: Hotel[];
+
+  public showCrearServicioNotification = false;
+  public showCrearServicioErrorNotification = false;
 
   constructor(private hotelesService: HotelesService, private formBuilder: FormBuilder) { }
 
@@ -99,11 +103,16 @@ export class AddServiceComponent {
 
     this.hotelesService.addServicio(idHotel, servicio).subscribe(
       response => {
-        console.log('Servicio añadido con éxito:', response);
-        window.location.reload();
+        this.showCrearServicioNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showCrearServicioNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       },
       error => {
-        console.error('Error al añadir servicio:', error);
+        this.showCrearServicioErrorNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showCrearServicioErrorNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       }
     );
   }

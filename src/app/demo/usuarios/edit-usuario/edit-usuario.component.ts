@@ -5,11 +5,12 @@ import { RolesService } from '../../roles/services/roles.service';
 import { UsuariosService } from '../services/usuarios.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-edit-usuario',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SharedModule],
   templateUrl: './edit-usuario.component.html',
   styleUrl: './edit-usuario.component.scss'
 })

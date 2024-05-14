@@ -3,11 +3,12 @@ import { HabitacionesService } from '../services/habitaciones.service';
 import { Habitacion } from '../interfaces/habitacion.interface';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-edit-room',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SharedModule],
   templateUrl: './edit-room.component.html',
   styleUrl: './edit-room.component.scss'
 })
@@ -22,6 +23,9 @@ export class EditRoomComponent {
     precioNoche: 0,
     huespedes: [],
   };
+
+  public showEditarHabitacionNotification = false;
+  public showEditarHabitacionErrorNotification = false;
 
   constructor(private habitacionesService: HabitacionesService) { }
 
@@ -46,10 +50,16 @@ export class EditRoomComponent {
         huespedes: [],
       };
       this.ocultarModalEditarHabitacion();
-      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
+      this.showEditarHabitacionNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showEditarHabitacionNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
     },
       error => {
-        console.error(`Error al editar la habitacion` + error)
+        this.showEditarHabitacionErrorNotification = true; // Mostrar la notificación
+        setTimeout(() => {
+        this.showEditarHabitacionErrorNotification = false; // Ocultar la notificación después de 2 segundos
+      }, 3000);
       }
     )
   }

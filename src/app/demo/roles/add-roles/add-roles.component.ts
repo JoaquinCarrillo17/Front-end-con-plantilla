@@ -4,11 +4,12 @@ import { RolesService } from '../services/roles.service';
 import { Permiso } from '../interfaces/permiso.interface';
 import { PermisosService } from '../services/permisos.service';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-rol',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './add-roles.component.html',
   styleUrl: './add-roles.component.scss'
 })

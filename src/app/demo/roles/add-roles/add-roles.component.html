@@ -31,3 +31,8 @@
     </div>
   </div>
 </form>
+
+
+<app-notification [showNotification]="showCrearRolNotification" message="Rol creado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showCrearRolErrorNotification" message="No tienes permisos para crear un rol" [color]="false"></app-notification>
+

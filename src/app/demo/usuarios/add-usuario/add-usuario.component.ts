@@ -4,11 +4,12 @@ import { Rol } from '../../roles/interfaces/rol.interface';
 import { UsuariosService } from '../services/usuarios.service';
 import { RolesService } from '../../roles/services/roles.service';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-add-usuario',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './add-usuario.component.html',
   styleUrl: './add-usuario.component.scss'
 })

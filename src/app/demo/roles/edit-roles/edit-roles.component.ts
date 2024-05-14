@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PermisosService } from '../services/permisos.service';
 import { Permiso } from '../interfaces/permiso.interface';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-edit-rol',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SharedModule],
   templateUrl: './edit-roles.component.html',
   styleUrl: './edit-roles.component.scss'
 })

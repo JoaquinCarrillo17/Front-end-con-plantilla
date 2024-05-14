@@ -42,3 +42,8 @@
     </div>
   </div>
 </form>
+
+
+<app-notification [showNotification]="showCrearServicioNotification" message="Servicio creado con éxito" [color]="true"></app-notification>
+<app-notification [showNotification]="showCrearServicioErrorNotification" message="No tienes permisos para crear un servicio" [color]="false"></app-notification>
+
