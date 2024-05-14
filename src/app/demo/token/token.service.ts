@@ -17,11 +17,16 @@ export class TokenService {
     return this.token;
   }
 
+  getRoles(): string[] {
+    const decodedToken = this.jwtHelper.decodeToken(this.token);
+    return decodedToken ? decodedToken.roles : [];
+  }
+
   getUsername(): string {
     const decodedToken = this.jwtHelper.decodeToken(this.token);
     return decodedToken ? decodedToken.sub : "";
   }
-  
+
   getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`

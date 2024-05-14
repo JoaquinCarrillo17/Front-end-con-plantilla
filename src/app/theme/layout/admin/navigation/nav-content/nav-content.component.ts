@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 // project import
 import { NavigationItem } from '../navigation';
 import { environment } from 'src/environments/environment';
+import { TokenService } from 'src/app/demo/token/token.service';
 
 @Component({
   selector: 'app-nav-content',
@@ -22,6 +23,7 @@ export class NavContentComponent implements OnInit {
   // constructor
   constructor(
     public nav: NavigationItem,
+    private tokenService: TokenService,
     private location: Location,
   ) {
     this.windowWidth = window.innerWidth;
@@ -30,6 +32,23 @@ export class NavContentComponent implements OnInit {
 
   // life cycle event
   ngOnInit() {
+    const userRoles = this.tokenService.getRoles();
+
+    // Filtra las secciones de navegación basadas en los roles del usuario
+    this.navigation.forEach(group => {
+      group.children = group.children.filter(item => {
+        // Verifica si el item tiene algún rol requerido
+        if (item.requiredRoles) {
+          // Verifica si el usuario tiene al menos uno de los dos roles requeridos para ver el item
+          return userRoles.some(role => item.requiredRoles.includes(role));
+        }
+        // Si el item no tiene roles requeridos, siempre se muestra
+        return true;
+      });
+    });
+
+    console.log(this.navigation)
+
     if (this.windowWidth < 992) {
       setTimeout(() => {
         document

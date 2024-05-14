@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { AddHotelComponent } from "../add-hotel/add-hotel.component";
 import { EditHotelComponent } from '../edit-hotel/edit-hotel.component';
+import { TokenService } from '../../token/token.service';
 
 @Component({
     selector: 'app-hotel-list',
@@ -31,9 +32,11 @@ export class HotelListComponent implements OnInit {
   public showBorrarHotelNotification = false;
   public showBorrarHotelErrorNotification = false;
 
+  public puedeCrear: boolean; // ? Para saber si tengo rol y mostrar las acciones
+
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
 
-  constructor(private hotelesService: HotelesService) { }
+  constructor(private hotelesService: HotelesService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.hotelesService.getAllHotelesMagicFilter().subscribe(response => {
@@ -46,6 +49,8 @@ export class HotelListComponent implements OnInit {
         this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       }
     );
+
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HOTELES_W');
   }
 
   search(value: string) {

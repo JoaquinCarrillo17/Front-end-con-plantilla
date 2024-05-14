@@ -18,7 +18,7 @@
             <th>Habitaciones totales</th>
             <th>Habitaciones Disponibles</th>
             <th>Habitaciones Reservadas</th>
-            <th>Acciones</th>
+            <th *ngIf="puedeCrear">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
             <td>{{ hotel.numeroHabitaciones }}</td>
             <td>{{ hotel.numeroHabitacionesDisponibles }}</td>
             <td>{{ hotel.numeroHabitacionesReservadas }}</td>
-            <td><span class="material-icons edit-icon" style="color: orange;"
+            <td *ngIf="puedeCrear"><span class="material-icons edit-icon" style="color: orange;"
                 (click)="mostrarModalEditarHotel(hotel.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
                 (click)="mostrarModalEliminarHotel(hotel.id)"> delete </span>
@@ -45,7 +45,7 @@
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
       (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
+  <app-floating-button *ngIf="puedeCrear" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
 
 <!-- Modal eliminar -->

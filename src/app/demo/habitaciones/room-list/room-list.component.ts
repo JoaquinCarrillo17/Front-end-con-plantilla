@@ -4,6 +4,7 @@ import { Habitacion } from '../interfaces/habitacion.interface';
 import { HabitacionesService } from '../services/habitaciones.service';
 import { AddRoomComponent } from '../add-room/add-room.component';
 import { EditRoomComponent } from '../edit-room/edit-room.component';
+import { TokenService } from '../../token/token.service';
 
 @Component({
   selector: 'app-room-list',
@@ -27,9 +28,11 @@ export class RoomListComponent implements OnInit {
   public mostrarModalEditarCrear = false;
   accionModal: 'editar' | 'crear' = 'editar';
 
+  public puedeCrear: boolean; // ? Para mostrar los iconos segun el rol
+
   public idHabitacion: number; // ? cuando abro un modal actualizo este id para saber sobre que habitacion ejecuto la accion
 
-  constructor(private habitacionesService: HabitacionesService){ }
+  constructor(private habitacionesService: HabitacionesService, private tokenService: TokenService){ }
 
   ngOnInit(): void {
     this.habitacionesService.getAllHabitacionesMagicFilter()
@@ -42,6 +45,8 @@ export class RoomListComponent implements OnInit {
         console.error('Error al cargar las habitaciones:', error);
         this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
+
+      this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HABITACIONES_W');
   }
 
   search(value: string): void {

@@ -14,7 +14,7 @@
             <th (click)="order('numero')" class="cursor-pointer">Número</th>
             <th (click)="order('tipoHabitacion')" class="cursor-pointer">Tipo de Habitación</th>
             <th (click)="order('precioNoche')" class="cursor-pointer">Precio por Noche</th>
-            <th>Acciones</th>
+            <th *ngIf="puedeCrear">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
             <td>{{ habitacion.numero }}</td>
             <td>{{ habitacion.tipoHabitacion }}</td>
             <td>{{ habitacion.precioNoche }}</td>
-            <td><span class="material-icons edit-icon" style="color: orange;"
+            <td *ngIf="puedeCrear"><span class="material-icons edit-icon" style="color: orange;"
               (click)="mostrarModalEditarHabitacion(habitacion.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
               (click)="mostrarModalEliminarHabitacion(habitacion.id)"> delete </span>
@@ -34,7 +34,7 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
+  <app-floating-button *ngIf="puedeCrear" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
 
 <!-- Modal eliminar -->
