@@ -12,7 +12,7 @@
             <th (click)="order('email')" class="cursor-pointer">Email</th>
             <th (click)="order('fechaCheckIn')" class="cursor-pointer">Fecha de Check-In</th>
             <th (click)="order('fechaCheckOut')" class="cursor-pointer">Fecha de Check-Out</th>
-            <th>Acciones</th>
+            <th *ngIf="puedeCrear">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
             <td>{{ huesped.email }}</td>
             <td>{{ huesped.fechaCheckIn | date:'dd-MM-yyyy HH:mm' }}</td>
             <td>{{ huesped.fechaCheckOut | date:'dd-MM-yyyy HH:mm' }}</td>
-            <td><span class="material-icons edit-icon" style="color: orange;"
+            <td *ngIf="puedeCrear"><span class="material-icons edit-icon" style="color: orange;"
                 (click)="mostrarModalEditarHuesped(huesped.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
                 (click)="mostrarModalEliminarHuesped(huesped.id)"> delete </span>
@@ -35,7 +35,7 @@
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
       (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
+  <app-floating-button *ngIf="puedeCrear" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
 
 <!-- Modal eliminar -->

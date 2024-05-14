@@ -4,6 +4,7 @@ import { Usuario } from '../../pages/authentication/interfaces/usuario.interface
 import { UsuariosService } from '../services/usuarios.service';
 import { EditUsuarioComponent } from "../edit-usuario/edit-usuario.component";
 import { AddUsuarioComponent } from "../add-usuario/add-usuario.component";
+import { TokenService } from '../../token/token.service';
 
 @Component({
     selector: 'app-usuarios-list',
@@ -30,9 +31,11 @@ export class UsuariosListComponent implements OnInit{
   public showBorrarUsuarioNotification = false;
   public showBorrarUsuarioErrorNotification = false;
 
+  public puedeCrear: boolean;
+
   public idUsuario: number; // ? Para saber que rol tiene que ser editado/creado
 
-  constructor(private usuariosService: UsuariosService) { }
+  constructor(private usuariosService: UsuariosService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.usuariosService.getAllUsuariosMagicFilter().subscribe(response => {
@@ -44,7 +47,9 @@ export class UsuariosListComponent implements OnInit{
         console.error('Error al cargar los roles: ' + error);
         this.isSpinnerVisible = false;
       }
-    )
+    );
+
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_USUARIOS_W');
   }
 
   search(value: string): void {

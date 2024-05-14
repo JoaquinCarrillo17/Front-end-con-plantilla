@@ -12,7 +12,7 @@
             <th (click)="order('email')" class="cursor-pointer">Email</th>
             <th (click)="order('fecha')" class="cursor-pointer">Fecha de nacimiento</th>
             <th>Roles</th>
-            <th>Acciones</th>
+            <th *ngIf="puedeCrear">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                 <span *ngIf="!last">, </span>
               </ng-container>
             </td>
-            <td><span class="material-icons edit-icon" style="color: orange;"
+            <td *ngIf="puedeCrear"><span class="material-icons edit-icon" style="color: orange;"
                 (click)="mostrarModalEditarCrearUsuario(usuario.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
                 (click)="mostrarModalEliminarUsuario(usuario.id)"> delete </span>
@@ -41,7 +41,7 @@
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
       (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
+  <app-floating-button *ngIf="puedeCrear" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
 
 

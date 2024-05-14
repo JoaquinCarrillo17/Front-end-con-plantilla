@@ -4,6 +4,7 @@ import { ServiciosService } from '../services/servicios.service';
 import { Servicio } from '../interfaces/servicio.interface';
 import { AddServiceComponent } from '../add-service/add-service.component';
 import { EditServiceComponent } from '../edit-service/edit-service.component';
+import { TokenService } from '../../token/token.service';
 
 @Component({
   selector: 'app-service-list',
@@ -27,9 +28,11 @@ export class ServiceListComponent implements OnInit {
   public mostrarModalEditarCrear = false;
   accionModal: 'editar' | 'crear' = 'editar';
 
+  public puedeCrear: boolean;
+
   public idServicio: number; // ? cuando abro un modal actualizo este id para saber sobre que Servicio ejecuto la accion
 
-  constructor(private serviciosService: ServiciosService) { }
+  constructor(private serviciosService: ServiciosService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.serviciosService.getAllServiciosMagicFilter()
@@ -42,6 +45,8 @@ export class ServiceListComponent implements OnInit {
         console.error('Error al cargar los servicios:', error);
         this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
+
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_SERVICIOS_W');
   }
 
   search(value: string): void {

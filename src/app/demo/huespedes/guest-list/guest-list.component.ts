@@ -5,6 +5,7 @@ import { HuespedesService } from '../services/huespedes.service';
 import { AddGuestComponent } from '../add-guest/add-guest.component';
 import { EditGuestComponent } from '../edit-guest/edit-guest.component';
 import { DatePipe } from '@angular/common';
+import { TokenService } from '../../token/token.service';
 
 @Component({
   selector: 'app-guest-list',
@@ -31,9 +32,11 @@ export class GuestListComponent implements OnInit {
   public showBorrarHuespedNotification = false;
   public showBorrarHuespedErrorNotification = false;
 
+  public puedeCrear: boolean;
+
   public idHuesped: number; // ? cuando abro un modal actualizo este id para saber sobre que Huesped ejecuto la accion
 
-  constructor(private huespedesService: HuespedesService) { }
+  constructor(private huespedesService: HuespedesService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.huespedesService.getAllHuespedesMagicFilter()
@@ -46,6 +49,8 @@ export class GuestListComponent implements OnInit {
           console.error('Error al cargar los huespesdes:', error);
           this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
         });
+
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HUESPEDES_W');
   }
 
   search(value: string): void {

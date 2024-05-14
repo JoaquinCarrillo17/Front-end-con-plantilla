@@ -4,6 +4,7 @@ import { Rol } from '../interfaces/rol.interface';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { EditRolesComponent } from "../edit-roles/edit-roles.component";
 import { AddRolesComponent } from "../add-roles/add-roles.component";
+import { TokenService } from '../../token/token.service';
 
 @Component({
     selector: 'app-roles-list',
@@ -30,9 +31,11 @@ export class RolesListComponent implements OnInit {
   public showBorrarRolNotification = false;
   public showBorrarRolErrorNotification = false;
 
+  public puedeCrear: boolean;
+
   public idRol: number; // ? Para saber que rol tiene que ser editado/creado
 
-  constructor(private rolesService: RolesService) { }
+  constructor(private rolesService: RolesService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.rolesService.getAllRolesMagicFilter().subscribe(response => {
@@ -45,6 +48,8 @@ export class RolesListComponent implements OnInit {
         this.isSpinnerVisible = false;
       }
     )
+
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_ROLES_W');
   }
 
   search(value: string): void {
