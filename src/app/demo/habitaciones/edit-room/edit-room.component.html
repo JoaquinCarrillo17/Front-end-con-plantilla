@@ -21,6 +21,18 @@
           <input type="text" class="form-control" id="precioNoche" [(ngModel)]="habitacion.precioNoche" name="precioNoche"
             required>
         </div>
+        <div class="form-group">
+          <label for="serviciosHabitacion">Servicios de la Habitación</label>
+          <div *ngFor="let servicio of serviciosDisponibles">
+            <input
+              type="checkbox"
+              [value]="servicio"
+              (change)="onCheckboxChange($event)"
+              [checked]="habitacion.servicios.includes(servicio)"
+            />
+            {{ servicio }}
+          </div>
+        </div>
     </div>
     <!-- Fin de la primera columna -->
 

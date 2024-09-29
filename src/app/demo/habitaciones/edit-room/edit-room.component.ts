@@ -16,16 +16,19 @@ export class EditRoomComponent {
 
   @Input() idHabitacion: number;
   @Output() editComplete: EventEmitter<void> = new EventEmitter<void>();
-  public habitacion: Habitacion = { // ? cuando abro el modal editar actualizo este habitacion para que me aparezcan los campos
+  public habitacion: any = {
     id: 0,
     numero: 0,
     tipoHabitacion: null,
     precioNoche: 0,
+    servicios: [],
     huespedes: [],
   };
 
   public showEditarHabitacionNotification = false;
   public showEditarHabitacionErrorNotification = false;
+
+  public serviciosDisponibles: string[] = ['COCINA', 'TERRAZA', 'JACUZZI'];
 
   constructor(private habitacionesService: HabitacionesService) { }
 
@@ -39,6 +42,22 @@ export class EditRoomComponent {
     );
   }
 
+  onCheckboxChange(event: any) {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      // Agregar el servicio si está seleccionado
+      this.habitacion.servicios.push(value);
+    } else {
+      // Eliminar el servicio si se ha desmarcado
+      const index = this.habitacion.servicios.indexOf(value);
+      if (index !== -1) {
+        this.habitacion.servicios.splice(index, 1);
+      }
+    }
+  }
+
   editHabitacion() {
     this.habitacionesService.editHabitacion(this.idHabitacion, this.habitacion).subscribe(response => {
       console.log("La habitacion se editó correctamente")
@@ -47,6 +66,7 @@ export class EditRoomComponent {
         numero: 0,
         tipoHabitacion: null,
         precioNoche: 0,
+        servicios: [],
         huespedes: [],
       };
       this.ocultarModalEditarHabitacion();

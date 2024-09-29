@@ -32,6 +32,17 @@
         </select>
         <span *ngIf="isValidFieldHabitacion('idHotel')" class="form-text text-danger">{{ getFieldErrorHabitacion('idHotel') }}</span>
       </div>
+      <div class="form-group">
+        <label for="servicios">Servicios</label>
+        <div *ngFor="let servicio of serviciosDisponibles">
+          <input
+            type="checkbox"
+            [value]="servicio"
+            (change)="onCheckboxChange($event)"
+            [checked]="habitacion.servicios.includes(servicio)">
+          {{ servicio }}
+        </div>
+      </div>
     </form>
     </div>
 

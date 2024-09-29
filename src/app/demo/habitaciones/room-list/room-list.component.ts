@@ -31,6 +31,7 @@ export class RoomListComponent implements OnInit {
   public puedeCrear: boolean; // ? Para mostrar los iconos segun el rol
 
   public idHabitacion: number; // ? cuando abro un modal actualizo este id para saber sobre que habitacion ejecuto la accion
+  public usuario;
 
   constructor(private habitacionesService: HabitacionesService, private tokenService: TokenService){ }
 
@@ -47,6 +48,7 @@ export class RoomListComponent implements OnInit {
       });
 
       this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HABITACIONES_W');
+      this.usuario = localStorage.getItem("usuario");
   }
 
   search(value: string): void {
@@ -59,7 +61,11 @@ export class RoomListComponent implements OnInit {
         this.isSpinnerVisible =  false;
       },
       (error) => {
-        console.error('Error al cargar los huespedes:', error);
+        if (error.status === 404) {
+          this.habitaciones = [];
+          this.totalItems = 0;
+        }
+        console.error('Error al cargar las habitaciones:', error);
         this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
   }

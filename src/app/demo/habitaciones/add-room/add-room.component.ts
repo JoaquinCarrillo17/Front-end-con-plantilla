@@ -31,6 +31,8 @@ export class AddRoomComponent {
   public showCrearHabitacionNotification = false;
   public showCrearHabitacionErrorNotification = false;
 
+  public serviciosDisponibles: string[] = ['COCINA', 'TERRAZA', 'JACUZZI'];
+
   public habitacionForm: FormGroup = this.formBuilder.group({
     numero: ['', [Validators.required, Validators.min(0)]],
     tipoHabitacion: ['', [Validators.required]],
@@ -67,10 +69,11 @@ export class AddRoomComponent {
 
 
   public hoteles: Hotel[];
-  public habitacion: Habitacion = {
+  public habitacion: any = {
     numero: 0,
     tipoHabitacion: null,
     precioNoche: 0,
+    servicios: [],
     huespedes: [],
   }
 
@@ -130,6 +133,22 @@ export class AddRoomComponent {
     return null;
   }
 
+  onCheckboxChange(event: any) {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      // Agregar el servicio si está seleccionado
+      this.habitacion.servicios.push(value);
+    } else {
+      // Eliminar el servicio si se ha desmarcado
+      const index = this.habitacion.servicios.indexOf(value);
+      if (index !== -1) {
+        this.habitacion.servicios.splice(index, 1);
+      }
+    }
+  }
+
   onSubmit() {
 
     if (this.habitacionForm.invalid) {
@@ -160,10 +179,11 @@ export class AddRoomComponent {
         break;
     }
 
-    const habitacion: Habitacion = {
+    const habitacion: any = {
       numero: numero,
       tipoHabitacion: tipoHabitacion,
       precioNoche: precio,
+      servicios: this.habitacion.servicios,
       huespedes: this.habitacion.huespedes,
     };
 

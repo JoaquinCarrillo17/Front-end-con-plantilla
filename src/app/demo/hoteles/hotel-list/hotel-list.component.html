@@ -34,9 +34,10 @@
             <td>{{ hotel.numeroHabitaciones }}</td>
             <td>{{ hotel.numeroHabitacionesDisponibles }}</td>
             <td>{{ hotel.numeroHabitacionesReservadas }}</td>
-            <td *ngIf="puedeCrear"><span class="material-icons edit-icon" style="color: orange;"
+            <td *ngIf="puedeCrear">
+              <span *ngIf="hotel.idUsuario == usuario" class="material-icons edit-icon" style="color: orange;"
                 (click)="mostrarModalEditarHotel(hotel.id)"> edit </span>
-              <span class="material-icons delete-icon" style="color: red;"
+              <span *ngIf="hotel.idUsuario == usuario" class="material-icons delete-icon" style="color: red;"
                 (click)="mostrarModalEliminarHotel(hotel.id)"> delete </span>
             </td>
 

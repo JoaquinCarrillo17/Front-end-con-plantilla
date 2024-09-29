@@ -17,7 +17,7 @@ import { TokenService } from '../../token/token.service';
 export class HotelListComponent implements OnInit {
 
   isSpinnerVisible: boolean = true; // Agrega una variable para controlar la visibilidad del spinner
-  public hoteles: Hotel[];
+  public hoteles: any[];
   public totalItems: number = 0; // Para el pagination component
   public query: string = '';
   public pageNumber: number = 0;
@@ -35,6 +35,7 @@ export class HotelListComponent implements OnInit {
   public puedeCrear: boolean; // ? Para saber si tengo rol y mostrar las acciones
 
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
+  public usuario;
 
   constructor(private hotelesService: HotelesService, private tokenService: TokenService) { }
 
@@ -51,6 +52,7 @@ export class HotelListComponent implements OnInit {
     );
 
     this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HOTELES_W');
+    this.usuario = localStorage.getItem("usuario");
   }
 
   search(value: string) {
@@ -62,6 +64,10 @@ export class HotelListComponent implements OnInit {
       this.isSpinnerVisible = false;
     },
     (error) => {
+      if (error.status === 404) {
+        this.hoteles = [];
+        this.totalItems = 0;
+      }
       console.error('Error al cargar los hoteles:', error);
       this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
     });

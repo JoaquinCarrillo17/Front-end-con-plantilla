@@ -31,7 +31,7 @@ export class AddHotelComponent {
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
 
-  public categorias: string[] = ['GIMNASIO', 'BAR', 'LAVANDERIA', 'KARAOKE', 'CASINO', 'WIFI', 'MASCOTA', 'COCINA', 'PISCINA'];
+  public categorias: string[] = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
 
   public showCrearHotelNotification = false;
   public showCrearHotelErrorNotification = false;

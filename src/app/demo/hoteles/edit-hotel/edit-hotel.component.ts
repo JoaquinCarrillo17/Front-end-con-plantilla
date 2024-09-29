@@ -27,7 +27,7 @@ export class EditHotelComponent implements OnInit {
     habitaciones: []
   };
 
-  public categorias: string[] = ['GIMNASIO', 'BAR', 'LAVANDERIA', 'KARAOKE', 'CASINO', 'WIFI', 'MASCOTA', 'COCINA', 'PISCINA'];
+  public categorias: string[] = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
 
   public showEditarHotelNotification = false;
   public showEditarHotelErrorNotification = false;

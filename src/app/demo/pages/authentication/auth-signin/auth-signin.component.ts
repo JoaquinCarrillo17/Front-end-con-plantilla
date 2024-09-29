@@ -25,6 +25,8 @@ export default class AuthSigninComponent {
       const token = response;
       //Navegar a localhost:4200/hotel-chart
       this.tokenService.setToken(token);
+      const usuario = this.authService.getIdUsuario();
+      localStorage.setItem('usuario', usuario);
       this.router.navigate(['/hotel-chart']);
     },
       error => {
