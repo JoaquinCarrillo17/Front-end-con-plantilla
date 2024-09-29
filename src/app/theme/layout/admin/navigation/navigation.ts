@@ -69,14 +69,14 @@ const NavigationItems = [
         url: '/huespedes',
         requiredRoles: ['ROLE_HUESPEDES_R', 'ROLE_HUESPEDES_W']
       },
-      {
+      /*{
         id: 'servicios',
         title: 'Servicios',
         type: 'item',
         icon: 'fa fa-cogs',
         url: '/servicios',
         requiredRoles: ['ROLE_SERVICIOS_R', 'ROLE_SERVICIOS_W']
-      },
+      },*/
       {
         id: 'roles',
         title: 'Roles',

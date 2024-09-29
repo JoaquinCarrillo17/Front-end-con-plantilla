@@ -25,32 +25,23 @@
           <input type="url" class="form-control" id="sitioWeb" [(ngModel)]="hotel.sitioWeb" name="sitioWeb"
             required>
         </div>
+        <div class="form-group">
+          <label for="categoriaServicio">Categorías</label>
+          <div *ngFor="let categoria of categorias">
+            <input
+              type="checkbox"
+              [value]="categoria"
+              (change)="onCheckboxChange($event)"
+              [checked]="hotel.servicios.includes(categoria)"
+            />
+            {{ categoria }}
+          </div>
+        </div>
     </div>
     <!-- Fin de la primera columna -->
 
     <!-- Segunda columna -->
     <div class="modal-column">
-      <!-- Iterar sobre los servicios -->
-      <div class="form-group" *ngFor="let servicio of hotel.servicios; let i = index">
-        <label for="nombreServicio{{i}}">Nombre del Servicio {{i+1}}</label>
-        <input type="text" class="form-control" id="nombreServicio{{i}}" [(ngModel)]="servicio.nombre"
-          name="nombreServicio{{i}}" required>
-
-        <label for="descripcionServicio{{i}}">Descripción del Servicio {{i+1}}</label>
-        <input type="text" class="form-control" id="descripcionServicio{{i}}" [(ngModel)]="servicio.descripcion"
-          name="descripcionServicio{{i}}" required>
-
-        <label for="categoriaServicio{{i}}">Categoría del Servicio {{i+1}}</label>
-        <select class="form-control" id="categoriaServicio{{i}}" [(ngModel)]="servicio.categoria"
-          name="categoriaServicio{{i}}" required>
-          <option value="GIMNASIO">Gimnasio</option>
-          <option value="BAR">Bar</option>
-          <option value="LAVANDERIA">Lavandería</option>
-          <option value="KARAOKE">Karaoke</option>
-          <option value="CASINO">Casino</option>
-        </select>
-      </div>
-
       <!-- Iterar sobre las habitaciones -->
       <div class="form-group" *ngFor="let habitacion of hotel.habitaciones; let j = index">
         <label for="numeroHabitacion{{j}}">Número de Habitación {{j+1}}</label>

@@ -26,10 +26,12 @@ export class AddHotelComponent {
   @ViewChild('sitioWebInput') sitioWebInput: { nativeElement: { value: string; }; };
   @ViewChild('nombreServicio') nombreServicio: { nativeElement: { value: string; }; };
   @ViewChild('descripcionServicio') descripcionServicio: { nativeElement: { value: string; }; };
-  @ViewChild('categoriaServicio') categoriaServicio: { nativeElement: { value: string; }; };
+  @ViewChild('categoriaServicio') categoriaServicio: { nativeElement: { value: string[]; }; };
   @ViewChild('numeroHabitacion') numeroHabitacion: { nativeElement: { value: number; }; };
   @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
   @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
+
+  public categorias: string[] = ['GIMNASIO', 'BAR', 'LAVANDERIA', 'KARAOKE', 'CASINO', 'WIFI', 'MASCOTA', 'COCINA', 'PISCINA'];
 
   public showCrearHotelNotification = false;
   public showCrearHotelErrorNotification = false;
@@ -52,6 +54,7 @@ export class AddHotelComponent {
     telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
     email: ['', [Validators.required, Validators.email]], // Validar formato de email
     sitioWeb: ['', [Validators.required, Validators.pattern(/^(www\..*)$/)]], // Validar que empiece con 'www'
+    categoria: [[], Validators.required]
   });
 
   hotel: Hotel = {
@@ -91,26 +94,6 @@ export class AddHotelComponent {
   }
 
 
-  isValidFieldServicio(field: string) {
-    return this.servicioForm.controls[field].errors && this.servicioForm.controls[field].touched
-  }
-
-  getFieldErrorServicio(field: string) {
-
-    if (!this.servicioForm.controls[field]) return null;
-
-    const errors = this.servicioForm.controls[field].errors;
-
-    for (const key of Object.keys(errors)) {
-      switch (key) {
-        case 'required':
-          return 'Este campo es obligatorio'
-      }
-    }
-
-    return null;
-  }
-
   isValidFieldHotel(field: string) {
     return this.hotelForm.controls[field].errors && this.hotelForm.controls[field].touched
   }
@@ -139,6 +122,25 @@ export class AddHotelComponent {
     return null;
   }
 
+  isChecked(categoria: string): boolean {
+    const categoriaArray = this.hotelForm.get('categoria').value;
+    return categoriaArray.includes(categoria);
+  }
+
+
+  onCheckboxChange(event: any) {
+    const categoriaArray: string[] = this.hotelForm.get('categoria').value;
+    if (event.target.checked) {
+      categoriaArray.push(event.target.value);
+    } else {
+      const index = categoriaArray.indexOf(event.target.value);
+      if (index > -1) {
+        categoriaArray.splice(index, 1);
+      }
+    }
+    this.hotelForm.get('categoria').setValue(categoriaArray);
+  }
+
   onSubmit() {
 
     if (this.hotelForm.invalid) {
@@ -146,20 +148,14 @@ export class AddHotelComponent {
       return;
     }
 
-    const nombre = this.nombreInput.nativeElement.value;
-    const direccion = this.direccionInput.nativeElement.value;
-    const telefono = this.telefonoInput.nativeElement.value;
-    const email = this.emailInput.nativeElement.value;
-    const sitioWeb = this.sitioWebInput.nativeElement.value;
-
     this.hotel = {
-      nombre: nombre,
-      direccion: direccion,
-      telefono: telefono,
-      email: email,
-      sitioWeb: sitioWeb,
-      servicios: this.hotel.servicios,
-      habitaciones: this.hotel.habitaciones,
+      nombre: this.hotelForm.get('nombre').value,
+      direccion: this.hotelForm.get('direccion').value,
+      telefono: this.hotelForm.get('telefono').value,
+      email: this.hotelForm.get('email').value,
+      sitioWeb: this.hotelForm.get('sitioWeb').value,
+      servicios: this.hotelForm.get('categoria').value,
+      habitaciones: this.hotel.habitaciones
     };
 
     this.hotelesService.addHotel(this.hotel).subscribe(
@@ -176,55 +172,6 @@ export class AddHotelComponent {
       }, 3000);
       }
     );
-  }
-
-  agregarServicio() {
-
-    if (this.servicioForm.invalid) {
-      this.servicioForm.markAllAsTouched();
-      return;
-    }
-
-    const nombre = this.nombreServicio.nativeElement.value;
-    const descripcion = this.descripcionServicio.nativeElement.value;
-    const categoria = this.categoriaServicio.nativeElement.value;
-
-
-    let cat: CategoriaServicio;
-    switch (categoria) {
-      case "GIMNASIO":
-        cat = CategoriaServicio.GIMNASIO;
-        break;
-      case "BAR":
-        cat = CategoriaServicio.BAR;
-        break;
-      case "LAVANDERIA":
-        cat = CategoriaServicio.LAVANDERIA;
-        break;
-      case "CASINO":
-        cat = CategoriaServicio.CASINO;
-        break;
-      case "KARAOKE":
-        cat = CategoriaServicio.KARAOKE;
-        break;
-
-      default:
-        break;
-    }
-
-    // Agregar el servicio al array de servicios del hotel
-    this.hotel.servicios.push({
-      nombre: nombre,
-      descripcion: descripcion,
-      categoria: cat
-    });
-
-    // Resetear los campos del servicio
-    this.nombreServicio.nativeElement.value = '';
-    this.descripcionServicio.nativeElement.value = '';
-    this.categoriaServicio.nativeElement.value = '';
-    this.servicioForm.reset();
-    this.ocultarFormularioServicio();
   }
 
   agregarHabitacion() {
@@ -273,16 +220,6 @@ export class AddHotelComponent {
   }
 
   // * Para el comportamiento de los forms del servicio y habitacion
-
-  mostrarFormularioServicio() {
-    const formularioServicio = document.getElementById('formulario-servicio');
-    formularioServicio.classList.add('mostrar');
-  }
-
-  ocultarFormularioServicio() {
-    const formularioServicio = document.getElementById('formulario-servicio');
-    formularioServicio.classList.remove('mostrar');
-  }
 
   mostrarFormularioHabitacion() {
     const formularioHabitacion = document.getElementById('formulario-habitacion');

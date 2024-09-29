@@ -28,40 +28,24 @@
         <input type="text" class="form-control" id="sitioWeb" placeholder="Sitio Web" #sitioWebInput required formControlName="sitioWeb">
         <span *ngIf="isValidFieldHotel('sitioWeb')" class="form-text text-danger">{{ getFieldErrorHotel('sitioWeb') }}</span>
       </div>
+      <div class="form-group">
+        <label for="categoriaServicio">Categorías</label>
+        <div *ngFor="let categoria of categorias">
+          <input
+            type="checkbox"
+            [value]="categoria"
+            (change)="onCheckboxChange($event)"
+            [checked]="isChecked(categoria)"
+          />
+          {{ categoria }}
+        </div>
+        <span *ngIf="isValidFieldHotel('categoria')" class="form-text text-danger">{{ getFieldErrorHotel('categoria') }}</span>
+      </div>
     </form>
     </div>
 
   <!-- Segunda columna para servicios, habitaciones y huéspedes -->
   <div class="modal-column">
-    <h6 class="añadir-servicio" (click)="mostrarFormularioServicio()">Añadir Servicio</h6>
-    <div id="formulario-servicio" class="formulario">
-      <form [formGroup]="servicioForm">
-      <div class="form-group">
-        <label for="nombreServicio">Nombre</label>
-        <input type="text" class="form-control" id="nombreServicio" placeholder="Nombre" #nombreServicio required formControlName="nombre"/>
-        <span *ngIf="isValidFieldServicio('nombre')" class="form-text text-danger">{{ getFieldErrorServicio('nombre') }}</span>
-      </div>
-      <div class="form-group">
-        <label for="descripcionServicio">Descripción</label>
-        <input type="text" class="form-control" id="descripcionServicio" placeholder="Descripción" #descripcionServicio required formControlName="descripcion"/>
-        <span *ngIf="isValidFieldServicio('descripcion')" class="form-text text-danger">{{ getFieldErrorServicio('descripcion') }}</span>
-      </div>
-      <div class="form-group">
-        <label for="categoriaServicio">Categoría</label>
-        <select class="form-control" id="categoriaServicio" #categoriaServicio required formControlName="categoria">
-          <option value="" selected disabled>Elige una categoría</option>
-          <option value="GIMNASIO">Gimnasio</option>
-          <option value="BAR">Bar</option>
-          <option value="LAVANDERIA">Lavandería</option>
-          <option value="KARAOKE">Karaoke</option>
-          <option value="CASINO">Casino</option>
-        </select>
-        <span *ngIf="isValidFieldServicio('categoria')" class="form-text text-danger">{{ getFieldErrorServicio('categoria') }}</span>
-      </div>
-      <button type="button" (click)="agregarServicio()" class="btn btn-glow-primary btn-primary">Agregar servicio</button>
-    </form>
-    </div>
-    <hr>
     <h6 class="añadir-habitacion" (click)="mostrarFormularioHabitacion()">Añadir habitación</h6>
     <div id="formulario-habitacion" class="formulario">
       <form [formGroup]="habitacionForm">

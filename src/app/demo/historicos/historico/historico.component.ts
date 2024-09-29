@@ -29,7 +29,6 @@ export default class HistoricoComponent {
   habitacionesDisponiblesData: number[] = [];
   habitacionesReservadasData: number[] = [];
   huespedesData: number[] = [];
-  serviciosData: number[] = [];
 
   constructor(private historicoService: HistoricoService) {}
 
@@ -49,7 +48,6 @@ export default class HistoricoComponent {
         this.habitacionesDisponiblesData.push(historico.habitacionesDisponibles);
         this.habitacionesReservadasData.push(historico.habitacionesReservadas);
         this.huespedesData.push(historico.huespedesTotales);
-        this.serviciosData.push(historico.serviciosTotales);
       });
 
       // Configura el gráfico con los datos obtenidos
@@ -74,10 +72,6 @@ export default class HistoricoComponent {
           {
             name: 'Huéspedes',
             data: this.huespedesData,
-          },
-          {
-            name: 'Servicios',
-            data: this.serviciosData,
           },
         ],
         xaxis: {

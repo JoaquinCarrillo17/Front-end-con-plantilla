@@ -15,6 +15,7 @@
             <th (click)="order('telefono')" class="cursor-pointer">Teléfono</th>
             <th (click)="order('email')" class="cursor-pointer">Email</th>
             <th (click)="order('sitioWeb')" class="cursor-pointer">Sitio Web</th>
+            <th>Servicios</th>
             <th>Habitaciones totales</th>
             <th>Habitaciones Disponibles</th>
             <th>Habitaciones Reservadas</th>
@@ -29,6 +30,7 @@
             <td>{{ hotel.telefono }}</td>
             <td>{{ hotel.email }}</td>
             <td>{{ hotel.sitioWeb }}</td>
+            <td>{{ hotel.servicios.join(', ') }}</td>
             <td>{{ hotel.numeroHabitaciones }}</td>
             <td>{{ hotel.numeroHabitacionesDisponibles }}</td>
             <td>{{ hotel.numeroHabitacionesReservadas }}</td>

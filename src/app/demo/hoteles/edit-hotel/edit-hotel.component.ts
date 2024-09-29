@@ -16,7 +16,7 @@ export class EditHotelComponent implements OnInit {
 
   @Input() idHotel: number;
   @Output() editComplete: EventEmitter<void> = new EventEmitter<void>();
-  public hotel: Hotel = { // ? cuando abro el modal editar actualizo este hotel para que me aparezcan los campos
+  public hotel: any = { // ? cuando abro el modal editar actualizo este hotel para que me aparezcan los campos
     id: 0,
     nombre: '',
     direccion: '',
@@ -26,6 +26,8 @@ export class EditHotelComponent implements OnInit {
     servicios: [],
     habitaciones: []
   };
+
+  public categorias: string[] = ['GIMNASIO', 'BAR', 'LAVANDERIA', 'KARAOKE', 'CASINO', 'WIFI', 'MASCOTA', 'COCINA', 'PISCINA'];
 
   public showEditarHotelNotification = false;
   public showEditarHotelErrorNotification = false;
@@ -40,6 +42,22 @@ export class EditHotelComponent implements OnInit {
       console.log("Error al obtener el hotel: " + error);
     }
   );
+  }
+
+  onCheckboxChange(event: any) {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      // Agregar el servicio si está seleccionado
+      this.hotel.servicios.push(value);
+    } else {
+      // Eliminar el servicio si se ha desmarcado
+      const index = this.hotel.servicios.indexOf(value);
+      if (index !== -1) {
+        this.hotel.servicios.splice(index, 1);
+      }
+    }
   }
 
   editHotel() {
