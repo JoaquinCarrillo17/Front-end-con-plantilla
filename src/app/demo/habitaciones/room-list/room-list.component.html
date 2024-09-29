@@ -11,6 +11,7 @@
         <thead>
           <tr>
             <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('hotel.nombre')" class="cursor-pointer">Hotel</th>
             <th (click)="order('numero')" class="cursor-pointer">Número</th>
             <th (click)="order('tipoHabitacion')" class="cursor-pointer">Tipo de Habitación</th>
             <th (click)="order('precioNoche')" class="cursor-pointer">Precio por Noche</th>
@@ -20,6 +21,7 @@
         <tbody>
           <tr *ngFor="let habitacion of habitaciones">
             <td>{{ habitacion.id }}</td>
+            <td>{{ habitacion.nombreHotel }}</td>
             <td>{{ habitacion.numero }}</td>
             <td>{{ habitacion.tipoHabitacion }}</td>
             <td>{{ habitacion.precioNoche }}</td>

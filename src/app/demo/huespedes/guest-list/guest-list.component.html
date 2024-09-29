@@ -7,6 +7,7 @@
         <thead>
           <tr>
             <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('habitacion.hotel.nombre')" class="cursor-pointer">Hotel</th>
             <th (click)="order('nombreCompleto')" class="cursor-pointer">Nombre Completo</th>
             <th (click)="order('dni')" class="cursor-pointer">DNI</th>
             <th (click)="order('email')" class="cursor-pointer">Email</th>
@@ -18,6 +19,7 @@
         <tbody>
           <tr *ngFor="let huesped of huespedes">
             <td>{{ huesped.id }}</td>
+            <td>{{ huesped.nombreHotel }}</td>
             <td>{{ huesped.nombreCompleto }}</td>
             <td>{{ huesped.dni }}</td>
             <td>{{ huesped.email }}</td>

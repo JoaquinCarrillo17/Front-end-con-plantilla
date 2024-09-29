@@ -17,7 +17,7 @@ import { TokenService } from '../../token/token.service';
 export class GuestListComponent implements OnInit {
 
   isSpinnerVisible: boolean = true;
-  public huespedes: Huesped[];
+  public huespedes: any[];
   public totalItems: number = 0;
   public query: string = '';
   public pageNumber: number = 0;

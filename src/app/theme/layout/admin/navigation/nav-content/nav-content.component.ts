@@ -33,12 +33,14 @@ export class NavContentComponent implements OnInit {
   // life cycle event
   ngOnInit() {
     const userRoles = this.tokenService.getRoles();
+    console.log("Roles del usuario: ", userRoles);
 
     // Filtra las secciones de navegación basadas en los roles del usuario
     this.navigation.forEach(group => {
       group.children = group.children.filter(item => {
         // Verifica si el item tiene algún rol requerido
         if (item.requiredRoles) {
+          console.log("Roles requeridos para " + item.title + " : ", item.requiredRoles)
           // Verifica si el usuario tiene al menos uno de los dos roles requeridos para ver el item
           return userRoles.some(role => item.requiredRoles.includes(role));
         }

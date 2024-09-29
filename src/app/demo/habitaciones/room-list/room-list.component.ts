@@ -16,7 +16,7 @@ import { TokenService } from '../../token/token.service';
 export class RoomListComponent implements OnInit {
 
   isSpinnerVisible: boolean = true;
-  public habitaciones: Habitacion[];
+  public habitaciones: any[];
   public totalItems: number = 0;
   public query: string = '';
   public pageNumber: number = 0;
