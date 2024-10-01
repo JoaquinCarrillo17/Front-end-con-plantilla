@@ -12,7 +12,7 @@ import { TokenService } from 'src/app/demo/token/token.service';
   templateUrl: './auth-signup.component.html',
   styleUrls: ['./auth-signup.component.scss'],
 })
-export default class AuthSignupComponent {
+export class AuthSignupComponent {
 
   @ViewChild('signupForm') signupForm: NgForm;
 
@@ -33,9 +33,11 @@ export default class AuthSignupComponent {
         const token = response;
         //Navegar a localhost:4200/hotel-chart
         this.tokenService.setToken(token);
-        const usuario = this.authService.getIdUsuario();
+        const usuario = this.tokenService.getIdUsuario();
+        const username = this.tokenService.getUsername();
+        localStorage.setItem('superadmin', this.tokenService.esSuperAdmin() ? 'true' : 'false');
         localStorage.setItem('usuario', usuario);
-        this.router.navigate(['/hotel-chart']);
+        if(username.includes('admin')) this.router.navigate(['/admin']);
       },
       error => {
         console.error('Sign up failed:', error);

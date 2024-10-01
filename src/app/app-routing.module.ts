@@ -6,13 +6,9 @@ import { HabitacionesModule } from './demo/habitaciones/habitaciones.module';
 import { RolesModule } from './demo/roles/roles.module';
 
 const routes: Routes = [
+
   {
-    path: '',
-    redirectTo: 'auth',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
+    path: 'admin',
     component: AdminComponent,
     children: [
       {
@@ -77,11 +73,32 @@ const routes: Routes = [
     component: GuestComponent,
     children: [
       {
-        path: 'auth',
-        loadChildren: () =>
+        path: '',
+        loadComponent: () => import('./demo/main-page/main-page.component').then(m => m.MainPageComponent),
+        pathMatch: 'full',
+      },
+    ],
+  },
+
+  {
+    path: 'auth',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
           import('./demo/pages/authentication/authentication.module').then(
             (m) => m.AuthenticationModule,
           ),
+      },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./demo/pages/authentication/auth-signin/auth-signin.component').then((m => m.AuthSigninComponent))
+      },
+      {
+        path: 'signup',
+        loadComponent: () =>
+          import('./demo/pages/authentication/auth-signup/auth-signup.component').then((m => m.AuthSignupComponent))
       },
     ],
   },

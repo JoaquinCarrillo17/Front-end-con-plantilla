@@ -27,6 +27,23 @@ export class TokenService {
     return decodedToken ? decodedToken.sub : "";
   }
 
+  getIdUsuario(): string {
+    if (this.token) {
+      const decodedToken = this.jwtHelper.decodeToken(this.token);
+      if (decodedToken && decodedToken.id) {
+        return decodedToken.id;
+      }
+    }
+    return null;
+  }
+
+  esSuperAdmin(): boolean {
+    if (this.token) {
+      return this.getRoles().includes('ROLE_SUPER_ADMIN');
+    }
+    return false;
+  }
+
   getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`

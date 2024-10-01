@@ -33,7 +33,7 @@ const NavigationItems = [
         id: 'apexChart',
         title: 'Hoteles Chart',
         type: 'item',
-        url: '/hotel-chart',
+        url: '/admin/hotel-chart',
         classes: 'nav-item',
         icon: 'fa fa-chart-line',
       },
@@ -50,48 +50,40 @@ const NavigationItems = [
         title: 'Hoteles',
         type: 'item',
         icon: 'fa fa-home',
-        url: '/hoteles',
-        requiredRoles: ['ROLE_HOTELES_R', 'ROLE_HOTELES_W']
+        url: '/admin/hoteles',
+        requiredRoles: ['ROLE_HOTELES_R', 'ROLE_HOTELES_W', 'ROLE_SUPER_ADMIN']
       },
       {
         id: 'habitaciones',
         title: 'Habitaciones',
         type: 'item',
         icon: 'fa fa-bed',
-        url: '/habitaciones',
-        requiredRoles: ['ROLE_HABITACIONES_R', 'ROLE_HABITACIONES_W']
+        url: '/admin/habitaciones',
+        requiredRoles: ['ROLE_HABITACIONES_R', 'ROLE_HABITACIONES_W', 'ROLE_SUPER_ADMIN']
       },
       {
         id: 'huespedes',
         title: 'Huéspedes',
         type: 'item',
         icon: 'fa fa-user',
-        url: '/huespedes',
-        requiredRoles: ['ROLE_HUESPEDES_R', 'ROLE_HUESPEDES_W']
+        url: '/admin/huespedes',
+        requiredRoles: ['ROLE_HUESPEDES_R', 'ROLE_HUESPEDES_W', 'ROLE_SUPER_ADMIN']
       },
-      /*{
-        id: 'servicios',
-        title: 'Servicios',
-        type: 'item',
-        icon: 'fa fa-cogs',
-        url: '/servicios',
-        requiredRoles: ['ROLE_SERVICIOS_R', 'ROLE_SERVICIOS_W']
-      },*/
       {
         id: 'roles',
         title: 'Roles',
         type: 'item',
         icon: 'fa fa-users',
-        url: '/roles',
-        requiredRoles: ['ROLE_ROLES_R', 'ROLE_ROLES_W']
+        url: '/admin/roles',
+        requiredRoles: ['ROLE_SUPER_ADMIN']
       },
       {
         id: 'usuarios',
         title: 'Usuarios',
         type: 'item',
         icon: 'fa fa-user-circle',
-        url: '/usuarios',
-        requiredRoles: ['ROLE_USUARIOS_R', 'ROLE_USUARIOS_W']
+        url: '/admin/usuarios',
+        requiredRoles: ['ROLE_SUPER_ADMIN']
       },
     ],
   },

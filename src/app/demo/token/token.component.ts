@@ -19,6 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(authReq);
     } else {
       // Token inválido o no disponible, redirigir al login
+      console.log("NO TENGO TOKEN");
       this.router.navigate(['/auth/login']);
       return next.handle(req);
     }

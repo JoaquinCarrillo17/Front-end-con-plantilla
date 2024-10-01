@@ -90,17 +90,6 @@ export class AuthService {
     }
   }
 
-  getIdUsuario(): string {
-    const token = this.tokenService.getToken();
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      if (decodedToken && decodedToken.id) {
-        return decodedToken.id;
-      }
-    }
-    return null;
-  }
-
   isTokenExpiringSoon(token: string): boolean {
     const expirationTimeInSeconds = this.jwtHelper.getTokenExpirationDate(token).getTime() / 1000;
     const currentTimeInSeconds = Math.floor(Date.now() / 1000);

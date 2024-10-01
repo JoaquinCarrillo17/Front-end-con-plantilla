@@ -14,6 +14,14 @@ export class HotelesService {
 
   constructor(private http: HttpClient) { }
 
+  getHotelesDynamicFilterAnd(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/hoteles/dynamicFilterAnd`, body);
+  }
+
+  getHotelesDynamicFilterOr(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/hoteles/dynamicFilterOr`, body);
+  }
+
   getAllHotelesMagicFilter(): Observable<{ hoteles: Hotel[], totalItems: number }> {
     return this.http.get<{ hoteles: Hotel[], totalItems: number }>(`${this.baseUrl}/hoteles/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }

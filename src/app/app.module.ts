@@ -27,6 +27,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './demo/token/token.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SessionTimeoutModalComponent } from './theme/shared/components/session-timeout-modal/session-timeout-modal.component';
+import { NavbarComponent } from "./theme/layout/guest/navbar/navbar.component";
 
 @NgModule({
   declarations: [
@@ -54,8 +55,9 @@ import { SessionTimeoutModalComponent } from './theme/shared/components/session-
     ReactiveFormsModule,
     SharedModule,
     BrowserAnimationsModule,
-    HttpClientModule
-  ],
+    HttpClientModule,
+    NavbarComponent,
+],
   providers: [
     NavigationItem,
     {

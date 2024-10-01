@@ -1,0 +1,44 @@
+@import '../../../../../scss/variables';
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $primary-color;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-brand-links {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand-links span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin-right: 1rem;
+}
+
+.separator {
+  border-left: 2px solid white; /* Línea vertical */
+  height: 30px; /* Altura de la línea */
+  margin: 0 1rem; /* Espacio alrededor de la línea */
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: 1rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+

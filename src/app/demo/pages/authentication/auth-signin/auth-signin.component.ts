@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './auth-signin.component.html',
   styleUrls: ['./auth-signin.component.scss'],
 })
-export default class AuthSigninComponent {
+export  class AuthSigninComponent {
 
   @ViewChild('loginForm') loginForm: NgForm;
 
@@ -25,9 +25,11 @@ export default class AuthSigninComponent {
       const token = response;
       //Navegar a localhost:4200/hotel-chart
       this.tokenService.setToken(token);
-      const usuario = this.authService.getIdUsuario();
+      const usuario = this.tokenService.getIdUsuario();
+      const username = this.tokenService.getUsername();
+      localStorage.setItem('superadmin', this.tokenService.esSuperAdmin() ? 'true' : 'false');
       localStorage.setItem('usuario', usuario);
-      this.router.navigate(['/hotel-chart']);
+      if(username.includes('admin')) this.router.navigate(['/admin']);
     },
       error => {
         console.error('Login failed:', error);

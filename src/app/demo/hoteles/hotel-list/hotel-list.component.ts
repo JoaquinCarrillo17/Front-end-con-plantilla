@@ -36,31 +36,23 @@ export class HotelListComponent implements OnInit {
 
   public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
   public usuario;
+  public esSuperAdmin: any;
 
   constructor(private hotelesService: HotelesService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
-    this.hotelesService.getAllHotelesMagicFilter().subscribe(response => {
-      this.hoteles = response.hoteles;
-      this.totalItems = response.totalItems;
-      this.isSpinnerVisible = false;
-    },
-      (error) => {
-        console.error('Error al cargar los hoteles:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      }
-    );
-
-    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HOTELES_W');
+    this.query = "";
+    //this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HOTELES_W');
     this.usuario = localStorage.getItem("usuario");
+    this.esSuperAdmin = localStorage.getItem("superadmin") == "true" ? true : false;
+    this.getHoteles(this.query);
   }
 
-  search(value: string) {
-    this.isSpinnerVisible = true;
-    this.hotelesService.getHotelesFilteredByQuery(value, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
-      this.hoteles = response.hoteles;
-      this.totalItems = response.totalItems;
-      this.query = value;
+
+  getHoteles(value: any) {
+    this.hotelesService.getHotelesDynamicFilterOr(this.getDataForRequest(value)).subscribe(response => {
+      this.hoteles = response.content;
+      this.totalItems = response.totalElements;
       this.isSpinnerVisible = false;
     },
     (error) => {
@@ -68,9 +60,113 @@ export class HotelListComponent implements OnInit {
         this.hoteles = [];
         this.totalItems = 0;
       }
-      console.error('Error al cargar los hoteles:', error);
-      this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-    });
+      this.isSpinnerVisible = false;
+    })
+  }
+
+  private getDataForRequest(value: any): any {
+    const validServices = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
+
+    // Inicializar la lista de criterios de búsqueda
+    let listSearchCriteria: any[] = [];
+
+    // Añadir filtros dinámicos
+    if (value !== "" && value !== null) {
+      // Añadir id al filtro solo si value es un número
+      if (!isNaN(value)) {
+        listSearchCriteria.push({
+          key: "id",
+          operation: "equals",
+          value: parseInt(value, 10)
+        });
+      }
+
+      listSearchCriteria.push(
+        {
+          key: "nombre",
+          operation: "contains",
+          value: value
+        },
+        {
+          key: "direccion",
+          operation: "contains",
+          value: value
+        }
+      );
+
+      // Añadir telefono al filtro solo si value es un número
+      if (!isNaN(value)) {
+        listSearchCriteria.push({
+          key: "telefono",
+          operation: "equals",
+          value: parseInt(value, 10)
+        });
+      }
+
+      listSearchCriteria.push(
+        {
+          key: "email",
+          operation: "contains",
+          value: value
+        },
+        {
+          key: "sitioWeb",
+          operation: "contains",
+          value: value
+        },
+        {
+          key: "ubicacion.ciudad",
+          operation: "contains",
+          value: value
+        },
+        {
+          key: "ubicacion.pais",
+          operation: "contains",
+          value: value
+        }
+      );
+
+      // Añadir servicios al filtro solo si value coincide con uno de los valores válidos
+      if (validServices.includes(value.toUpperCase())) {
+        listSearchCriteria.push({
+          key: "servicios",
+          operation: "equals",
+          value: value.toUpperCase()
+        });
+      }
+    }
+
+    // Si no es superadmin, añadir el filtro idUsuario
+    console.log(this.esSuperAdmin)
+    if (!this.esSuperAdmin) {
+      listSearchCriteria.push({
+        key: "idUsuario",
+        operation: "equals",
+        value: this.usuario
+      });
+    }
+
+    return {
+      listOrderCriteria: {
+        valueSortOrder: this.valueSortOrder,
+        sortBy: this.sortBy
+      },
+      listSearchCriteria: listSearchCriteria,
+      page: {
+        pageIndex: this.pageNumber,
+        pageSize: this.itemsPerPage
+      }
+    };
+  }
+
+
+
+
+
+  search(value: string) {
+    this.isSpinnerVisible = true;
+    this.getHoteles(value);
+    this.query = value;
   }
 
   order(columnName: string) {
@@ -82,37 +178,19 @@ export class HotelListComponent implements OnInit {
     }
     this.sortBy = columnName;
     this.valueSortOrder = direction;
-    this.hotelesService.getHotelesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
-      this.hoteles = response.hoteles;
-      this.totalItems = response.totalItems;
-    });
+    this.getHoteles(this.query)
   }
 
   onPageChange(value: number) {
     this.isSpinnerVisible = true;
-    this.hotelesService.getHotelesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, value, this.itemsPerPage).subscribe(response => {
-      this.hoteles = response.hoteles;
-      this.totalItems = response.totalItems;
-      this.isSpinnerVisible = false;
-    },
-    (error) => {
-      console.error('Error al cargar los hoteles:', error);
-      this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-    });
+    this.pageNumber = value;
+    this.getHoteles(this.query);
   }
 
   onItemPerPageChange(value: number) {
     this.isSpinnerVisible = true
     this.itemsPerPage = value; // Para que me actualice el valor que por defecto tengo a 5
-    this.hotelesService.getHotelesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, value).subscribe(response => {
-      this.hoteles = response.hoteles;
-      this.totalItems = response.totalItems;
-      this.isSpinnerVisible = false;
-    },
-    (error) => {
-      console.error('Error al cargar los hoteles:', error);
-      this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-    });
+    this.getHoteles(this.query)
   }
 
   deleteHotel() {
