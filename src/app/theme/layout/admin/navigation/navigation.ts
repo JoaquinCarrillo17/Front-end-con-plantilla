@@ -36,6 +36,7 @@ const NavigationItems = [
         url: '/admin/hotel-chart',
         classes: 'nav-item',
         icon: 'fa fa-chart-line',
+        requiredRoles: ['ROLE_SUPER_ADMIN']
       },
     ],
   },

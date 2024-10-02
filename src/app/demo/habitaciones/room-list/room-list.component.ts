@@ -28,90 +28,138 @@ export class RoomListComponent implements OnInit {
   public mostrarModalEditarCrear = false;
   accionModal: 'editar' | 'crear' = 'editar';
 
-  public puedeCrear: boolean; // ? Para mostrar los iconos segun el rol
+  public puedeCrear: boolean;
+  public idHabitacion: number;
+  public usuario: any;
+  public esSuperAdmin: boolean;
 
-  public idHabitacion: number; // ? cuando abro un modal actualizo este id para saber sobre que habitacion ejecuto la accion
-  public usuario;
-
-  constructor(private habitacionesService: HabitacionesService, private tokenService: TokenService){ }
+  constructor(private habitacionesService: HabitacionesService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
-    this.habitacionesService.getAllHabitacionesMagicFilter()
-      .subscribe(response => {
-        this.habitaciones = response.habitaciones;
-        this.totalItems = response.totalItems;
-        this.isSpinnerVisible = false;
-      },
-      (error) => {
-        console.error('Error al cargar las habitaciones:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+    this.query = "";
+    this.usuario = localStorage.getItem("usuario");
+    this.esSuperAdmin = localStorage.getItem("superadmin") === "true";
+    this.getHabitaciones(this.query);
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HABITACIONES_W');
+  }
 
-      this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HABITACIONES_W');
-      this.usuario = localStorage.getItem("usuario");
+  getHabitaciones(value: any): void {
+    this.habitacionesService.getHabitacionesDynamicFilterOr(this.getDataForRequest(value)).subscribe(response => {
+      this.habitaciones = response.content;
+      this.totalItems = response.totalElements;
+      this.isSpinnerVisible = false;
+    },
+    (error) => {
+      if (error.status === 404) {
+        this.habitaciones = [];
+        this.totalItems = 0;
+      }
+      this.isSpinnerVisible = false;
+    });
+  }
+
+  private getDataForRequest(value: any): any {
+    const validServices = ['COCINA', 'TERRAZA', 'JACUZZI'];
+    const validRoom = ['INDIVIDUAL', 'DOBLE', 'CUADRUPLE', 'SUITE'];
+
+    let listSearchCriteria: any[] = [];
+
+    // Filtros dinámicos
+    if (value !== "" && value !== null) {
+      if (!isNaN(value)) {
+        listSearchCriteria.push({
+          key: "id",
+          operation: "equals",
+          value: parseInt(value, 10)
+        });
+      }
+
+      listSearchCriteria.push(
+        {
+          key: "numero",
+          operation: "equals",
+          value: value
+        },
+        {
+          key: "hotel.nombre",
+          operation: "contains",
+          value: value
+        }
+        );
+
+      if (!isNaN(value)) {
+        listSearchCriteria.push({
+          key: "precioNoche",
+          operation: "equals",
+          value: parseFloat(value)
+        });
+      }
+
+      // Filtrar por servicios válidos
+      if (validServices.includes(value.toUpperCase())) {
+        listSearchCriteria.push({
+          key: "servicios",
+          operation: "equals",
+          value: value.toUpperCase()
+        });
+      }
+      if (validRoom.includes(value.toUpperCase())) {
+        listSearchCriteria.push({
+          key: "tipoHabitacion",
+          operation: "equals",
+          value: value.toUpperCase()
+        });
+      }
+    }
+
+    // Si no es superadmin, añadir filtro idUsuario
+    if (!this.esSuperAdmin) {
+      listSearchCriteria.push({
+        key: "hotel.idUsuario",
+        operation: "equals",
+        value: this.usuario
+      });
+    }
+
+    return {
+      listOrderCriteria: {
+        valueSortOrder: this.valueSortOrder,
+        sortBy: this.sortBy
+      },
+      listSearchCriteria: listSearchCriteria,
+      page: {
+        pageIndex: this.pageNumber,
+        pageSize: this.itemsPerPage
+      }
+    };
   }
 
   search(value: string): void {
     this.isSpinnerVisible = true;
-    this.habitacionesService.getHabitacionesFilteredByQuery(value, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage)
-      .subscribe(response => {
-        this.habitaciones = response.habitaciones;
-        this.totalItems = response.totalItems;
-        this.query = value;
-        this.isSpinnerVisible =  false;
-      },
-      (error) => {
-        if (error.status === 404) {
-          this.habitaciones = [];
-          this.totalItems = 0;
-        }
-        console.error('Error al cargar las habitaciones:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+    this.getHabitaciones(value);
+    this.query = value;
   }
 
-  order(columnName: string) {
+  order(columnName: string): void {
     let direction = 'ASC';
     if (this.sortBy === columnName) {
-      if (this.valueSortOrder === 'ASC') {
-        direction = 'DESC';
-      } else direction = 'ASC';
+      direction = this.valueSortOrder === 'ASC' ? 'DESC' : 'ASC';
     }
     this.sortBy = columnName;
     this.valueSortOrder = direction;
-    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage).subscribe(response => {
-      this.habitaciones = response.habitaciones;
-      this.totalItems = response.totalItems;
-    });
+    this.getHabitaciones(this.query);
   }
-
 
   onPageChange(value: number): void {
     this.isSpinnerVisible = true;
-    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, value, this.itemsPerPage)
-      .subscribe(response => {
-        this.habitaciones = response.habitaciones;
-        this.totalItems = response.totalItems;
-        this.isSpinnerVisible = false;
-      },
-      (error) => {
-        console.error('Error al cargar los huespedes:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+    this.pageNumber = value;
+    this.getHabitaciones(this.query);
   }
 
   onItemPerPageChange(value: number): void {
     this.isSpinnerVisible = true;
-    this.habitacionesService.getHabitacionesFilteredByQuery(this.query, this.valueSortOrder, this.sortBy, this.pageNumber, value)
-      .subscribe(response => {
-        this.habitaciones = response.habitaciones;
-        this.totalItems = response.totalItems;
-        this.isSpinnerVisible = false;
-      },
-      (error) => {
-        console.error('Error al cargar las habitaciones:', error);
-        this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
-      });
+    this.itemsPerPage = value;
+    this.getHabitaciones(this.query);
   }
 
   deleteHabitacion() {

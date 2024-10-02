@@ -137,7 +137,6 @@ export class HotelListComponent implements OnInit {
     }
 
     // Si no es superadmin, añadir el filtro idUsuario
-    console.log(this.esSuperAdmin)
     if (!this.esSuperAdmin) {
       listSearchCriteria.push({
         key: "idUsuario",

@@ -12,6 +12,14 @@ export class HabitacionesService {
 
   constructor(private http: HttpClient) { }
 
+  getHabitacionesDynamicFilterAnd(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/habitaciones/dynamicFilterAnd`, body);
+  }
+
+  getHabitacionesDynamicFilterOr(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/habitaciones/dynamicFilterOr`, body);
+  }
+
   getAllHabitacionesMagicFilter() : Observable<{ habitaciones: Habitacion[], totalItems: number }> {
     return this.http.get<{ habitaciones: Habitacion[], totalItems: number }>(`${this.baseUrl}/habitaciones/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }
