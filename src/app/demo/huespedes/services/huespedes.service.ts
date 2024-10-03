@@ -11,6 +11,14 @@ export class HuespedesService {
 
   constructor(private http: HttpClient) { }
 
+  getHuespedesDynamicFilterAnd(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/habitaciones/dynamicFilterAnd`, body);
+  }
+
+  getHuespedesDynamicFilterOr(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/huespedes/dynamicFilterOr`, body);
+  }
+
   getAllHuespedesMagicFilter() : Observable<{ huespedes: Huesped[], totalItems: number }> {
     return this.http.get<{ huespedes: Huesped[], totalItems: number }>(`${this.baseUrl}/huespedes/magicFilter?pageNumber=0&itemsPerPage=5&valueSortOrder=ASC&sortBy=id`);
   }
