@@ -13,11 +13,12 @@ export class AuthService {
 
   public baseUrl = environment.baseUrl;
 
-  private readonly ACTIVITY_TIMEOUT = 400000; //600000; // 10 minutes in milliseconds
+  private readonly ACTIVITY_TIMEOUT = 120000; //2 mins
   private readonly UPDATE_THRESHOLD = 30; // Umbral de tiempo en segundos para actualizar el token
 
   private activityTimer: any;
   private modalTimer: any;
+  private isTokenRefreshing = false; // Bandera para evitar múltiples llamadas a createToken
 
   constructor(private http: HttpClient,
     private jwtHelper: JwtHelperService,
@@ -76,16 +77,23 @@ export class AuthService {
   updateTokenExpiration(): void {
     const token = this.tokenService.getToken();
     if (token && this.isTokenExpiringSoon(token)) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      if (decodedToken && decodedToken.sub) {
-        // Obtener el identificador del sujeto del token decodificado
-        const sub = decodedToken.sub;
-        // Crear un nuevo token con la fecha de expiración actualizada
-        this.createToken(sub).subscribe(updatedToken => {
-          // Guardar el nuevo token en el TokenService
-          console.log(`nuevo token: ${updatedToken}`)
-          this.tokenService.setToken(updatedToken);
-        });
+      if (!this.isTokenRefreshing) {
+        this.isTokenRefreshing = true; // Evitar múltiples llamadas
+
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        if (decodedToken && decodedToken.sub) {
+          const sub = decodedToken.sub;
+          this.createToken(sub).subscribe(
+            updatedToken => {
+              this.tokenService.setToken(updatedToken);
+              this.isTokenRefreshing = false; // Liberar la bandera cuando la llamada finaliza
+            },
+            error => {
+              console.error('Error refreshing token', error);
+              this.isTokenRefreshing = false; // Liberar la bandera en caso de error
+            }
+          );
+        }
       }
     }
   }
