@@ -74,11 +74,9 @@ export class GuestListComponent implements OnInit {
       const date = new Date(value); // Suponiendo que `value` puede ser una fecha
 
       if (!isNaN(date.getTime())) { // Verifica si es una fecha válida
-        const formattedDate = dateFormatter.formatDateToYyyyMmDd(date);
-        console.log(formattedDate);
         listSearchCriteria.push(
-          { key: 'fechaCheckIn', operation: 'equals', value: formattedDate },
-          { key: 'fechaCheckOut', operation: 'equals', value: formattedDate }
+          { key: 'fechaCheckIn', operation: 'equals', value: value },
+          { key: 'fechaCheckOut', operation: 'equals', value: value }
         );
       }
 

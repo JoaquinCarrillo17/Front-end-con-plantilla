@@ -41,7 +41,7 @@
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
       (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button *ngIf="puedeCrear" (click)="onFloatingButtonClick()"></app-floating-button>
+  <app-floating-button (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
 
 

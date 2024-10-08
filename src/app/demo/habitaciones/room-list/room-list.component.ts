@@ -17,6 +17,7 @@ export class RoomListComponent implements OnInit {
 
   isSpinnerVisible: boolean = true;
   public habitaciones: any[];
+  public habitacionSeleccionada: any = null;
   public totalItems: number = 0;
   public query: string = '';
   public pageNumber: number = 0;
@@ -171,6 +172,16 @@ export class RoomListComponent implements OnInit {
     }
   )
   this.ocultarModalEliminarHabitacion();
+  }
+
+  toggleHabitacion(id: number): void {
+    if (this.habitacionSeleccionada?.id === id) {
+      this.habitacionSeleccionada = null; // Si es en la misma fila se cierra
+    } else {
+      this.habitacionesService.getHabitacion(id).subscribe(habitacion => {
+        this.habitacionSeleccionada = habitacion;
+      });
+    }
   }
 
   // ? Gestion de los modales

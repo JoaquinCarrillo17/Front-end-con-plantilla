@@ -28,6 +28,8 @@
             <td>{{ habitacion.precioNoche }}</td>
             <td>{{ habitacion.servicios.join(', ') }}</td>
             <td>
+              <span class="material-icons view-icon" style="color: #04a9f5;"
+              (click)="toggleHabitacion(habitacion.id)"> visibility </span>
               <span class="material-icons edit-icon" style="color: orange;"
               (click)="mostrarModalEditarHabitacion(habitacion.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
@@ -39,7 +41,7 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button *ngIf="puedeCrear" (click)="onFloatingButtonClick()"></app-floating-button>
+  <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
 
 <!-- Modal eliminar -->
@@ -61,15 +63,45 @@
 <ng-container *ngIf="mostrarModalEditarCrear">
   <div class="modal">
     <div class="modal-content edit-modal">
-      <span class="close" (click)="ocultarModalEditarHabitacion()">&times;</span>
-      <h5>{{ accionModal === 'editar' ? 'Editar Habitación' : 'Añadir Habitación' }}</h5>
-      <hr>
+      <div class="modal-header-view-more">
+        <h5>{{ accionModal === 'editar' ? 'Editar Habitación' : 'Añadir Habitación' }}</h5>
+        <span class="modal-close-icon" (click)="ocultarModalEditarHabitacion()">&times;</span>
+      </div>
       <ng-container *ngIf="accionModal === 'editar'; else addHabitacionForm">
         <app-edit-room [idHabitacion]="idHabitacion" (editComplete)="ocultarModalEditarHabitacion()"></app-edit-room>
-  </ng-container>
-  <ng-template #addHabitacionForm>
-    <app-add-room (cancelarCrear)="ocultarModalEditarHabitacion()"></app-add-room>
-  </ng-template>
+      </ng-container>
+      <ng-template #addHabitacionForm>
+        <app-add-room (cancelarCrear)="ocultarModalEditarHabitacion()"></app-add-room>
+      </ng-template>
     </div>
   </div>
 </ng-container>
+
+<ng-container *ngIf="habitacionSeleccionada != null">
+  <div class="modal modal-view-more">
+    <div class="modal-content modal-content-view-more">
+      <div class="modal-header-view-more">
+        <h5>Detalles de la Habitación</h5>
+        <span class="modal-close-icon" (click)="toggleHabitacion(habitacionSeleccionada.id)">&times;</span>
+      </div>
+      <div class="modal-body-view-more">
+        <p><strong>Hotel:</strong> {{ habitacionSeleccionada?.nombreHotel }}</p>
+        <p><strong>Número:</strong> {{ habitacionSeleccionada?.numero }}</p>
+        <p><strong>Tipo de Habitación:</strong> {{ habitacionSeleccionada?.tipoHabitacion }}</p>
+        <p><strong>Precio por Noche:</strong> {{ habitacionSeleccionada?.precioNoche }}</p>
+        <p><strong>Servicios:</strong> {{ habitacionSeleccionada?.servicios.join(', ') }}</p>
+
+        <h6>Huéspedes</h6>
+        <ul>
+          <li *ngFor="let huesped of habitacionSeleccionada?.huespedes">
+            {{ huesped.nombreCompleto }} ({{ huesped.dni }}) - {{ huesped.fechaCheckIn | date:'dd-MM-yyyy HH:mm' }} a {{ huesped.fechaCheckOut | date:'dd-MM-yyyy HH:mm' }}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer-view-more">
+        <button class="btn btn-primary" (click)="toggleHabitacion(habitacionSeleccionada.id)">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
