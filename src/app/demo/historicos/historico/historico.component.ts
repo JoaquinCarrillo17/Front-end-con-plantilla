@@ -30,6 +30,9 @@ export default class HistoricoComponent {
   habitacionesReservadasData: number[] = [];
   huespedesData: number[] = [];
 
+  public usuario: any;
+  public esSuperAdmin: boolean;
+
   constructor(private historicoService: HistoricoService) {}
 
   ngOnInit() {
@@ -37,7 +40,12 @@ export default class HistoricoComponent {
   }
 
   loadDataForChart() {
-    this.historicoService.getAllHistoricos().subscribe((historicos: Historico[]) => {
+    this.usuario = localStorage.getItem("usuario");
+    this.esSuperAdmin = localStorage.getItem("superadmin") === "true";
+
+    const historicoObservable = this.esSuperAdmin ? this.historicoService.getAllHistoricos(this.usuario) : this.historicoService.getHistoricosDeUsuario(this.usuario);
+
+    historicoObservable.subscribe((historicos: Historico[]) => {
       historicos.forEach((historico: Historico) => {
         const fecha = new Date(historico.fecha);
         // Formatear la fecha en "dd/mm/yyyy"

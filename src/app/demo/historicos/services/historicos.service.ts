@@ -11,8 +11,12 @@ export class HistoricoService {
 
   constructor(private http: HttpClient) { }
 
-  getAllHistoricos(): Observable<Historico[]> {
-    return this.http.get<Historico[]>(`${this.baseUrl}/historicos`);
+  getAllHistoricos(id:any): Observable<Historico[]> {
+    return this.http.get<Historico[]>(`${this.baseUrl}/historicos/admin/${id}`);
+  }
+
+  getHistoricosDeUsuario(id: any): Observable<Historico[]> {
+    return this.http.get<Historico[]>(`${this.baseUrl}/historicos/${id}`)
   }
 
 }
