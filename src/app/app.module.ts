@@ -28,6 +28,12 @@ import { TokenInterceptor } from './demo/token/token.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SessionTimeoutModalComponent } from './theme/shared/components/session-timeout-modal/session-timeout-modal.component';
 import { NavbarComponent } from "./theme/layout/guest/navbar/navbar.component";
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [
@@ -57,6 +63,11 @@ import { NavbarComponent } from "./theme/layout/guest/navbar/navbar.component";
     BrowserAnimationsModule,
     HttpClientModule,
     NavbarComponent,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule
 ],
   providers: [
     NavigationItem,

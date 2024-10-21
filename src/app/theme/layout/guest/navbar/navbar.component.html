@@ -3,11 +3,45 @@
     <span>JC Hotel Group</span>
     <div class="separator"></div> <!-- Línea separadora -->
     <div class="navbar-links">
-      <a routerLink="/hoteles">Hoteles</a>
+
+      <a routerLink="/hoteles" class="nav-link-hoteles">Hoteles
+        <div class="dropdown-hoteles">
+          <div class="hoteles-card">
+
+            <!-- Sección Principales Destinos -->
+            <div class="section">
+              <h4>Principales destinos</h4>
+              <div class="links-group">
+                <div *ngFor="let continente of ubicacionesPorContinente | keyvalue">
+                  <h6>{{ continente.key }}</h6> <!-- Nombre del continente -->
+                  <div class="links">
+                    <!-- Itera sobre cada ciudad del continente -->
+                    <a *ngFor="let ubicacion of continente.value" [routerLink]="['/hoteles', ubicacion.ciudad]">
+                      Hoteles en {{ ubicacion.ciudad }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sección Hoteles temáticos -->
+            <div class="section">
+              <h4>Hoteles temáticos</h4>
+              <div class="links">
+                <a href="/hoteles/familiares">Hoteles familiares</a>
+                <a href="/hoteles/piscina">Hoteles con piscina</a>
+                <!-- Más enlaces -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </a>
+
       <a routerLink="/reservas">Reservas</a>
     </div>
   </div>
   <div>
-    <span class="material-icons user-icon" style="color: white; font-size: 30px; cursor: pointer;" (click)="goToLogin()"> person </span>
+    <span class="material-icons user-icon" style="color: white; font-size: 30px; cursor: pointer;" (click)="goToLogin()">person</span>
   </div>
 </nav>

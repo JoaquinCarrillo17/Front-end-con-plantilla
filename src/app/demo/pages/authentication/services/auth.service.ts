@@ -47,16 +47,18 @@ export class AuthService {
 
     this.activityTimer = setTimeout(() => {
       // Token expired due to inactivity, redirect to login
-      this.tokenService.setToken(null);
-      this.closeSessionTimeoutModal();
-      this.redirectToLogin();
+      if (this.tokenService.getToken() != null) {
+        this.tokenService.setToken(null);
+        this.closeSessionTimeoutModal();
+        this.redirectToLogin();
+      }
     }, this.ACTIVITY_TIMEOUT);
 
     this.modalTimer = setTimeout(() => {
-      this.showSessionTimeoutModal();
+      if (this.tokenService.getToken() != null) this.showSessionTimeoutModal();
     }, this.ACTIVITY_TIMEOUT - this.UPDATE_THRESHOLD * 1000);
 
-    this.updateTokenExpiration();
+    if (this.tokenService.getToken() != null) this.updateTokenExpiration();
   }
 
   showSessionTimeoutModal() {

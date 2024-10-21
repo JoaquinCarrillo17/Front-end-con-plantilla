@@ -80,7 +80,7 @@ const routes: Routes = [
     ],
   },
 
-  {
+  /*{
     path: 'auth',
     children: [
       {
@@ -101,7 +101,7 @@ const routes: Routes = [
           import('./demo/pages/authentication/auth-signup/auth-signup.component').then((m => m.AuthSignupComponent))
       },
     ],
-  },
+  },*/
 ];
 
 @NgModule({
