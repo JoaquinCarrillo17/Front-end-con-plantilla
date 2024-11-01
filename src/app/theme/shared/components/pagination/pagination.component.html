@@ -1,16 +1,16 @@
 <div class="pagination-container">
   <div class="pagination-info">
-    Filas por página:
+    Filas por página: 
     <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
       <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
     </select>
     {{ startIndex + 1 }} - {{ endIndex }} de {{ totalItems }}
   </div>
   <div class="pagination-buttons">
-    <button (click)="firstPage()" [disabled]="currentPage === 1" class="pagination-button-NaN {{ currentPage === 1 ? 'disabled' : '' }}">First</button>
-    <button (click)="prevPage()" [disabled]="currentPage === 1" class="pagination-button-NaN {{ currentPage === 1 ? 'disabled' : '' }}">Prev</button>
+    <span class="material-icons pagination-icon" (click)="firstPage()" [class.disabled]="currentPage === 1"   [ngStyle]="{ 'color': currentPage === 1 ? 'gray' : 'black', 'cursor': currentPage === 1 ? 'default' : 'pointer' }">first_page</span>
+    <span class="material-icons pagination-icon" (click)="prevPage()" [class.disabled]="currentPage === 1"   [ngStyle]="{ 'color': currentPage === 1 ? 'gray' : 'black', 'cursor': currentPage === 1 ? 'default' : 'pointer' }">chevron_left</span>
     <button *ngFor="let page of pages" (click)="goToPage(page)" [disabled]="currentPage === page" class="pagination-button {{ currentPage === page ? 'active' : '' }}">{{ page }}</button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-button-NaN {{ currentPage === totalPages ? 'disabled' : '' }}">Next</button>
-    <button (click)="lastPage()" [disabled]="currentPage === totalPages" class="pagination-button-NaN {{ currentPage === totalPages ? 'disabled' : '' }}">Last</button>
+    <span class="material-icons pagination-icon" (click)="nextPage()" [class.disabled]="currentPage === totalPages" [ngStyle]="{ 'color': currentPage === totalPages ? 'gray' : 'black', 'cursor': currentPage === totalPages ? 'default' : 'pointer' }">chevron_right</span>
+    <span class="material-icons pagination-icon" (click)="lastPage()" [class.disabled]="currentPage === totalPages" [ngStyle]="{ 'color': currentPage === totalPages ? 'gray' : 'black', 'cursor': currentPage === totalPages ? 'default' : 'pointer' }">last_page</span>
   </div>
 </div>

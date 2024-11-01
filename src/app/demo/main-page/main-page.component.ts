@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UbicacionService } from '../ubicacion/ubicacion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -26,15 +27,18 @@ export class MainPageComponent {
   ubicacionesPorContinente: { [key: string]: any[] } = {};
 
   cards = [
-    { title: 'Bar', image: 'bar.jpg', description: 'Relájate en nuestro chill out' },
-    { title: 'Mascota', image: 'mascota.jpg', description: 'Ven con tu mascota' },
-    { title: 'Gimnasio', image: 'gym.jpg', description: 'Entrena en nuestro gimnasio' },
-    { title: 'Piscina', image: 'piscina.jpg', description: 'Disfruta de nuestra piscina' },
-    { title: 'Karaoke', image: 'karaoke.jpeg', description: 'Diviértete en el karaoke' },
-    { title: 'Casino', image: 'casino.jpg', description: 'Prueba suerte en el casino' }
+    { title: 'Bar', image: 'bar.jpg', description: 'Relájate en nuestro chill out', key: 'BAR' },
+    { title: 'Mascota', image: 'mascota.jpg', description: 'Ven con tu mascota', key: 'PET FRIENDLY' },
+    { title: 'Gimnasio', image: 'gym.jpg', description: 'Entrena en nuestro gimnasio', key: 'GIMNASIO' },
+    { title: 'Piscina', image: 'piscina.jpg', description: 'Disfruta de nuestra piscina', key: 'PISCINA' },
+    { title: 'Karaoke', image: 'karaoke.jpeg', description: 'Diviértete en el karaoke', key: 'KARAOKE' },
+    { title: 'Casino', image: 'casino.jpg', description: 'Prueba suerte en el casino', key: 'CASINO' }
   ];
 
-  constructor(private ubicacionService: UbicacionService) {
+  constructor(
+    private ubicacionService: UbicacionService,
+    private router: Router,
+  ) {
 
   }
 
@@ -60,6 +64,14 @@ export class MainPageComponent {
       continentes[continente].push(ubicacion);
       return continentes;
     }, {});
+  }
+
+  filtrarPorCiudad(ciudad: string): void {
+    this.router.navigate(['/hoteles'], { queryParams: { ciudad } });
+  }
+
+  filtrarPorServicio(servicio: string): void {
+    this.router.navigate(['/hoteles'], { queryParams: { servicio } });
   }
 
 }

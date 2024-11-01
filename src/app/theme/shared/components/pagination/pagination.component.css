@@ -5,7 +5,14 @@
 }
 
 .pagination-info {
+  display: flex;
+  align-items: center;
   margin-right: 20px;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center; /* Alineación vertical centrada */
 }
 
 .pagination-buttons .pagination-button , .pagination-button-NaN{
@@ -36,4 +43,8 @@
 .pagination-buttons .pagination-button.active , .pagination-button-NaN.active {
   background-color: #04a9f5;
   color: #fff;
+}
+
+select {
+  margin: 0 5px;
 }

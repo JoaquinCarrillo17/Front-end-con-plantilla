@@ -85,6 +85,7 @@ button {
   padding: 30px;
   text-align: center;
   transition: background 0.3s ease;
+  cursor: pointer;
 }
 
 .card-content p {
@@ -117,10 +118,6 @@ button {
 
 .ciudad:hover {
   color: #0056b3; /* Cambia el color en hover */
-}
-
-h3, h2 {
-  color: #003a70;
 }
 
 .hoteles hr {

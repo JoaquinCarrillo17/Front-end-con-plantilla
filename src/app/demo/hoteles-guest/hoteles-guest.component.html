@@ -1,0 +1,60 @@
+<div class="padding">
+  <div class="filtros-panel">
+    <mat-form-field appearance="outline">
+      <mat-label>Ciudad</mat-label>
+      <input matInput type="text" [(ngModel)]="filtroCiudad" placeholder="Escribe una ciudad">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>País</mat-label>
+      <input matInput type="text" [(ngModel)]="filtroPais" placeholder="Escribe un país">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Check-in</mat-label>
+      <input matInput [matDatepicker]="checkinPicker" [(ngModel)]="filtroCheckIn">
+      <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
+      <mat-datepicker #checkinPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Check-out</mat-label>
+      <input matInput [matDatepicker]="checkoutPicker" [(ngModel)]="filtroCheckOut">
+      <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
+      <mat-datepicker #checkoutPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Servicios</mat-label>
+      <mat-select [(ngModel)]="filtroServicios" multiple>
+        <mat-option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.key }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button class="button-blue" (click)="buscarHoteles()">Buscar</button>
+    <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
+  </div>
+
+  <h3>{{totalItems}} Hotel(es) encontrados</h3>
+
+  <div class="hoteles-lista">
+    <div class="hotel-card" *ngFor="let hotel of hoteles">
+      <img [src]="'/assets/images/hoteles/' + hotel.foto" alt="{{ hotel.nombre }}">
+      <div class="hotel-info">
+        <h3>{{ hotel.nombre }}</h3>
+        <p>ID: {{ hotel.id }}</p>
+        <p>{{ hotel.direccion }} - {{ hotel.ubicacion.ciudad  }}, {{ hotel.ubicacion.pais }}</p>
+        <p *ngIf="hotel.servicios && hotel.servicios.length > 0">Servicios: {{ hotel.servicios.join(', ') }}</p>
+        <p>Teléfono: {{ hotel.telefono }}</p>
+        <p>Email: <a href="mailto:{{ hotel.email }}">{{ hotel.email }}</a></p>
+        <p>Sitio web: <a href="{{ hotel.sitioWeb }}" target="_blank">{{ hotel.sitioWeb }}</a></p>
+        <button mat-raised-button class="button-blue ver-disponibilidad-button">Ver disponibilidad</button>
+      </div>
+    </div>
+  </div>
+  <div class="pagination-container">
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
+                    (itemsPerPageChange)="onItemPerPageChange($event)">
+    </app-pagination>
+  </div>
+</div>

@@ -24,7 +24,7 @@
         <input matInput type="text" placeholder="1 habitación, 2 adultos">
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit">Buscar</button>
+      <button mat-raised-button class="button-blue" type="submit">Buscar</button>
   </div>
 
 </div>
@@ -34,7 +34,7 @@
   <div class="cards-container">
     <div class="card" *ngFor="let card of cards">
       <img [src]="'/assets/images/servicios/' + card.image" alt="{{ card.title }}">
-      <div class="card-content">
+      <div class="card-content" (click)="filtrarPorServicio(card.key)">
         <p>{{ card.description }}</p>
       </div>
     </div>
@@ -46,7 +46,9 @@
     <h3>Hoteles en {{ continente.key }}</h3>
     <hr />
     <div class="ciudades">
-      <span *ngFor="let hotel of continente.value" class="ciudad">{{ hotel.ciudad }}</span>
+      <span *ngFor="let hotel of continente.value" class="ciudad" (click)="filtrarPorCiudad(hotel.ciudad)">
+        {{ hotel.ciudad }}
+      </span>
     </div>
   </ng-container>
 </div>

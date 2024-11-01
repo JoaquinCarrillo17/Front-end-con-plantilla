@@ -77,19 +77,19 @@ const routes: Routes = [
         loadComponent: () => import('./demo/main-page/main-page.component').then(m => m.MainPageComponent),
         pathMatch: 'full',
       },
+      {
+        path: 'hoteles',
+        loadChildren: () =>
+          import('./demo/hoteles-guest/hoteles-guest.module').then(
+            (m) => m.HotelesGuestModule,
+          ),
+      }
     ],
   },
 
-  /*{
+  {
     path: 'auth',
     children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./demo/pages/authentication/authentication.module').then(
-            (m) => m.AuthenticationModule,
-          ),
-      },
       {
         path: 'login',
         loadComponent: () =>
@@ -101,7 +101,7 @@ const routes: Routes = [
           import('./demo/pages/authentication/auth-signup/auth-signup.component').then((m => m.AuthSignupComponent))
       },
     ],
-  },*/
+  },
 ];
 
 @NgModule({
