@@ -32,6 +32,9 @@ export class HabitacionesGuestComponent implements OnInit {
 
   isSpinnerVisible: boolean = true;
 
+  precioMin: any;
+  precioMax: any;
+
   ocupacionArray = [
     { key: 'INDIVIDUAL', value: 'INDIVIDUAL' },
     { key: 'DOBLE', value: 'DOBLE' },
@@ -81,6 +84,12 @@ export class HabitacionesGuestComponent implements OnInit {
       }
       if (params['servicios']) {
         this.servicios = params['servicios'].split(';');
+      }
+      if (params['precioMin']) {
+        this.precioMin = params['precioMin'];
+      }
+      if (params['precioMax']) {
+        this.precioMax = params['precioMax'];
       }
     });
 
@@ -135,7 +144,12 @@ export class HabitacionesGuestComponent implements OnInit {
       if (serviciosConcatenados) {
         listSearchCriteria.push({ key: 'servicios', operation: 'equals', value: serviciosConcatenados });
       }
-
+    }
+    if (this.precioMin) {
+      listSearchCriteria.push({ key: 'precioNoche', operation: 'greaterThanOrEqual', value: this.precioMin });
+    }
+    if (this.precioMax) {
+      listSearchCriteria.push({ key: 'precioNoche', operation: 'lessThanOrEqual', value: this.precioMax });
     }
 
     return {
@@ -168,10 +182,18 @@ export class HabitacionesGuestComponent implements OnInit {
     this.checkOut = '';
     this.ocupacion = '';
     this.servicios = [];
+    this.precioMin = 0;
+    this.precioMax = 1000;
     this.buscarHabitaciones();
   }
 
   goToReservar(habitacionId) {
     this.router.navigate(['/reservas'], { queryParams: { habitacionId: habitacionId } });
+  }
+
+  onRangeChange(event: { min: number; max: number }): void {
+    this.precioMin = event.min;
+    this.precioMax = event.max;
+    // Update your search criteria or form based on the new values
   }
 }

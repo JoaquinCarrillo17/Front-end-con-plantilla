@@ -1,0 +1,27 @@
+<div class="range-slider">
+  <label>Precio</label>
+  <div class="slider-values">
+    {{ minValue }} EUR – {{ maxValue }} EUR
+  </div>
+  <div class="slider-container">
+    <input
+      type="range"
+      class="slider"
+      min="0"
+      max="1000"
+      step="10"
+      [(ngModel)]="minValue"
+      (input)="updateRange()"
+    />
+    <input
+      type="range"
+      class="slider"
+      min="0"
+      max="1000"
+      step="10"
+      [(ngModel)]="maxValue"
+      (input)="updateRange()"
+    />
+    <div class="slider-track"></div>
+  </div>
+</div>

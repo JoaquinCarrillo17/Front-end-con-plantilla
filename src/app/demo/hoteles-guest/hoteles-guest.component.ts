@@ -69,6 +69,8 @@ export class HotelesGuestComponent implements OnInit {
   modalCheckOut: Date | null = null;
   modalOcupacion: string = '';
   modalServicios: string[] = [];
+  precioMin: any;
+  precioMax: any;
 
   constructor(
     private ubicacionesService: UbicacionService,
@@ -215,9 +217,16 @@ export class HotelesGuestComponent implements OnInit {
       checkIn: this.modalCheckIn ? this.modalCheckIn.toISOString().split('T')[0] : null, // Formatea la fecha a yyyy-MM-dd
       checkOut: this.modalCheckOut ? this.modalCheckOut.toISOString().split('T')[0] : null,
       ocupacion: this.modalOcupacion ? this.modalOcupacion : null,
-      servicios: this.modalServicios.length > 0 ? this.modalServicios.join(';') : null
+      servicios: this.modalServicios.length > 0 ? this.modalServicios.join(';') : null,
+      precioMin: this.precioMin !== 0 ? this.precioMin : null,
+      precioMax: this.precioMax !== 1000 ? this.precioMax : null
     };
 
     this.router.navigate(['/habitaciones'], { queryParams });
+  }
+
+  onRangeChange(event: { min: number; max: number }): void {
+    this.precioMin = event.min;
+    this.precioMax = event.max;
   }
 }

@@ -13,7 +13,6 @@ export class HabitacionesService {
   constructor(private http: HttpClient) { }
 
   getHabitacionesDynamicFilterAnd(body: any): Observable<any> {
-    console.log("el body que le mando es: ", body)
     return this.http.post<any>(`${this.baseUrl}/habitaciones/dynamicFilterAnd`, body);
   }
 

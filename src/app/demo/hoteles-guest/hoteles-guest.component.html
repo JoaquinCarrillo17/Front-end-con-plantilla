@@ -81,6 +81,16 @@
       <mat-datepicker #modalCheckoutPicker></mat-datepicker>
     </mat-form-field>
 
+    <div style="margin-bottom: 20px;">
+      <app-range-slider
+        [min]="0"
+        [max]="1000"
+        [initialMinValue]="0"
+        [initialMaxValue]="1000"
+        (rangeChange)="onRangeChange($event)"
+      ></app-range-slider>
+    </div>
+
     <mat-form-field appearance="outline">
       <mat-label>Ocupación</mat-label>
       <mat-select [(ngModel)]="modalOcupacion">

@@ -18,9 +18,10 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { RangeSliderComponent } from './components/range-slider/range-slider.component';
 
 @NgModule({
-  declarations: [SpinnerComponent, NotificationComponent],
+  declarations: [SpinnerComponent, NotificationComponent, RangeSliderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -32,7 +33,8 @@ import { NotificationComponent } from './components/notification/notification.co
     BreadcrumbsComponent,
     SearchBarComponent,
     PaginationComponent,
-    FloatingButtonComponent
+    FloatingButtonComponent,
+
   ],
   exports: [
     CommonModule,
@@ -48,6 +50,7 @@ import { NotificationComponent } from './components/notification/notification.co
     PaginationComponent,
     FloatingButtonComponent,
     NotificationComponent,
+    RangeSliderComponent
   ],
 })
 export class SharedModule {}
