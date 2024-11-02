@@ -205,13 +205,6 @@ export class HotelesGuestComponent implements OnInit {
   }
 
   goToHabitaciones() {
-    console.log("Buscando habitaciones...");
-    console.log("Hotel ID:", this.hotelId);
-    console.log("Check-in:", this.modalCheckIn);
-    console.log("Check-out:", this.modalCheckOut);
-    console.log("Ocupación:", this.modalOcupacion);
-    console.log("Servicios:", this.modalServicios);
-
     const queryParams = {
       hotelId: this.hotelId,
       checkIn: this.modalCheckIn ? this.modalCheckIn.toISOString().split('T')[0] : null, // Formatea la fecha a yyyy-MM-dd

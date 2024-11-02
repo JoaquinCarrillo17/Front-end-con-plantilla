@@ -41,7 +41,7 @@ export class NavRightComponent implements OnInit {
 
   logOut(): void {
     this.tokenService.setToken(null);
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/']);
   }
 
   editUsuario() {

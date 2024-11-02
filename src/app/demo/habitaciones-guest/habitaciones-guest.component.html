@@ -46,7 +46,7 @@
 
   <div class="hoteles-lista">
     <div class="hotel-card" *ngFor="let habitacion of habitaciones">
-      <img [src]="'/assets/images/habitaciones/' + habitacion.foto" alt="{{ habitacion.numero }}">
+      <img [src]="'/assets/images/habitaciones/' + habitacion.tipoHabitacion.toLowerCase() + '/' + habitacion.foto" alt="{{ habitacion.numero }}">
       <div class="hotel-info">
         <h3>Habitación - {{ habitacion.numero }}</h3>
         <p>Tipo: {{ habitacion.tipoHabitacion }}</p>

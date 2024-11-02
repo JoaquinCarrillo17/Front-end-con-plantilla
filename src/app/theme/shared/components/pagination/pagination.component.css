@@ -16,7 +16,6 @@
 }
 
 .pagination-buttons .pagination-button , .pagination-button-NaN{
-  margin-left: 5px;
   border: none;
   border-radius: 50%;
   height: 30px;
@@ -25,6 +24,10 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.left {
+  margin-left: 5px;
 }
 
 .pagination-button-NaN {
