@@ -1,0 +1,57 @@
+<div class="padding">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+  <div class="filtros-panel">
+    <mat-form-field appearance="outline">
+      <mat-label>Check-in</mat-label>
+      <input matInput [matDatepicker]="checkinPicker" [(ngModel)]="checkIn">
+      <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
+      <mat-datepicker #checkinPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Check-out</mat-label>
+      <input matInput [matDatepicker]="checkoutPicker" [(ngModel)]="checkOut">
+      <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
+      <mat-datepicker #checkoutPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Servicios</mat-label>
+      <mat-select [(ngModel)]="servicios" multiple>
+        <mat-option *ngFor="let servicio of serviciosArray" [value]="servicio.key">{{ servicio.key }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ocupación</mat-label>
+      <mat-select [(ngModel)]="ocupacion">
+        <mat-option *ngFor="let ocupacion of ocupacionArray" [value]="ocupacion.key">{{ ocupacion.key }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button class="button-blue" (click)="buscarHabitaciones()">Buscar</button>
+    <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
+  </div>
+
+  <h3>{{totalItems}} Habitacion(es) encontradas</h3>
+
+  <div class="hoteles-lista">
+    <div class="hotel-card" *ngFor="let habitacion of habitaciones">
+      <img [src]="'/assets/images/habitaciones/' + habitacion.foto" alt="{{ habitacion.numero }}">
+      <div class="hotel-info">
+        <h3>Habitación - {{ habitacion.numero }}</h3>
+        <p>Tipo: {{ habitacion.tipoHabitacion }}</p>
+        <p>Precio: {{ habitacion.precioNoche }} EUR</p>
+        <p *ngIf="habitacion.servicios && habitacion.servicios.length > 0">Servicios: {{ habitacion.servicios.join(', ') }}</p>
+        <button mat-raised-button class="button-blue ver-disponibilidad-button" (click)="goToReservar(habitacion.id)">Reservar</button>
+      </div>
+    </div>
+  </div>
+  <div class="pagination-container">
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
+                    (itemsPerPageChange)="onItemPerPageChange($event)">
+    </app-pagination>
+  </div>
+</div>
+
+

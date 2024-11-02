@@ -15,6 +15,7 @@ export class TokenInterceptor implements HttpInterceptor {
     '/auth/login',
     '/ubicaciones',
     '/hoteles/dynamicFilterAnd',
+    '/habitaciones/dynamicFilterAnd'
   ];
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

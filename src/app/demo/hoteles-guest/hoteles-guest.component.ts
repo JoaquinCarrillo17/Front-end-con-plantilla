@@ -62,10 +62,19 @@ export class HotelesGuestComponent implements OnInit {
   filtroCheckOut: string = '';
   filtroServicios: string[] = [];
 
+  hotelId: any; // ? Voy a buscar las habitaciones de este hotel
+
+  // Campos del modal
+  modalCheckIn: Date | null = null;
+  modalCheckOut: Date | null = null;
+  modalOcupacion: string = '';
+  modalServicios: string[] = [];
+
   constructor(
     private ubicacionesService: UbicacionService,
     private hotelesService: HotelesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -114,15 +123,6 @@ export class HotelesGuestComponent implements OnInit {
   private getDataForRequest(): any {
     let listSearchCriteria: any[] = [];
 
-    console.log('Filtros actuales:', {
-      filtroContinente: this.filtroContinente,
-      filtroCiudad: this.filtroCiudad,
-      filtroPais: this.filtroPais,
-      filtroCheckIn: this.filtroCheckIn,
-      filtroCheckOut: this.filtroCheckOut,
-      filtroServicios: this.filtroServicios
-    });
-
     // Añadir filtros específicos
     if (this.filtroContinente) {
       listSearchCriteria.push({ key: 'ubicacion.continente', operation: 'contains', value: this.filtroContinente });
@@ -140,7 +140,6 @@ export class HotelesGuestComponent implements OnInit {
       listSearchCriteria.push({ key: 'fechaCheckOut', operation: 'lessThanOrEqual', value: this.filtroCheckOut });
     }
     if (this.filtroServicios) {
-      console.log(this.filtroServicios);
       const serviciosConcatenados = this.filtroServicios
       .map(key => {
         const servicio = this.servicios.find(s => s.key === key);
@@ -193,5 +192,32 @@ export class HotelesGuestComponent implements OnInit {
     this.filtroCheckOut = '';
     this.filtroServicios = [];
     this.buscarHoteles();
+  }
+
+  abrirModal(hotelId) {
+    this.hotelId = hotelId;
+    this.modalCheckIn = null;
+    this.modalCheckOut = null;
+    this.modalOcupacion = '';
+    this.modalServicios = [];
+  }
+
+  goToHabitaciones() {
+    console.log("Buscando habitaciones...");
+    console.log("Hotel ID:", this.hotelId);
+    console.log("Check-in:", this.modalCheckIn);
+    console.log("Check-out:", this.modalCheckOut);
+    console.log("Ocupación:", this.modalOcupacion);
+    console.log("Servicios:", this.modalServicios);
+
+    const queryParams = {
+      hotelId: this.hotelId,
+      checkIn: this.modalCheckIn ? this.modalCheckIn.toISOString().split('T')[0] : null, // Formatea la fecha a yyyy-MM-dd
+      checkOut: this.modalCheckOut ? this.modalCheckOut.toISOString().split('T')[0] : null,
+      ocupacion: this.modalOcupacion ? this.modalOcupacion : null,
+      servicios: this.modalServicios.length > 0 ? this.modalServicios.join(';') : null
+    };
+
+    this.router.navigate(['/habitaciones'], { queryParams });
   }
 }

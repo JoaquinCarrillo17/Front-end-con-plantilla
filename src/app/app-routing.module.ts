@@ -83,6 +83,13 @@ const routes: Routes = [
           import('./demo/hoteles-guest/hoteles-guest.module').then(
             (m) => m.HotelesGuestModule,
           ),
+      },
+      {
+        path: 'habitaciones',
+        loadChildren: () =>
+          import('./demo/habitaciones-guest/habitaciones-guest.module').then(
+            (m) => m.HabitacionesGuestModule,
+          ),
       }
     ],
   },

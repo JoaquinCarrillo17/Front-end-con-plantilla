@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UbicacionService } from '../ubicacion/ubicacion.service';
 import { Router } from '@angular/router';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 
 @Component({
   selector: 'app-main-page',
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    SharedModule,
   CommonModule],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
