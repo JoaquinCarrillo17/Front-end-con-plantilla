@@ -59,8 +59,6 @@ export class GuestListComponent implements OnInit {
         { key: 'nombreCompleto', operation: 'contains', value: value },
         { key: 'dni', operation: 'equals', value: value },
         { key: 'email', operation: 'contains', value: value },
-        { key: 'habitacion.numero', operation: 'equals', value: value },
-        { key: 'habitacion.hotel.nombre', operation: 'contains', value: value },
       );
 
       if (!isNaN(Number(value))) {
@@ -71,26 +69,17 @@ export class GuestListComponent implements OnInit {
         });
       }
 
-      const date = new Date(value); // Suponiendo que `value` puede ser una fecha
-
-      if (!isNaN(date.getTime())) { // Verifica si es una fecha válida
-        listSearchCriteria.push(
-          { key: 'fechaCheckIn', operation: 'equals', value: value },
-          { key: 'fechaCheckOut', operation: 'equals', value: value }
-        );
-      }
-
     }
 
     // Si no es superadmin, filtrar por idUsuario
-    if (!this.esSuperAdmin) {
+    /*if (!this.esSuperAdmin) {
       listSearchCriteria.push({
         key: 'habitacion.hotel.idUsuario',
         operation: 'equals',
         value: this.usuario
       });
     }
-
+*/
     return {
       listOrderCriteria: {
         valueSortOrder: this.valueSortOrder,

@@ -6,15 +6,29 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { AddHotelComponent } from "../add-hotel/add-hotel.component";
 import { EditHotelComponent } from '../edit-hotel/edit-hotel.component';
 import { TokenService } from '../../token/token.service';
+import { AddRoomComponent } from "../../habitaciones/add-room/add-room.component";
 
 @Component({
     selector: 'app-hotel-list',
     standalone: true,
     templateUrl: './hotel-list.component.html',
     styleUrls: ['./hotel-list.component.scss', './hotel-list.component.css'],
-    imports: [CommonModule, SharedModule, AddHotelComponent, EditHotelComponent]
+    imports: [CommonModule, SharedModule, AddHotelComponent, EditHotelComponent, AddRoomComponent]
 })
 export class HotelListComponent implements OnInit {
+
+  mostrarAddRoomModal = false;
+  hotelSeleccionado: any;
+
+  mostrarAddRoom(hotel: any) {
+    this.hotelSeleccionado = hotel;
+    this.mostrarModalEditarCrear = false; // Cerrar el modal de hotel
+    this.mostrarAddRoomModal = true; // Abrir el modal de habitación
+  }
+
+  ocultarModalAddRoom() {
+    this.mostrarAddRoomModal = false;
+  }
 
   isSpinnerVisible: boolean = true; // Agrega una variable para controlar la visibilidad del spinner
   public hoteles: any[];
@@ -164,6 +178,7 @@ export class HotelListComponent implements OnInit {
 
   search(value: string) {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0; // Para que me muestre la primera página al buscar
     this.getHoteles(value);
     this.query = value;
   }

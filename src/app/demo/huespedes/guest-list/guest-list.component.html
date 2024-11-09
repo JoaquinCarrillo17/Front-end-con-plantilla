@@ -7,26 +7,18 @@
         <thead>
           <tr>
             <th (click)="order('id')" class="cursor-pointer">ID</th>
-            <th (click)="order('habitacion.hotel.nombre')" class="cursor-pointer">Hotel</th>
-            <th (click)="order('habitacion.numero')" class="cursor-pointer">Habitación</th>
             <th (click)="order('nombreCompleto')" class="cursor-pointer">Nombre Completo</th>
             <th (click)="order('dni')" class="cursor-pointer">DNI</th>
             <th (click)="order('email')" class="cursor-pointer">Email</th>
-            <th (click)="order('fechaCheckIn')" class="cursor-pointer">Fecha de Check-In</th>
-            <th (click)="order('fechaCheckOut')" class="cursor-pointer">Fecha de Check-Out</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let huesped of huespedes">
             <td>{{ huesped.id }}</td>
-            <td>{{ huesped.nombreHotel }}</td>
-            <td>{{ huesped.habitacion }}</td>
             <td>{{ huesped.nombreCompleto }}</td>
             <td>{{ huesped.dni }}</td>
             <td>{{ huesped.email }}</td>
-            <td>{{ huesped.fechaCheckIn | date:'dd-MM-yyyy HH:mm' }}</td>
-            <td>{{ huesped.fechaCheckOut | date:'dd-MM-yyyy HH:mm' }}</td>
             <td><span class="material-icons edit-icon" style="color: orange;"
                 (click)="mostrarModalEditarHuesped(huesped.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
@@ -46,7 +38,6 @@
 <ng-container *ngIf="mostrarModalEliminar">
   <div class="modal">
     <div class="modal-content delete-modal">
-      <span class="close" (click)="ocultarModalEliminarHuesped()">&times;</span>
       <p>¿Estás seguro de que deseas eliminar el huésped? Esta operación es irreversible.</p>
       <div class="button-container">
         <button class="btn btn-glow-danger btn-danger" (click)="deleteHuesped()">Aceptar</button>

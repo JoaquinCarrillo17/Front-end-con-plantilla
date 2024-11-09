@@ -2,52 +2,46 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class TokenService {
+  private tokenKey = 'auth_token';
 
-  private token: string;
-
-  constructor( private jwtHelper: JwtHelperService ) { }
+  constructor(private jwtHelper: JwtHelperService) {}
 
   setToken(token: string): void {
-    this.token = token;
+    localStorage.setItem(this.tokenKey, token);
   }
 
   getToken(): string {
-    return this.token;
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  removeToken(): void {
+    localStorage.removeItem(this.tokenKey);
   }
 
   getRoles(): string[] {
-    const decodedToken = this.jwtHelper.decodeToken(this.token);
+    const decodedToken = this.jwtHelper.decodeToken(this.getToken());
     return decodedToken ? decodedToken.roles : [];
   }
 
   getUsername(): string {
-    const decodedToken = this.jwtHelper.decodeToken(this.token);
-    return decodedToken ? decodedToken.sub : "";
+    const decodedToken = this.jwtHelper.decodeToken(this.getToken());
+    return decodedToken ? decodedToken.sub : '';
   }
 
   getIdUsuario(): string {
-    if (this.token) {
-      const decodedToken = this.jwtHelper.decodeToken(this.token);
-      if (decodedToken && decodedToken.id) {
-        return decodedToken.id;
-      }
-    }
-    return null;
+    const decodedToken = this.jwtHelper.decodeToken(this.getToken());
+    return decodedToken && decodedToken.id ? decodedToken.id : null;
   }
 
   esSuperAdmin(): boolean {
-    if (this.token) {
-      return this.getRoles().includes('ROLE_SUPER_ADMIN');
-    }
-    return false;
+    return this.getRoles().includes('ROLE_SUPER_ADMIN');
   }
 
   getHeaders(): HttpHeaders {
     return new HttpHeaders({
-      'Authorization': `Bearer ${this.getToken()}`
+      Authorization: `Bearer ${this.getToken()}`
     });
   }
-
 }

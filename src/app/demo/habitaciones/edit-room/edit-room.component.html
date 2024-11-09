@@ -4,7 +4,7 @@
     <div class="modal-column">
         <div class="form-group">
           <label for="numero">Número</label>
-          <input type="text" class="form-control" id="numero" [(ngModel)]="habitacion.numero" name="numero" required>
+          <input type="text" class="form-control" id="numero" [(ngModel)]="habitacion.numero" name="numero" required disabled>
         </div>
         <div class="form-group">
           <label for="tipoHabitacion">Tipo de Habitación</label>
@@ -21,45 +21,23 @@
           <input type="text" class="form-control" id="precioNoche" [(ngModel)]="habitacion.precioNoche" name="precioNoche"
             required>
         </div>
-        <div class="form-group">
-          <label for="serviciosHabitacion">Servicios de la Habitación</label>
-          <div *ngFor="let servicio of serviciosDisponibles">
-            <input
-              type="checkbox"
-              [value]="servicio"
-              (change)="onCheckboxChange($event)"
-              [checked]="habitacion.servicios.includes(servicio)"
-            />
-            {{ servicio }}
-          </div>
-        </div>
     </div>
     <!-- Fin de la primera columna -->
 
     <!-- Segunda columna -->
     <div class="modal-column">
       <!-- Iterar sobre los huespedes -->
-      <div class="form-group" *ngFor="let huesped of habitacion.huespedes; let i = index">
-        <label for="nombreHuesped{{i}}">Nombre del huésped {{i+1}}</label>
-        <input type="text" class="form-control" id="nombreHuesped{{i}}" [(ngModel)]="huesped.nombreCompleto"
-          name="nombreHuesped{{i}}" required>
-
-        <label for="dniHuesped{{i}}">DNI del Huésped {{i+1}}</label>
-        <input type="text" class="form-control" id="dniHuesped{{i}}" [(ngModel)]="huesped.dni"
-          name="dniHuesped{{i}}" required>
-
-          <label for="emailHuesped{{i}}">Email del Huésped {{i+1}}</label>
-        <input type="text" class="form-control" id="emailHuesped{{i}}" [(ngModel)]="huesped.email"
-          name="emailHuesped{{i}}" required>
-
-          <label for="fechaCheckInHuesped{{i}}">Fecha de entrada del Huésped {{i+1}}</label>
-        <input type="text" class="form-control" id="fechaCheckInHuesped{{i}}" [(ngModel)]="huesped.fechaCheckIn"
-          name="fechaCheckInHuesped{{i}}" required>
-
-          <label for="fechaCheckOutHuesped{{i}}">Fecha de entrada del Huésped {{i+1}}</label>
-        <input type="text" class="form-control" id="fechaCheckOutHuesped{{i}}" [(ngModel)]="huesped.fechaCheckOut"
-          name="fechaCheckOutHuesped{{i}}" required>
-
+      <div class="form-group">
+        <label for="serviciosHabitacion">Servicios de la Habitación</label>
+        <div *ngFor="let servicio of serviciosDisponibles">
+          <input
+            type="checkbox"
+            [value]="servicio"
+            (change)="onCheckboxChange($event)"
+            [checked]="habitacion.servicios.includes(servicio)"
+          />
+          {{ servicio }}
+        </div>
       </div>
     </div>
     <!-- Fin de la segunda columna -->

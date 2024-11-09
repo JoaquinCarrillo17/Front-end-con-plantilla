@@ -66,5 +66,8 @@ export class HotelesService {
     return this.http.put(`${this.baseUrl}/hoteles/${idHotel}`, hotel);
   }
 
+  getById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/hoteles/${id}`);
+  }
 
 }

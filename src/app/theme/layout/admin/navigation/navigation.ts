@@ -71,6 +71,14 @@ const NavigationItems = [
         requiredRoles: ['ROLE_HUESPEDES_R', 'ROLE_HUESPEDES_W', 'ROLE_SUPER_ADMIN']
       },
       {
+        id: 'reservas',
+        title: 'Reservas',
+        type: 'item',
+        icon: 'fa fa-sack-dollar',
+        url: '/admin/reservas',
+        requiredRoles: ['ROLE_RESERVAS_R', 'ROLE_RESERVAS_W', 'ROLE_SUPER_ADMIN']
+      },
+      {
         id: 'roles',
         title: 'Roles',
         type: 'item',

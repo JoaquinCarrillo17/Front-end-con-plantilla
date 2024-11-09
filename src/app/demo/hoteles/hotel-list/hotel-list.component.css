@@ -66,6 +66,10 @@
   margin: auto;
 }
 
+.modal-content.delete-modal p {
+  margin-bottom: 0px;
+}
+
 .modal-content.edit-modal {
   max-width: 800px;
 }
@@ -109,7 +113,7 @@
   flex: 1;
   padding: 0 15px;
   overflow-y: auto;
-  max-height: 430px; /* Altura máxima para permitir el desplazamiento */
+  max-height: 450px; /* Altura máxima para permitir el desplazamiento */
 }
 
 .cursor-pointer {

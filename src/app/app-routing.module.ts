@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'hotel-chart',
+        redirectTo: 'hoteles',
         pathMatch: 'full',
       },
       {

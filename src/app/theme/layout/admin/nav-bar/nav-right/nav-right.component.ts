@@ -40,7 +40,7 @@ export class NavRightComponent implements OnInit {
   }
 
   logOut(): void {
-    this.tokenService.setToken(null);
+    this.tokenService.removeToken();
     this.router.navigate(['/']);
   }
 

@@ -18,81 +18,43 @@ export class AddHotelComponent {
 
 
   @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>(); // Para cerrar el modal con el boton de cancelar
+  @Output() hotelCreado = new EventEmitter<any>(); // Emite el hotel creado
 
   @ViewChild('nombreInput') nombreInput: { nativeElement: { value: string; }; };
   @ViewChild('direccionInput') direccionInput: { nativeElement: { value: string; }; };
   @ViewChild('telefonoInput') telefonoInput: { nativeElement: { value: string; }; };
   @ViewChild('emailInput') emailInput: { nativeElement: { value: string; }; };
   @ViewChild('sitioWebInput') sitioWebInput: { nativeElement: { value: string; }; };
-  @ViewChild('nombreServicio') nombreServicio: { nativeElement: { value: string; }; };
-  @ViewChild('descripcionServicio') descripcionServicio: { nativeElement: { value: string; }; };
   @ViewChild('categoriaServicio') categoriaServicio: { nativeElement: { value: string[]; }; };
-  @ViewChild('numeroHabitacion') numeroHabitacion: { nativeElement: { value: number; }; };
-  @ViewChild('tipoHabitacion') tipoHabitacion: { nativeElement: { value: string; }; };
-  @ViewChild('precioHabitacion') precioHabitacion: { nativeElement: { value: number; }; };
 
   public categorias: string[] = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
 
   public showCrearHotelNotification = false;
   public showCrearHotelErrorNotification = false;
 
-  public habitacionForm: FormGroup = this.formBuilder.group({
-    numero: ['', [Validators.required, Validators.min(0)]],
-    tipoHabitacion: ['', [Validators.required]],
-    precio: ['', [Validators.required, Validators.min(0)]]
-  })
-
-  public servicioForm: FormGroup = this.formBuilder.group({
-    nombre: ['', [Validators.required]],
-    descripcion: ['', [Validators.required]],
-    categoria: ['', [Validators.required]]
-  })
-
   public hotelForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required]],
     direccion: ['', [Validators.required]],
     telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
-    email: ['', [Validators.required, Validators.email]], // Validar formato de email
-    sitioWeb: ['', [Validators.required, Validators.pattern(/^(www\..*)$/)]], // Validar que empiece con 'www'
+    email: ['', [Validators.required, Validators.email]],
+    sitioWeb: ['', [Validators.required, Validators.pattern(/^(www\..*)$/)]],
+    ciudad: ['', [Validators.required]],
+    pais: ['', [Validators.required]],
+    continente: ['', [Validators.required]],
     categoria: [[], Validators.required]
   });
 
-  hotel: Hotel = {
+
+  hotel: any = {
     nombre: '',
     direccion: '',
     telefono: '',
     email: '',
     sitioWeb: '',
     servicios: [],
-    habitaciones: [],
   };
 
   constructor(private hotelesService: HotelesService, private formBuilder: FormBuilder) { }
-
-  // Para el validator
-
-  isValidFieldHabitacion(field: string) {
-    return this.habitacionForm.controls[field].errors && this.habitacionForm.controls[field].touched
-  }
-
-  getFieldErrorHabitacion(field: string) {
-
-    if (!this.habitacionForm.controls[field]) return null;
-
-    const errors = this.habitacionForm.controls[field].errors;
-
-    for (const key of Object.keys(errors)) {
-      switch (key) {
-        case 'required':
-          return 'Este campo es obligatorio'
-        case 'min':
-          return 'Este campo no puede ser menor que 0'
-      }
-    }
-
-    return null;
-  }
-
 
   isValidFieldHotel(field: string) {
     return this.hotelForm.controls[field].errors && this.hotelForm.controls[field].touched
@@ -155,7 +117,13 @@ export class AddHotelComponent {
       email: this.hotelForm.get('email').value,
       sitioWeb: this.hotelForm.get('sitioWeb').value,
       servicios: this.hotelForm.get('categoria').value,
-      habitaciones: this.hotel.habitaciones
+      idUsuario: localStorage.getItem('usuario'),
+      ubicacion: {
+        id : null,
+        ciudad: this.hotelForm.get('ciudad').value,
+        pais: this.hotelForm.get('pais').value,
+        continente: this.hotelForm.get('continente').value
+      }
     };
 
     this.hotelesService.addHotel(this.hotel).subscribe(
@@ -164,6 +132,7 @@ export class AddHotelComponent {
         setTimeout(() => {
         this.showCrearHotelNotification = false; // Ocultar la notificación después de 2 segundos
       }, 3000);
+      this.hotelCreado.emit(response);
       },
       error => {
         this.showCrearHotelErrorNotification = true; // Mostrar la notificación
@@ -172,63 +141,6 @@ export class AddHotelComponent {
       }, 3000);
       }
     );
-  }
-
-  agregarHabitacion() {
-
-    if (this.habitacionForm.invalid) {
-      this.habitacionForm.markAllAsTouched();
-      return;
-    }
-
-    const numero = this.numeroHabitacion.nativeElement.value;
-    const tipo = this.tipoHabitacion.nativeElement.value;
-    const precio = this.precioHabitacion.nativeElement.value;
-
-    let tipoHabitacion: TipoHabitacion;
-    switch (tipo) {
-      case "INDIVIDUAL":
-        tipoHabitacion = TipoHabitacion.INDIVIDUAL;
-        break;
-      case "DOBLE":
-        tipoHabitacion = TipoHabitacion.DOBLE;
-        break;
-      case "CUADRUPLE":
-        tipoHabitacion = TipoHabitacion.CUADRUPLE;
-        break;
-      case "SUITE":
-        tipoHabitacion = TipoHabitacion.SUITE;
-        break;
-      default:
-        break;
-    }
-
-    // Agregar la habitación al array de habitaciones del hotel
-    this.hotel.habitaciones.push({
-      numero: numero,
-      tipoHabitacion: tipoHabitacion,
-      precioNoche: precio,
-      huespedes: []
-    });
-
-    // Resetear los campos de la habitación
-    this.numeroHabitacion.nativeElement.value = null;
-    this.tipoHabitacion.nativeElement.value = '';
-    this.precioHabitacion.nativeElement.value = null;
-    this.habitacionForm.reset();
-    this.ocultarFormularioHabitacion();
-  }
-
-  // * Para el comportamiento de los forms del servicio y habitacion
-
-  mostrarFormularioHabitacion() {
-    const formularioHabitacion = document.getElementById('formulario-habitacion');
-    formularioHabitacion.classList.add('mostrar');
-  }
-
-  ocultarFormularioHabitacion() {
-    const formularioHabitacion = document.getElementById('formulario-habitacion');
-    formularioHabitacion.classList.remove('mostrar');
   }
 
   ocultarModalEditarHotel() {

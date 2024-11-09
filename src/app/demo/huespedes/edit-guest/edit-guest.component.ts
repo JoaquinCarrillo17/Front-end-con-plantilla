@@ -16,13 +16,11 @@ export class EditGuestComponent {
 
   @Input() idHuesped: number;
   @Output() editComplete: EventEmitter<void> = new EventEmitter<void>();
-  public huesped: Huesped = { // ? cuando abro el modal editar actualizo este huesped para que me aparezcan los campos
+  public huesped: any = { // ? cuando abro el modal editar actualizo este huesped para que me aparezcan los campos
     id: 0,
     nombreCompleto: '',
     dni: '',
-    email: '',
-    fechaCheckIn: null,
-    fechaCheckOut: null,
+    email: ''
   };
 
   public showEditarHuespedNotification = false;
@@ -48,8 +46,6 @@ export class EditGuestComponent {
         nombreCompleto: '',
         dni: '',
         email: '',
-        fechaCheckIn: null,
-        fechaCheckOut: null,
       };
       this.ocultarModalEditarHuesped();
       this.showEditarHuespedNotification = true;

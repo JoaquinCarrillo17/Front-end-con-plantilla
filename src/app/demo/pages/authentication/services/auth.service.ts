@@ -10,7 +10,6 @@ import { SessionTimeoutModalService } from 'src/app/theme/shared/components/sess
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
   public baseUrl = environment.baseUrl;
 
   private readonly ACTIVITY_TIMEOUT = 120000; //2 mins
@@ -20,20 +19,21 @@ export class AuthService {
   private modalTimer: any;
   private isTokenRefreshing = false; // Bandera para evitar múltiples llamadas a createToken
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private jwtHelper: JwtHelperService,
     private router: Router,
     private tokenService: TokenService,
-    private sessionTimeoutModalService: SessionTimeoutModalService) {
-  }
+    private sessionTimeoutModalService: SessionTimeoutModalService,
+  ) {}
 
   /*
-  * Los tokens duran 10 mins, tengo un activity timeout de 10 mins
-  * que mientras el usuario no pulse una tecla o mueva el raton se va consumiendo,
-  * si se consume te llevo al login. Sin embargo, si el usuario esta activo,
-  * cada vez que use el teclado o mueva el raton se reseteara ese timeout,
-  * de forma que mientras este activo nunca te lleve al login y por lo tanto sigas autenticado
-  * */
+   * Los tokens duran 10 mins, tengo un activity timeout de 10 mins
+   * que mientras el usuario no pulse una tecla o mueva el raton se va consumiendo,
+   * si se consume te llevo al login. Sin embargo, si el usuario esta activo,
+   * cada vez que use el teclado o mueva el raton se reseteara ese timeout,
+   * de forma que mientras este activo nunca te lleve al login y por lo tanto sigas autenticado
+   * */
 
   startActivityDetection(): void {
     window.addEventListener('mousemove', this.resetActivityTimer.bind(this));
@@ -48,15 +48,19 @@ export class AuthService {
     this.activityTimer = setTimeout(() => {
       // Token expired due to inactivity, redirect to login
       if (this.tokenService.getToken() != null) {
-        this.tokenService.setToken(null);
+        this.tokenService.removeToken();
         this.closeSessionTimeoutModal();
         this.redirectToLogin();
       }
     }, this.ACTIVITY_TIMEOUT);
 
-    this.modalTimer = setTimeout(() => {
-      if (this.tokenService.getToken() != null) this.showSessionTimeoutModal();
-    }, this.ACTIVITY_TIMEOUT - this.UPDATE_THRESHOLD * 1000);
+    this.modalTimer = setTimeout(
+      () => {
+        if (this.tokenService.getToken() != null)
+          this.showSessionTimeoutModal();
+      },
+      this.ACTIVITY_TIMEOUT - this.UPDATE_THRESHOLD * 1000,
+    );
 
     if (this.tokenService.getToken() != null) this.updateTokenExpiration();
   }
@@ -78,32 +82,37 @@ export class AuthService {
 
   updateTokenExpiration(): void {
     const token = this.tokenService.getToken();
-    if (token && this.isTokenExpiringSoon(token)) {
-      if (!this.isTokenRefreshing) {
-        this.isTokenRefreshing = true; // Evitar múltiples llamadas
+    if (token != null) {
+      if (this.isTokenExpiringSoon(token)) {
+        if (!this.isTokenRefreshing) {
+          this.isTokenRefreshing = true; // Evitar múltiples llamadas
 
-        const decodedToken = this.jwtHelper.decodeToken(token);
-        if (decodedToken && decodedToken.sub) {
-          const sub = decodedToken.sub;
-          this.createToken(sub).subscribe(
-            updatedToken => {
-              this.tokenService.setToken(updatedToken);
-              this.isTokenRefreshing = false; // Liberar la bandera cuando la llamada finaliza
-            },
-            error => {
-              console.error('Error refreshing token', error);
-              this.isTokenRefreshing = false; // Liberar la bandera en caso de error
-            }
-          );
+          const decodedToken = this.jwtHelper.decodeToken(token);
+          if (decodedToken && decodedToken.sub) {
+            const sub = decodedToken.sub;
+            this.createToken(sub).subscribe(
+              (updatedToken) => {
+                this.tokenService.setToken(updatedToken);
+                this.isTokenRefreshing = false; // Liberar la bandera cuando la llamada finaliza
+              },
+              (error) => {
+                console.error('Error refreshing token', error);
+                this.isTokenRefreshing = false; // Liberar la bandera en caso de error
+              },
+            );
+          }
         }
       }
     }
   }
 
   isTokenExpiringSoon(token: string): boolean {
-    const expirationTimeInSeconds = this.jwtHelper.getTokenExpirationDate(token).getTime() / 1000;
+    const expirationTimeInSeconds =
+      this.jwtHelper.getTokenExpirationDate(token).getTime() / 1000;
     const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-    return expirationTimeInSeconds - currentTimeInSeconds <= this.UPDATE_THRESHOLD;
+    return (
+      expirationTimeInSeconds - currentTimeInSeconds <= this.UPDATE_THRESHOLD
+    );
   }
 
   createToken(username: string): Observable<string> {
@@ -129,7 +138,4 @@ export class AuthService {
     const options = { responseType: 'text' as 'text' }; // ! sino pongo esto intenta analizar el token como JSON y da error
     return this.http.post(`${this.baseUrl}/auth/signUp`, usuario, options);
   }
-
-
-
 }

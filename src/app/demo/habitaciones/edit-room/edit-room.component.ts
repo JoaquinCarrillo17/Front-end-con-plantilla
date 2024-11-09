@@ -22,7 +22,6 @@ export class EditRoomComponent {
     tipoHabitacion: null,
     precioNoche: 0,
     servicios: [],
-    huespedes: [],
   };
 
   public showEditarHabitacionNotification = false;
@@ -33,7 +32,7 @@ export class EditRoomComponent {
   constructor(private habitacionesService: HabitacionesService) { }
 
   ngOnInit(): void {
-    this.habitacionesService.getHabitacionFull(this.idHabitacion).subscribe(data => {
+    this.habitacionesService.getHabitacionById(this.idHabitacion).subscribe(data => {
       this.habitacion = data;
     },
       error => {
@@ -60,14 +59,12 @@ export class EditRoomComponent {
 
   editHabitacion() {
     this.habitacionesService.editHabitacion(this.idHabitacion, this.habitacion).subscribe(response => {
-      console.log("La habitacion se editó correctamente")
       this.habitacion = {
         id: 0,
         numero: 0,
         tipoHabitacion: null,
         precioNoche: 0,
         servicios: [],
-        huespedes: [],
       };
       this.ocultarModalEditarHabitacion();
       this.showEditarHabitacionNotification = true; // Mostrar la notificación

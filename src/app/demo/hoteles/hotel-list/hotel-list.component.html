@@ -57,7 +57,6 @@
 <ng-container *ngIf="mostrarModalEliminar">
   <div class="modal">
     <div class="modal-content delete-modal">
-      <span class="close" (click)="ocultarModalEliminarHotel()">&times;</span>
       <p>¿Estás seguro de que deseas eliminar el hotel? Esta operación es irreversible.</p>
       <div class="button-container">
         <button class="btn btn-glow-danger btn-danger" (click)="deleteHotel()">Aceptar</button>
@@ -79,8 +78,19 @@
         <app-edit-hotel [idHotel]="idHotel" (editComplete)="ocultarModalEditarHotel()"></app-edit-hotel>
       </ng-container>
       <ng-template #addHotelForm>
-        <app-add-hotel (cancelarCrear)="ocultarModalEditarHotel()"></app-add-hotel>
+        <app-add-hotel (hotelCreado)="mostrarAddRoom($event)" (cancelarCrear)="ocultarModalEditarHotel()"></app-add-hotel>
       </ng-template>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="mostrarAddRoomModal">
+  <div class="modal">
+    <div class="modal-content edit-modal">
+      <span class="close" (click)="ocultarModalAddRoom()">&times;</span>
+      <h5>Añadir Habitación</h5>
+      <hr>
+      <app-add-room [hotel]="hotelSeleccionado" (cancelarCrear)="ocultarModalAddRoom()"></app-add-room>
     </div>
   </div>
 </ng-container>

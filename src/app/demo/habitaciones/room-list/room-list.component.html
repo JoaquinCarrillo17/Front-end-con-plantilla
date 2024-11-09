@@ -22,14 +22,14 @@
         <tbody>
           <tr *ngFor="let habitacion of habitaciones">
             <td>{{ habitacion.id }}</td>
-            <td>{{ habitacion.nombreHotel }}</td>
+            <td>{{ habitacion.hotel.nombre }}</td>
             <td>{{ habitacion.numero }}</td>
             <td>{{ habitacion.tipoHabitacion }}</td>
             <td>{{ habitacion.precioNoche }}</td>
             <td>{{ habitacion.servicios.join(', ') }}</td>
             <td>
-              <span class="material-icons view-icon" style="color: #04a9f5;"
-              (click)="toggleHabitacion(habitacion.id)"> visibility </span>
+             <!-- <span class="material-icons view-icon" style="color: #04a9f5;"
+              (click)="toggleHabitacion(habitacion.id)"> visibility </span> -->
               <span class="material-icons edit-icon" style="color: orange;"
               (click)="mostrarModalEditarHabitacion(habitacion.id)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
@@ -41,14 +41,13 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button>
+  <!-- <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button> -->
 </div>
 
 <!-- Modal eliminar -->
 <ng-container *ngIf="mostrarModalEliminar">
   <div class="modal">
     <div class="modal-content delete-modal">
-      <span class="close" (click)="ocultarModalEliminarHabitacion()">&times;</span>
       <p>¿Estás seguro de que deseas eliminar la habitacion? Esta operación es irreversible.</p>
       <div class="button-container">
         <button class="btn btn-glow-danger btn-danger" (click)="deleteHabitacion()">Aceptar</button>

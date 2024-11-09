@@ -34,6 +34,7 @@ export class NavContentComponent implements OnInit {
   ngOnInit() {
     const userRoles = this.tokenService.getRoles();
     console.log("Roles del usuario: ", userRoles);
+    console.log("Token: ", this.tokenService.getToken());
 
     // Filtra las secciones de navegación basadas en los roles del usuario
     this.navigation.forEach(group => {
