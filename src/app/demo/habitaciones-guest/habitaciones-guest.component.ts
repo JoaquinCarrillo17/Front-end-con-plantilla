@@ -39,11 +39,11 @@ export class HabitacionesGuestComponent implements OnInit {
   precioMax: any;
 
   ocupacionArray = [
-    { key: 'INDIVIDUAL', value: 'INDIVIDUAL' },
-    { key: 'DOBLE', value: 'DOBLE' },
-    { key: 'TRIPLE', value: 'TRIPLE' },
-    { key: 'CUADRUPLE', value: 'CUADRUPLE' },
-    { key: 'SUITE', value: 'SUITE' },
+    'INDIVIDUAL',
+    'DOBLE',
+    'TRIPLE',
+    'CUADRUPLE',
+    'SUITE',
   ];
 
   serviciosArray = [
@@ -78,11 +78,9 @@ export class HabitacionesGuestComponent implements OnInit {
       }
       if (params['checkIn']) {
         this.checkIn = params['checkIn'];
-        this.checkIn = this.formatDate(this.checkIn);
       }
       if (params['checkOut']) {
         this.checkOut = params['checkOut'];
-        this.checkOut = this.formatDate(this.checkOut);
       }
       if (params['ocupacion']) {
         this.ocupacion = params['ocupacion'];
@@ -200,8 +198,8 @@ export class HabitacionesGuestComponent implements OnInit {
     this.router.navigate(['/resumen-reserva'], {
       queryParams: {
         habitacionId: habitacionId,
-        checkIn: this.formatDate(this.checkIn),
-        checkOut: this.formatDate(this.checkOut)
+        checkIn: this.checkIn,
+        checkOut: this.checkOut
       }
     });
   }

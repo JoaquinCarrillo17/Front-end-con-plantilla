@@ -25,6 +25,14 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  width: 100%;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -87,6 +95,12 @@
   padding: 5px 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 10;
+}
+
+.button-container {
+  margin-left: auto; /* Empuja los botones hacia la derecha */
+  display: flex;
+  gap: 10px; /* Espacio entre los botones */
 }
 
 .options-container label {

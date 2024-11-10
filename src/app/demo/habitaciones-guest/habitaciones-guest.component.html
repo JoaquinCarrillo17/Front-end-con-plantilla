@@ -1,46 +1,50 @@
 <div class="padding">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
-  <div class="filtros-panel">
-    <mat-form-field appearance="outline">
-      <mat-label>Check-in</mat-label>
-      <input matInput [matDatepicker]="checkinPicker" [(ngModel)]="checkIn">
-      <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
-      <mat-datepicker #checkinPicker></mat-datepicker>
-    </mat-form-field>
+  <div class="search-filter-container">
+    <!-- Fila de Inputs -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="checkin">Check-in</label>
+        <input type="date" id="checkin" [(ngModel)]="checkIn">
+      </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Check-out</mat-label>
-      <input matInput [matDatepicker]="checkoutPicker" [(ngModel)]="checkOut">
-      <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
-      <mat-datepicker #checkoutPicker></mat-datepicker>
-    </mat-form-field>
+      <div class="form-group">
+        <label for="checkout">Check-out</label>
+        <input type="date" id="checkout" [(ngModel)]="checkOut">
+      </div>
 
-    <app-range-slider
-      [min]="0"
-      [max]="1000"
-      [initialMinValue]="precioMin ? precioMin : 0"
-      [initialMaxValue]="precioMax ? precioMax : 1000"
-      (rangeChange)="onRangeChange($event)"
-    ></app-range-slider>
+      <app-range-slider
+        [min]="0"
+        [max]="1000"
+        [initialMinValue]="precioMin ? precioMin : 0"
+        [initialMaxValue]="precioMax ? precioMax : 1000"
+        (rangeChange)="onRangeChange($event)"
+      ></app-range-slider>
 
+      <div class="form-group">
+        <label for="ocupacion">Ocupación</label>
+        <select id="ocupacion" [(ngModel)]="ocupacion">
+          <option value="" disabled selected>Seleccione la ocupación</option>
+          <option *ngFor="let tipo of ocupacionArray" [value]="tipo">{{ tipo }}</option>
+        </select>
+      </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Servicios</mat-label>
-      <mat-select [(ngModel)]="servicios" multiple>
-        <mat-option *ngFor="let servicio of serviciosArray" [value]="servicio.key">{{ servicio.key }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Servicios</mat-label>
+        <mat-select [(ngModel)]="servicios" multiple>
+          <mat-option *ngFor="let servicio of serviciosArray" [value]="servicio.key">{{ servicio.key }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Ocupación</mat-label>
-      <mat-select [(ngModel)]="ocupacion">
-        <mat-option *ngFor="let ocupacion of ocupacionArray" [value]="ocupacion.key">{{ ocupacion.key }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button mat-raised-button class="button-blue" (click)="buscarHabitaciones()">Buscar</button>
-    <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
+    <!-- Fila de Botones -->
+    <div class="button-container">
+      <button mat-raised-button class="button-blue" (click)="buscarHabitaciones()">Buscar</button>
+      <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
   </div>
+
+  
   <h3>{{totalItems}} Habitacion(es) encontradas</h3>
 
   <div class="hoteles-lista">

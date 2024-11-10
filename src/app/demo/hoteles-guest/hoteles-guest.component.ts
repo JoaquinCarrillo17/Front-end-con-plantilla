@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UbicacionService } from '../ubicacion/ubicacion.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -11,6 +11,8 @@ import { HotelesService } from '../hoteles/services/hoteles.service';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from "../../theme/shared/shared.module";
 import { ActivatedRoute, Router } from '@angular/router';
+import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 
 @Component({
   selector: 'app-hoteles-guest',
@@ -24,7 +26,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatNativeDateModule,
     CommonModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    NgMultiSelectDropDownModule
 ],
   templateUrl: './hoteles-guest.component.html',
   styleUrls: ['./hoteles-guest.component.scss']
@@ -45,6 +48,27 @@ export class HotelesGuestComponent implements OnInit {
     { key: 'PARKING', value: 'PARKING' }
   ];
 
+  /*servicios = [
+    { item_id: 1, item_text: 'GIMNASIO' },
+    { item_id: 2, item_text: 'LAVANDERIA' },
+    { item_id: 3, item_text: 'BAR' },
+    { item_id: 4, item_text: 'CASINO' },
+    { item_id: 5, item_text: 'KARAOKE' },
+    { item_id: 6, item_text: 'PET FRIENDLY' },
+    { item_id: 7, item_text: 'PISCINA' },
+    { item_id: 8, item_text: 'PARKING' }
+  ];*/
+
+  dropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'item_id',
+    textField: 'item_text',
+    selectAllText: 'Seleccionar todo',
+    unSelectAllText: 'Deseleccionar todo',
+    itemsShowLimit: 3,
+    allowSearchFilter: true
+  };
+
   /* Para recuperar los hoteles */
   hoteles = [];
   totalItems: number = 0;
@@ -60,7 +84,7 @@ export class HotelesGuestComponent implements OnInit {
   filtroPais: string = '';
   filtroCheckIn: string = '';
   filtroCheckOut: string = '';
-  filtroServicios: string[] = [];
+  filtroServicios: any[] = [];
 
   hotelId: any; // ? Voy a buscar las habitaciones de este hotel
 
@@ -77,10 +101,9 @@ export class HotelesGuestComponent implements OnInit {
     private hotelesService: HotelesService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+    ) {}
 
   ngOnInit(): void {
-
     this.cargarUbicaciones();
 
     this.route.queryParams.subscribe(params => {

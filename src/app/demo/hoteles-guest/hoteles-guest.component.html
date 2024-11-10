@@ -1,14 +1,25 @@
 <div class="padding">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
   <div class="search-filter-container">
+    <div class="form-row">
+
+
+    <!-- Select para Ciudad -->
     <div class="form-group">
       <label for="ciudad">Ciudad</label>
-      <input type="text" id="ciudad" [(ngModel)]="filtroCiudad" placeholder="Escribe una ciudad">
+      <select id="ciudad" [(ngModel)]="filtroCiudad">
+        <option value="" disabled selected>Seleccione una ciudad</option>
+        <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad.toUpperCase() }}</option>
+      </select>
     </div>
 
+    <!-- Select para País -->
     <div class="form-group">
       <label for="pais">País</label>
-      <input type="text" id="pais" [(ngModel)]="filtroPais" placeholder="Escribe un país">
+      <select id="pais" [(ngModel)]="filtroPais">
+        <option value="" disabled selected>Seleccione un país</option>
+        <option *ngFor="let pais of paises" [value]="pais">{{ pais.toUpperCase() }}</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -21,15 +32,35 @@
       <input type="date" id="checkout" [(ngModel)]="filtroCheckOut">
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="servicios">Servicios</label>
-      <select id="servicios" [(ngModel)]="filtroServicios" multiple>
-        <option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.value }}</option>
-      </select>
-    </div>
+      <ng-multiselect-dropdown
+      *ngIf="servicios.length > 0"
+        [placeholder]="'Selecciona los servicios'"
+        [data]="servicios"
+        [(ngModel)]="filtroServicios"
+        [settings]="dropdownSettings"
+        (onSelect)="onItemSelect($event)"
+        (onDeSelect)="onItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)">
+      </ng-multiselect-dropdown>
+    </div> -->
 
-    <button class="button-blue" (click)="buscarHoteles()">Buscar</button>
-    <button class="button-blue" (click)="limpiarFiltros()">Limpiar</button>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Servicios</mat-label>
+      <mat-select [(ngModel)]="filtroServicios" multiple>
+        <mat-option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.key }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+    <div class="button-container">
+      <button mat-raised-button class="button-blue" (click)="buscarHoteles()">Buscar</button>
+      <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
   </div>
 
   <h3>{{totalItems}} Hotel(es) encontrados</h3>
@@ -95,12 +126,21 @@
       </select>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="modalServicios">Servicios</label>
       <select id="modalServicios" [(ngModel)]="modalServicios" multiple>
         <option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.value }}</option>
       </select>
-    </div>
+    </div>-->
+
+    <mat-form-field appearance="outline">
+      <mat-label>Servicios</mat-label>
+      <mat-select [(ngModel)]="modalServicios" multiple>
+        <mat-option value="COCINA">COCINA</mat-option>
+        <mat-option value="TERRAZA">TERRAZA</mat-option>
+        <mat-option value="JACUZZI">JACUZZI</mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <button mat-raised-button class="button-blue" (click)="goToHabitaciones()">Buscar</button>
   </div>

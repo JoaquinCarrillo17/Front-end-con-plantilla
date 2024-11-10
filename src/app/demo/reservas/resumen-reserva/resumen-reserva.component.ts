@@ -1,14 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
 import { ReservasService } from '../reservas.service';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-resumen-reserva',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,],
   templateUrl: './resumen-reserva.component.html',
   styleUrl: './resumen-reserva.component.scss'
 })
@@ -24,10 +39,21 @@ export class ResumenReservaComponent implements OnInit {
     private habitacionesService: HabitacionesService,
     private reservasService: ReservasService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.huespedForm = this.fb.group({
       huespedes: this.fb.array([]),
+    });
+  }
+
+  // Método para inicializar un FormGroup para un huésped
+  private createHuespedFormGroup(huesped): FormGroup {
+    return this.fb.group({
+        dni: [huesped.dni],
+        email: [huesped.email],
+        id: [huesped.id],
+        nombreCompleto: [huesped.nombreCompleto]
     });
   }
 
@@ -38,7 +64,17 @@ export class ResumenReservaComponent implements OnInit {
 
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        this.huespedForm.patchValue({ huespedes });
+        // Limpia el FormArray actual antes de asignar nuevos valores
+        const huespedesFormArray = this.huespedForm.get('huespedes') as FormArray;
+        huespedesFormArray.clear();
+
+        // Mapea cada huesped a un nuevo FormGroup o FormControl dentro del FormArray
+        huespedes.forEach(huesped => {
+          huespedesFormArray.push(this.createHuespedFormGroup(huesped));
+        });
+        console.log(this.huespedForm.value)
+
+        this.cdr.markForCheck();
 
         this.loadHabitacion(habitacionId);
 
@@ -57,6 +93,10 @@ export class ResumenReservaComponent implements OnInit {
   }
   }
 
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
+
   loadHabitacion(habitacionId: string): void {
     this.habitacionesService.getHabitacionById(habitacionId).subscribe(habitacion => {
       this.habitacion = habitacion;
@@ -72,6 +112,7 @@ export class ResumenReservaComponent implements OnInit {
     for (let i = 0; i < capacidad; i++) {
       huespedesArray.push(
         this.fb.group({
+          id: [null],
           nombreCompleto: ['', Validators.required],
           dni: ['', Validators.required],
           email: ['', [Validators.required, Validators.email]]
@@ -96,8 +137,7 @@ export class ResumenReservaComponent implements OnInit {
   }
 
   confirmarReserva(): void {
-
-    if (localStorage.getItem('auth_token') != null) {
+    if (localStorage.getItem('auth_token') == null) {
       sessionStorage.setItem('reservaData', JSON.stringify({
         habitacionId: this.habitacion.id,
         checkIn: this.checkIn,
@@ -110,24 +150,24 @@ export class ResumenReservaComponent implements OnInit {
     });
     } else {
       const reserva = {
-        idUsuario: localStorage.getItem('usuarioId'),
+        idUsuario: localStorage.getItem('usuario'),
         checkIn: new Date(this.checkIn),
         checkOut: new Date(this.checkOut),
         coste: this.calcularTotal(),
-        habitacion: { id: this.habitacion.id },
-        hotel: { id: this.habitacion.hotel.id },
+        habitacion: this.habitacion,
+        hotel: this.habitacion.hotel,
         huespedes: this.huespedes.value
       };
-  /*
+
       this.reservasService.createReserva(reserva).subscribe(
         response => {
           console.log('Reserva creada:', response);
-          this.router.navigate(['/confirmacion']); // Redirigir a una página de confirmación
+          //this.router.navigate(['/confirmacion']); // Redirigir a una página de confirmación
         },
         error => {
           console.error('Error al crear la reserva', error);
         }
-      );*/
+      );
       console.log("Reserva a crear: ", reserva)
     }
 
@@ -136,8 +176,6 @@ export class ResumenReservaComponent implements OnInit {
   calcularNoches(): number {
     const checkInDate = new Date(this.checkIn);
     const checkOutDate = new Date(this.checkOut);
-    console.log("Fecha de checkin: ", checkInDate)
-    console.log("Fecha de checkout: ", checkOutDate)
     return Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
   }
 

@@ -17,8 +17,8 @@
       <p><strong>Tipo:</strong> {{ habitacion.tipoHabitacion }}</p>
       <p><strong>Precio por noche:</strong> {{ habitacion.precioNoche }}€</p>
       <p><strong>Servicios:</strong> {{ habitacion.servicios.join(', ') }}</p>
-      <p><strong>Check-in:</strong> {{ checkIn }}</p>
-      <p><strong>Check-out:</strong> {{ checkOut }}</p>
+      <p><strong>Check-in:</strong> {{ checkIn | date: 'dd/MM/yyyy' }}</p>
+      <p><strong>Check-out:</strong> {{ checkOut | date: 'dd/MM/yyyy' }}</p>
       <p><strong>Total de noches:</strong> {{ calcularNoches() }}</p>
       <p><strong>Total a pagar:</strong> {{ calcularTotal() }}€</p>
     </div>
@@ -48,9 +48,9 @@
           </div>
         </div>
         <div class="button-container">
-          <button type="button" class="btn btn-glow-primary btn-primary" (click)="confirmarReserva()">Confirmar
+          <button mat-raised-button class="button-blue" (click)="confirmarReserva()">Confirmar
             Reserva</button>
-          <button type="button" class="btn btn-glow-danger btn-danger" (click)="cancelarReserva()">Cancelar</button>
+          <button mat-raised-button color="warn" (click)="cancelarReserva()">Cancelar</button>
         </div>
       </form>
     </div>
