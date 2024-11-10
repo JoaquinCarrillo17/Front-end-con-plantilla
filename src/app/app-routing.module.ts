@@ -90,6 +90,13 @@ const routes: Routes = [
           import('./demo/habitaciones-guest/habitaciones-guest.module').then(
             (m) => m.HabitacionesGuestModule,
           ),
+      },
+      {
+        path: 'resumen-reserva',
+        loadChildren: () =>
+          import('./demo/reservas/resumen-reserva/resumen-reserva.module').then(
+            (m) => m.ResumenReservaModule,
+          ),
       }
     ],
   },

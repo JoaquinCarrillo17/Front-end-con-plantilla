@@ -62,7 +62,7 @@ export class HabitacionesService {
     return this.http.post(`${this.baseUrl}/habitaciones`, habitacion);
   }
 
-  getHabitacionById(idHabitacion: number): Observable<any> {
+  getHabitacionById(idHabitacion: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/habitaciones/${idHabitacion}`);
   }
 

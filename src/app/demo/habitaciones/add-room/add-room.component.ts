@@ -106,6 +106,7 @@ export class AddRoomComponent {
       this.habitacionesService.crearHabitacion(habitacion).subscribe(
         response => {
           // Muestra una notificación de éxito o cualquier otro manejo
+          window.location.reload();
         },
         error => {
           // Muestra una notificación de error o cualquier otro manejo

@@ -37,7 +37,9 @@ export class AuthSignupComponent {
         const username = this.tokenService.getUsername();
         localStorage.setItem('superadmin', this.tokenService.esSuperAdmin() ? 'true' : 'false');
         localStorage.setItem('usuario', usuario);
-        if(username.includes('admin')) this.router.navigate(['/admin']);
+        if(username.includes('admin')) {
+          this.router.navigate(['/admin']);
+        } else this.router.navigate(['/']);
       },
       error => {
         console.error('Sign up failed:', error);

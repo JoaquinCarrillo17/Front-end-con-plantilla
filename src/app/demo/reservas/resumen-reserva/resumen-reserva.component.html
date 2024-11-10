@@ -1,0 +1,58 @@
+<div class="resumen-container">
+  <h2 style="margin-bottom: 10px;">Resumen de la Reserva</h2>
+
+  <div class="row">
+    <div class="card hotel-info">
+      <h3>{{ habitacion.hotel.nombre }}</h3>
+      <p><strong>Dirección:</strong> {{ habitacion.hotel.direccion }}</p>
+      <p><strong>Ciudad:</strong> {{ habitacion.hotel.ubicacion.ciudad }}, {{ habitacion.hotel.ubicacion.pais }}</p>
+      <p><strong>Teléfono:</strong> {{ habitacion.hotel.telefono }}</p>
+      <p><strong>Email:</strong> <a href="mailto:{{ habitacion.hotel.email }}"> {{ habitacion.hotel.email }}</a></p>
+      <p><strong>Sitio Web:</strong> <a href="http://{{ habitacion.hotel.sitioWeb }}" target="_blank"> {{
+          habitacion.hotel.sitioWeb }}</a></p>
+    </div>
+
+    <div class="card habitacion-info">
+      <h3>Habitación - {{ habitacion.numero }}</h3>
+      <p><strong>Tipo:</strong> {{ habitacion.tipoHabitacion }}</p>
+      <p><strong>Precio por noche:</strong> {{ habitacion.precioNoche }}€</p>
+      <p><strong>Servicios:</strong> {{ habitacion.servicios.join(', ') }}</p>
+      <p><strong>Check-in:</strong> {{ checkIn }}</p>
+      <p><strong>Check-out:</strong> {{ checkOut }}</p>
+      <p><strong>Total de noches:</strong> {{ calcularNoches() }}</p>
+      <p><strong>Total a pagar:</strong> {{ calcularTotal() }}€</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card huespedes-info">
+      <h3>Datos de los Huéspedes</h3>
+      <form [formGroup]="huespedForm">
+        <div class="huespedes-grid"
+        [ngClass]="{
+          'cuadruple': habitacion.tipoHabitacion === 'CUADRUPLE',
+          'triple': habitacion.tipoHabitacion === 'TRIPLE',
+          'doble': habitacion.tipoHabitacion === 'DOBLE',
+          'individual': habitacion.tipoHabitacion === 'INDIVIDUAL'
+        }"
+        formArrayName="huespedes">
+          <div class="huesped" *ngFor="let huesped of huespedes.controls; let i = index" [formGroupName]="i">
+            <label>Nombre Completo</label>
+            <input formControlName="nombreCompleto" type="text" class="form-control">
+
+            <label>DNI</label>
+            <input formControlName="dni" type="text" class="form-control">
+
+            <label>Email</label>
+            <input formControlName="email" type="email" class="form-control">
+          </div>
+        </div>
+        <div class="button-container">
+          <button type="button" class="btn btn-glow-primary btn-primary" (click)="confirmarReserva()">Confirmar
+            Reserva</button>
+          <button type="button" class="btn btn-glow-danger btn-danger" (click)="cancelarReserva()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

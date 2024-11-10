@@ -1,0 +1,73 @@
+.resumen-container {
+  padding: 2% 15%;
+  background-color: #f5f8fa;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+p {
+  margin-bottom: 5px !important;
+}
+
+.card a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.huespedes-info form {
+  display: flex;
+  flex-direction: column;
+}
+
+.huespedes-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.huespedes-grid.cuadruple {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.huespedes-grid.triple {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.huespedes-grid.doble {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.huespedes-grid.individual {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.huesped label {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-control {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}

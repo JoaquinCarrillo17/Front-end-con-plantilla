@@ -41,7 +41,6 @@
     <button mat-raised-button class="button-blue" (click)="buscarHabitaciones()">Buscar</button>
     <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
   </div>
-
   <h3>{{totalItems}} Habitacion(es) encontradas</h3>
 
   <div class="hoteles-lista">
@@ -50,7 +49,7 @@
       <div class="hotel-info">
         <h3>Habitación - {{ habitacion.numero }}</h3>
         <p>Tipo: {{ habitacion.tipoHabitacion }}</p>
-        <p>Precio: {{ habitacion.precioNoche }} EUR</p>
+        <p>Precio: {{ habitacion.precioNoche }}€</p>
         <p *ngIf="habitacion.servicios && habitacion.servicios.length > 0">Servicios: {{ habitacion.servicios.join(', ') }}</p>
         <button mat-raised-button class="button-blue ver-disponibilidad-button" (click)="goToReservar(habitacion.id)">Reservar</button>
       </div>

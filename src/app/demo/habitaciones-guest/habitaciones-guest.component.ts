@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-habitaciones-guest',
@@ -25,6 +27,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
     FormsModule,
     SharedModule
   ],
+  providers: [DatePipe],
   templateUrl: './habitaciones-guest.component.html',
   styleUrls: ['./habitaciones-guest.component.scss']
 })
@@ -65,7 +68,7 @@ export class HabitacionesGuestComponent implements OnInit {
   ocupacion: string = '';
   servicios: string[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private habitacionesService: HabitacionesService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private habitacionesService: HabitacionesService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     // Suscripción a los parámetros de la URL
@@ -75,9 +78,11 @@ export class HabitacionesGuestComponent implements OnInit {
       }
       if (params['checkIn']) {
         this.checkIn = params['checkIn'];
+        this.checkIn = this.formatDate(this.checkIn);
       }
       if (params['checkOut']) {
         this.checkOut = params['checkOut'];
+        this.checkOut = this.formatDate(this.checkOut);
       }
       if (params['ocupacion']) {
         this.ocupacion = params['ocupacion'];
@@ -95,6 +100,10 @@ export class HabitacionesGuestComponent implements OnInit {
 
     // Llamada al método para buscar habitaciones con los criterios obtenidos
     this.buscarHabitaciones();
+  }
+
+  formatDate(date: string): string {
+    return this.datePipe.transform(date, 'dd/MM/yyyy') || '';
   }
 
   buscarHabitaciones() {
@@ -188,7 +197,13 @@ export class HabitacionesGuestComponent implements OnInit {
   }
 
   goToReservar(habitacionId) {
-    this.router.navigate(['/reservas'], { queryParams: { habitacionId: habitacionId } });
+    this.router.navigate(['/resumen-reserva'], {
+      queryParams: {
+        habitacionId: habitacionId,
+        checkIn: this.formatDate(this.checkIn),
+        checkOut: this.formatDate(this.checkOut)
+      }
+    });
   }
 
   onRangeChange(event: { min: number; max: number }): void {
