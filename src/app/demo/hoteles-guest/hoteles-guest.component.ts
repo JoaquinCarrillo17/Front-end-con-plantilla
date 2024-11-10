@@ -65,8 +65,8 @@ export class HotelesGuestComponent implements OnInit {
   hotelId: any; // ? Voy a buscar las habitaciones de este hotel
 
   // Campos del modal
-  modalCheckIn: Date | null = null;
-  modalCheckOut: Date | null = null;
+  modalCheckIn: any = null;
+  modalCheckOut: any = null;
   modalOcupacion: string = '';
   modalServicios: string[] = [];
   precioMin: any;
@@ -89,6 +89,12 @@ export class HotelesGuestComponent implements OnInit {
       }
       if (params['servicio']) {
         this.filtroServicios = [params['servicio']];
+      }
+      if (params['checkIn']) {
+        this.filtroCheckIn = params['checkIn'];
+      }
+      if (params['checkOut']) {
+        this.filtroCheckOut = params['checkOut'];
       }
     });
 
@@ -136,10 +142,10 @@ export class HotelesGuestComponent implements OnInit {
       listSearchCriteria.push({ key: 'ubicacion.pais', operation: 'contains', value: this.filtroPais });
     }
     if (this.filtroCheckIn) {
-      listSearchCriteria.push({ key: 'fechaCheckIn', operation: 'greaterThanOrEqual', value: this.filtroCheckIn });
+      listSearchCriteria.push({ key: 'checkIn', operation: 'equals', value: this.filtroCheckIn });
     }
     if (this.filtroCheckOut) {
-      listSearchCriteria.push({ key: 'fechaCheckOut', operation: 'lessThanOrEqual', value: this.filtroCheckOut });
+      listSearchCriteria.push({ key: 'checkOut', operation: 'equals', value: this.filtroCheckOut });
     }
     if (this.filtroServicios) {
       const serviciosConcatenados = this.filtroServicios
@@ -198,17 +204,17 @@ export class HotelesGuestComponent implements OnInit {
 
   abrirModal(hotelId) {
     this.hotelId = hotelId;
-    this.modalCheckIn = null;
-    this.modalCheckOut = null;
+    this.modalCheckIn = this.filtroCheckIn ?? null;
+    this.modalCheckOut = this.filtroCheckOut ?? null;
     this.modalOcupacion = '';
-    this.modalServicios = [];
+    this.modalServicios = this.filtroServicios ?? [];
   }
 
   goToHabitaciones() {
     const queryParams = {
       hotelId: this.hotelId,
-      checkIn: this.modalCheckIn ? this.modalCheckIn.toISOString().split('T')[0] : null, // Formatea la fecha a yyyy-MM-dd
-      checkOut: this.modalCheckOut ? this.modalCheckOut.toISOString().split('T')[0] : null,
+      checkIn: this.modalCheckIn ? this.modalCheckIn : null, // Formatea la fecha a yyyy-MM-dd
+      checkOut: this.modalCheckOut ? this.modalCheckOut : null,
       ocupacion: this.modalOcupacion ? this.modalOcupacion : null,
       servicios: this.modalServicios.length > 0 ? this.modalServicios.join(';') : null,
       precioMin: this.precioMin !== 0 ? this.precioMin : null,

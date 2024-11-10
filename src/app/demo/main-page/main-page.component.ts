@@ -13,36 +13,78 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 @Component({
   selector: 'app-main-page',
   standalone: true,
-  imports: [MatInputModule,
+  imports: [
+    MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
     ReactiveFormsModule,
     SharedModule,
-  CommonModule],
+    CommonModule,
+  ],
   templateUrl: './main-page.component.html',
-  styleUrl: './main-page.component.scss'
+  styleUrl: './main-page.component.scss',
 })
 export class MainPageComponent {
-
   ubicacionesPorContinente: { [key: string]: any[] } = {};
+  ciudades: string[] = []; // Lista de ciudades para el select de destino
+  ocupacionArray: string[] = [
+    'INDIVIDUAL',
+    'DOBLE',
+    'TRIPLE',
+    'CUADRUPLE',
+    'SUITE',
+  ]; // Opciones en mayúsculas para ocupación
+
+  selectedCity: string = '';
+  selectedOcupacion: string = '';
+  checkIn: string = '';
+  checkOut: string = '';
 
   cards = [
-    { title: 'Bar', image: 'bar.jpg', description: 'Relájate en nuestro chill out', key: 'BAR' },
-    { title: 'Mascota', image: 'mascota.jpg', description: 'Ven con tu mascota', key: 'PET FRIENDLY' },
-    { title: 'Gimnasio', image: 'gym.jpg', description: 'Entrena en nuestro gimnasio', key: 'GIMNASIO' },
-    { title: 'Piscina', image: 'piscina.jpg', description: 'Disfruta de nuestra piscina', key: 'PISCINA' },
-    { title: 'Karaoke', image: 'karaoke.jpeg', description: 'Diviértete en el karaoke', key: 'KARAOKE' },
-    { title: 'Casino', image: 'casino.jpg', description: 'Prueba suerte en el casino', key: 'CASINO' }
+    {
+      title: 'Bar',
+      image: 'bar.jpg',
+      description: 'Relájate en nuestro chill out',
+      key: 'BAR',
+    },
+    {
+      title: 'Mascota',
+      image: 'mascota.jpg',
+      description: 'Ven con tu mascota',
+      key: 'PET FRIENDLY',
+    },
+    {
+      title: 'Gimnasio',
+      image: 'gym.jpg',
+      description: 'Entrena en nuestro gimnasio',
+      key: 'GIMNASIO',
+    },
+    {
+      title: 'Piscina',
+      image: 'piscina.jpg',
+      description: 'Disfruta de nuestra piscina',
+      key: 'PISCINA',
+    },
+    {
+      title: 'Karaoke',
+      image: 'karaoke.jpeg',
+      description: 'Diviértete en el karaoke',
+      key: 'KARAOKE',
+    },
+    {
+      title: 'Casino',
+      image: 'casino.jpg',
+      description: 'Prueba suerte en el casino',
+      key: 'CASINO',
+    },
   ];
 
   constructor(
     private ubicacionService: UbicacionService,
     private router: Router,
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.cargarUbicaciones();
@@ -52,8 +94,16 @@ export class MainPageComponent {
   cargarUbicaciones(): void {
     this.ubicacionService.getAllUbicaciones().subscribe((ubicaciones) => {
       this.ubicacionesPorContinente = this.agruparPorContinente(ubicaciones);
-      console.log(this.ubicacionesPorContinente);
+      this.extraerCiudades(ubicaciones);
     });
+  }
+
+  extraerCiudades(ubicaciones: any[]): void {
+    this.ciudades = [
+      ...new Set(
+        ubicaciones.map((ubicacion) => ubicacion.ciudad.toUpperCase()),
+      ),
+    ];
   }
 
   // Agrupar las ubicaciones por continente
@@ -76,4 +126,24 @@ export class MainPageComponent {
     this.router.navigate(['/hoteles'], { queryParams: { servicio } });
   }
 
+  buscar(): void {
+    const queryParams: any = {};
+
+    if (this.selectedCity) {
+      queryParams.ciudad = this.selectedCity;
+    }
+    if (this.checkIn) {
+      queryParams.checkIn = this.checkIn;
+    }
+    if (this.checkOut) {
+      queryParams.checkOut = this.checkOut;
+    }
+    if (this.selectedOcupacion) {
+      queryParams.ocupacion = this.selectedOcupacion;
+    }
+
+    console.log(queryParams);
+
+    this.router.navigate(['/hoteles'], { queryParams });
+  }
 }

@@ -15,25 +15,54 @@
   justify-content: space-between;
   align-items: center;
   margin-top: -50px; /* Ajusta este valor para superponer el formulario en la imagen */
+  gap: 15px;
   position: absolute;
   bottom: 30px; /* Ajusta la posición vertical del formulario */
   left: 50%;
   transform: translateX(-50%);
   width: 80%; /* Ajusta el ancho del formulario según sea necesario */
+  max-width: 1400px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-mat-form-field {
-  flex: 1; // Distribuye el espacio equitativamente entre los campos
-  margin: 10px;
-  min-width: 150px; // Asegura un tamaño mínimo para que no se reduzcan demasiado
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
 }
 
-button {
-  flex: 0 0 auto; // Evita que el botón crezca o se reduzca, manteniendo su tamaño original
-  margin: 10px;
-  height: 56px;
-  line-height: 56px;
+.form-group label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input, .form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #1a73e8;
+}
+
+.button-blue {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-blue:hover {
+  background-color: #155bb5;
 }
 
 .servicios {

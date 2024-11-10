@@ -1,39 +1,35 @@
 <div class="padding">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
-  <div class="filtros-panel">
-    <mat-form-field appearance="outline">
-      <mat-label>Ciudad</mat-label>
-      <input matInput type="text" [(ngModel)]="filtroCiudad" placeholder="Escribe una ciudad">
-    </mat-form-field>
+  <div class="search-filter-container">
+    <div class="form-group">
+      <label for="ciudad">Ciudad</label>
+      <input type="text" id="ciudad" [(ngModel)]="filtroCiudad" placeholder="Escribe una ciudad">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>País</mat-label>
-      <input matInput type="text" [(ngModel)]="filtroPais" placeholder="Escribe un país">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="pais">País</label>
+      <input type="text" id="pais" [(ngModel)]="filtroPais" placeholder="Escribe un país">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Check-in</mat-label>
-      <input matInput [matDatepicker]="checkinPicker" [(ngModel)]="filtroCheckIn">
-      <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
-      <mat-datepicker #checkinPicker></mat-datepicker>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="checkin">Check-in</label>
+      <input type="date" id="checkin" [(ngModel)]="filtroCheckIn">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Check-out</mat-label>
-      <input matInput [matDatepicker]="checkoutPicker" [(ngModel)]="filtroCheckOut">
-      <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
-      <mat-datepicker #checkoutPicker></mat-datepicker>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="checkout">Check-out</label>
+      <input type="date" id="checkout" [(ngModel)]="filtroCheckOut">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Servicios</mat-label>
-      <mat-select [(ngModel)]="filtroServicios" multiple>
-        <mat-option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.key }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="servicios">Servicios</label>
+      <select id="servicios" [(ngModel)]="filtroServicios" multiple>
+        <option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.value }}</option>
+      </select>
+    </div>
 
-    <button mat-raised-button class="button-blue" (click)="buscarHoteles()">Buscar</button>
-    <button mat-raised-button color="warn" (click)="limpiarFiltros()">Limpiar</button>
+    <button class="button-blue" (click)="buscarHoteles()">Buscar</button>
+    <button class="button-blue" (click)="limpiarFiltros()">Limpiar</button>
   </div>
 
   <h3>{{totalItems}} Hotel(es) encontrados</h3>
@@ -67,19 +63,16 @@
     <button class="close-button" (click)="hotelId = null">&times;</button>
     <h3>Buscar disponibilidad</h3>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Check-in</mat-label>
-      <input matInput [matDatepicker]="modalCheckinPicker" [(ngModel)]="modalCheckIn">
-      <mat-datepicker-toggle matSuffix [for]="modalCheckinPicker"></mat-datepicker-toggle>
-      <mat-datepicker #modalCheckinPicker></mat-datepicker>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="modalCheckIn">Check-in</label>
+      <input type="date" id="modalCheckIn" [(ngModel)]="modalCheckIn">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Check-out</mat-label>
-      <input matInput [matDatepicker]="modalCheckoutPicker" [(ngModel)]="modalCheckOut">
-      <mat-datepicker-toggle matSuffix [for]="modalCheckoutPicker"></mat-datepicker-toggle>
-      <mat-datepicker #modalCheckoutPicker></mat-datepicker>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="modalCheckOut">Check-out</label>
+      <input type="date" id="modalCheckOut" [(ngModel)]="modalCheckOut">
+    </div>
+
 
     <div style="margin-bottom: 20px;">
       <app-range-slider
@@ -89,27 +82,25 @@
         [initialMaxValue]="1000"
         (rangeChange)="onRangeChange($event)"
       ></app-range-slider>
+      </div>
+
+    <div class="form-group">
+      <label for="ocupacion">Ocupación</label>
+      <select id="ocupacion" [(ngModel)]="modalOcupacion">
+        <option value="INDIVIDUAL">INDIVIDUAL</option>
+        <option value="DOBLE">DOBLE</option>
+        <option value="TRIPLE">TRIPLE</option>
+        <option value="CUADRUPLE">CUADRUPLE</option>
+        <option value="SUITE">SUITE</option>
+      </select>
     </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Ocupación</mat-label>
-      <mat-select [(ngModel)]="modalOcupacion">
-        <mat-option value="INDIVIDUAL">INDIVIDUAL</mat-option>
-        <mat-option value="DOBLE">DOBLE</mat-option>
-        <mat-option value="TRIPLE">TRIPLE</mat-option>
-        <mat-option value="CUADRUPLE">CUADRUPLE</mat-option>
-        <mat-option value="SUITE">SUITE</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Servicios</mat-label>
-      <mat-select [(ngModel)]="modalServicios" multiple>
-        <mat-option value="COCINA">COCINA</mat-option>
-        <mat-option value="TERRAZA">TERRAZA</mat-option>
-        <mat-option value="JACUZZI">JACUZZI</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="modalServicios">Servicios</label>
+      <select id="modalServicios" [(ngModel)]="modalServicios" multiple>
+        <option *ngFor="let servicio of servicios" [value]="servicio.key">{{ servicio.value }}</option>
+      </select>
+    </div>
 
     <button mat-raised-button class="button-blue" (click)="goToHabitaciones()">Buscar</button>
   </div>

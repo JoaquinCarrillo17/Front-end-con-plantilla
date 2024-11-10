@@ -11,7 +11,7 @@
 
 .button-container {
   display: flex;
-  justify-content: end; /* Distribuir los botones horizontalmente */
+  justify-content: flex-end; /* Distribuir los botones horizontalmente */
   margin-top: 20px; /* Espacio entre los botones y el párrafo */
 }
 

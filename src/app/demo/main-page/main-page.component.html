@@ -1,30 +1,36 @@
 <div class="background-image">
   <div class="search-filter-container">
-      <mat-form-field appearance="outline">
-        <mat-label>Destino</mat-label>
-        <input matInput type="text" placeholder="Escribe un destino">
-      </mat-form-field>
+   <!-- Select de Destino -->
+   <div class="form-group">
+    <label for="destino">Destino</label>
+    <select id="destino" [(ngModel)]="selectedCity">
+      <option value="" disabled selected>Seleccione un destino</option>
+      <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad.toUpperCase() }}</option>
+    </select>
+  </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Check-in</mat-label>
-        <input matInput [matDatepicker]="checkinPicker">
-        <mat-datepicker-toggle matSuffix [for]="checkinPicker"></mat-datepicker-toggle>
-        <mat-datepicker #checkinPicker></mat-datepicker>
-      </mat-form-field>
+  <!-- Input de Check-in -->
+  <div class="form-group">
+    <label for="checkin">Check-in</label>
+    <input type="date" id="checkin" [(ngModel)]="checkIn">
+  </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Check-out</mat-label>
-        <input matInput [matDatepicker]="checkoutPicker">
-        <mat-datepicker-toggle matSuffix [for]="checkoutPicker"></mat-datepicker-toggle>
-        <mat-datepicker #checkoutPicker></mat-datepicker>
-      </mat-form-field>
+  <!-- Input de Check-out -->
+  <div class="form-group">
+    <label for="checkout">Check-out</label>
+    <input type="date" id="checkout" [(ngModel)]="checkOut">
+  </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Ocupación</mat-label>
-        <input matInput type="text" placeholder="1 habitación, 2 adultos">
-      </mat-form-field>
+  <!-- Select de Ocupación -->
+  <div class="form-group">
+    <label for="ocupacion">Ocupación</label>
+    <select id="ocupacion" [(ngModel)]="selectedOcupacion">
+      <option value="" disabled selected>Seleccione la ocupación</option>
+      <option *ngFor="let tipo of ocupacionArray" [value]="tipo">{{ tipo }}</option>
+    </select>
+  </div>
 
-      <button mat-raised-button class="button-blue" type="submit">Buscar</button>
+    <button class="button-blue" type="submit" (click)="buscar()">Buscar</button>
   </div>
 
 </div>
