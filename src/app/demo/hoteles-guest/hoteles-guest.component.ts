@@ -34,6 +34,7 @@ import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-d
 })
 export class HotelesGuestComponent implements OnInit {
 
+  ubicaciones: any;
   continentes: string[] = [];
   paises: string[] = [];
   ciudades: string[] = [];
@@ -84,6 +85,7 @@ export class HotelesGuestComponent implements OnInit {
   filtroPais: string = '';
   filtroCheckIn: string = '';
   filtroCheckOut: string = '';
+  filtroOcupacion: string = '';
   filtroServicios: any[] = [];
 
   hotelId: any; // ? Voy a buscar las habitaciones de este hotel
@@ -95,6 +97,8 @@ export class HotelesGuestComponent implements OnInit {
   modalServicios: string[] = [];
   precioMin: any;
   precioMax: any;
+
+  formSubmitted: boolean = false;
 
   constructor(
     private ubicacionesService: UbicacionService,
@@ -109,6 +113,14 @@ export class HotelesGuestComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['ciudad']) {
         this.filtroCiudad = params['ciudad'];
+        // Asignar el país correspondiente
+        // Usar un timeout para esperar a que `this.ubicaciones` esté disponible
+        this.esperarUbicaciones(() => {
+          const ubicacion = this.encontrarUbicacionPorCiudad(this.filtroCiudad);
+          if (ubicacion) {
+            this.filtroPais = ubicacion.pais;
+          }
+        });
       }
       if (params['servicio']) {
         this.filtroServicios = [params['servicio']];
@@ -119,14 +131,33 @@ export class HotelesGuestComponent implements OnInit {
       if (params['checkOut']) {
         this.filtroCheckOut = params['checkOut'];
       }
+      if (params['ocupacion']) {
+        this.filtroOcupacion = params['ocupacion'];
+      }
     });
 
     this.buscarHoteles();
 
   }
 
+  // Método para esperar a que `this.ubicaciones` esté definido
+private esperarUbicaciones(callback: () => void): void {
+  const intervalo = 100; // Intervalo de tiempo en ms
+  const timeout = setInterval(() => {
+    if (this.ubicaciones.length > 0) {
+      clearInterval(timeout);
+      callback(); // Ejecutar la lógica cuando las ubicaciones estén disponibles
+    }
+  }, intervalo);
+}
+
+  private encontrarUbicacionPorCiudad(ciudad: string) {
+    return this.ubicaciones.find(ubicacion => ubicacion.ciudad === ciudad) || null;
+  }
+
   cargarUbicaciones(): void {
     this.ubicacionesService.getAllUbicaciones().subscribe((ubicaciones: any[]) => {
+      this.ubicaciones = ubicaciones;
       this.extraerValoresUnicos(ubicaciones);
     });
   }
@@ -170,6 +201,10 @@ export class HotelesGuestComponent implements OnInit {
     if (this.filtroCheckOut) {
       listSearchCriteria.push({ key: 'checkOut', operation: 'equals', value: this.filtroCheckOut });
     }
+    if (this.filtroOcupacion) {
+      listSearchCriteria.push({ key: 'tipoHabitacion', operation: 'equals', value: this.filtroOcupacion });
+    }
+
     if (this.filtroServicios) {
       const serviciosConcatenados = this.filtroServicios
       .map(key => {
@@ -234,17 +269,20 @@ export class HotelesGuestComponent implements OnInit {
   }
 
   goToHabitaciones() {
-    const queryParams = {
-      hotelId: this.hotelId,
-      checkIn: this.modalCheckIn ? this.modalCheckIn : null, // Formatea la fecha a yyyy-MM-dd
-      checkOut: this.modalCheckOut ? this.modalCheckOut : null,
-      ocupacion: this.modalOcupacion ? this.modalOcupacion : null,
-      servicios: this.modalServicios.length > 0 ? this.modalServicios.join(';') : null,
-      precioMin: this.precioMin !== 0 ? this.precioMin : null,
-      precioMax: this.precioMax !== 1000 ? this.precioMax : null
-    };
+    this.formSubmitted = true;
+    if (this.modalCheckIn && this.modalCheckOut) {
+      const queryParams = {
+        hotelId: this.hotelId,
+        checkIn: this.modalCheckIn ? this.modalCheckIn : null, // Formatea la fecha a yyyy-MM-dd
+        checkOut: this.modalCheckOut ? this.modalCheckOut : null,
+        ocupacion: this.modalOcupacion ? this.modalOcupacion : null,
+        servicios: this.modalServicios.length > 0 ? this.modalServicios.join(';') : null,
+        precioMin: this.precioMin !== 0 ? this.precioMin : null,
+        precioMax: this.precioMax !== 1000 ? this.precioMax : null
+      };
 
-    this.router.navigate(['/habitaciones'], { queryParams });
+      this.router.navigate(['/habitaciones'], { queryParams });
+    }
   }
 
   onRangeChange(event: { min: number; max: number }): void {

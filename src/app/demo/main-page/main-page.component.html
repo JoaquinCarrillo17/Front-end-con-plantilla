@@ -5,7 +5,7 @@
     <label for="destino">Destino</label>
     <select id="destino" [(ngModel)]="selectedCity">
       <option value="" disabled selected>Seleccione un destino</option>
-      <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad.toUpperCase() }}</option>
+      <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ ciudad }}</option>
     </select>
   </div>
 

@@ -131,10 +131,10 @@ export class HabitacionesGuestComponent implements OnInit {
       listSearchCriteria.push({ key: 'hotel.id', operation: 'equals', value: this.hotelId });
     }
     if (this.checkIn) {
-      listSearchCriteria.push({ key: 'fechaCheckIn', operation: 'greaterThanOrEqual', value: this.checkIn });
+      listSearchCriteria.push({ key: 'checkIn', operation: 'equals', value: this.checkIn });
     }
     if (this.checkOut) {
-      listSearchCriteria.push({ key: 'fechaCheckOut', operation: 'lessThanOrEqual', value: this.checkOut });
+      listSearchCriteria.push({ key: 'checkOut', operation: 'equals', value: this.checkOut });
     }
     if (this.ocupacion) {
       listSearchCriteria.push({ key: 'tipoHabitacion', operation: 'equals', value: this.ocupacion });

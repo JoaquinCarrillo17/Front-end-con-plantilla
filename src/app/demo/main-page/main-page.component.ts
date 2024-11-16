@@ -130,7 +130,7 @@ export class MainPageComponent {
     const queryParams: any = {};
 
     if (this.selectedCity) {
-      queryParams.ciudad = this.selectedCity;
+      queryParams.ciudad = this.capitalize(this.selectedCity);
     }
     if (this.checkIn) {
       queryParams.checkIn = this.checkIn;
@@ -142,8 +142,17 @@ export class MainPageComponent {
       queryParams.ocupacion = this.selectedOcupacion;
     }
 
-    console.log(queryParams);
 
     this.router.navigate(['/hoteles'], { queryParams });
   }
+
+  // Método para capitalizar el texto
+  capitalize(text: string): string {
+    if (!text) return '';
+    return text
+      .split(' ') // Divide el texto en palabras
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza cada palabra
+      .join(' '); // Une las palabras nuevamente con espacios
+  }
+
 }
