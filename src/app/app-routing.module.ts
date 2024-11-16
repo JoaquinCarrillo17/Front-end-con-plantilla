@@ -97,6 +97,13 @@ const routes: Routes = [
           import('./demo/reservas/resumen-reserva/resumen-reserva.module').then(
             (m) => m.ResumenReservaModule,
           ),
+      },
+      {
+        path: 'reservas',
+        loadChildren: () =>
+          import('./demo/reservas/mis-reservas/mis-reservas.module').then(
+            (m) => m.MisReservasModule,
+          ),
       }
     ],
   },

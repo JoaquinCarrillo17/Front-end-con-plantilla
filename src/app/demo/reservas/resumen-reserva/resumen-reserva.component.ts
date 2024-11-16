@@ -42,9 +42,7 @@ export class ResumenReservaComponent implements OnInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef
   ) {
-    this.huespedForm = this.fb.group({
-      huespedes: this.fb.array([]),
-    });
+
   }
 
   // Método para inicializar un FormGroup para un huésped
@@ -58,6 +56,10 @@ export class ResumenReservaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.huespedForm = this.fb.group({
+      huespedes: this.fb.array([]),
+    });
+
     const reservaData = sessionStorage.getItem('reservaData');
     if (reservaData) {
         const { habitacionId, checkIn, checkOut, huespedes } = JSON.parse(reservaData);
@@ -72,9 +74,10 @@ export class ResumenReservaComponent implements OnInit {
         huespedes.forEach(huesped => {
           huespedesFormArray.push(this.createHuespedFormGroup(huesped));
         });
-        console.log(this.huespedForm.value)
 
         this.cdr.markForCheck();
+        this.cdr.detectChanges();
+
 
         this.loadHabitacion(habitacionId);
 
@@ -100,14 +103,17 @@ export class ResumenReservaComponent implements OnInit {
   loadHabitacion(habitacionId: string): void {
     this.habitacionesService.getHabitacionById(habitacionId).subscribe(habitacion => {
       this.habitacion = habitacion;
-      this.initializeHuespedesForm();
+      const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
+      if (huespedesArray.length === 0) {
+        this.initializeHuespedesForm();
+      }
+      this.cdr.markForCheck();
     });
   }
 
   initializeHuespedesForm(): void {
     const capacidad = this.getCapacidadHabitacion(this.habitacion.tipoHabitacion);
     const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
-    huespedesArray.clear();
 
     for (let i = 0; i < capacidad; i++) {
       huespedesArray.push(

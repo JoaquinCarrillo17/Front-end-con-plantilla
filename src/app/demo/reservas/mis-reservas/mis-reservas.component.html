@@ -1,0 +1,38 @@
+<div class="padding">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+
+  <h3>{{totalItems}} Reservas realizadas</h3>
+
+  <div class="hoteles-lista">
+    <div class="hotel-card" *ngFor="let reserva of reservas">
+      <img [src]="'/assets/images/hoteles/' + reserva.hotel.foto" alt="{{ reserva.hotel.nombre }}">
+      <div class="hotel-info">
+        <h3>{{ reserva.hotel.nombre }}</h3>
+        <p>Tipo: {{ reserva.habitacion.tipoHabitacion }}</p>
+        <p>Precio: {{ reserva.coste }}€</p>
+        <p>Servicios: {{ (reserva.hotel.servicios.concat(reserva.habitacion.servicios)).join(', ') }}</p>
+        <p>Fecha: {{ reserva.checkIn | date: 'dd/MM/yyyy' }} - {{ reserva.checkOut | date: 'dd/MM/yyyy' }}</p>
+        <p>Huéspedes: {{ getNombresHuespedes(reserva) }}</p>
+        <button mat-raised-button class="ver-disponibilidad-button" color="warn" (click)="mostrarModalCancelar(reserva.id)">Cancelar reserva</button>
+      </div>
+    </div>
+  </div>
+  <div class="pagination-container">
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
+                    (itemsPerPageChange)="onItemPerPageChange($event)">
+    </app-pagination>
+  </div>
+</div>
+
+
+<!-- Modal de confirmación -->
+<div class="modal-overlay" *ngIf="isCancelModalVisible">
+  <div class="modal-content">
+    <h2>Cancelar Reserva</h2>
+    <p>¿Estás seguro de que quieres cancelar tu reserva?</p>
+    <div class="modal-actions">
+      <button mat-button (click)="confirmarCancelarReserva()">Sí</button>
+      <button mat-button (click)="cerrarModalCancelar()">No</button>
+    </div>
+  </div>
+</div>

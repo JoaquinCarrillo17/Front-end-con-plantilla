@@ -14,4 +14,12 @@ export class ReservasService {
     return this.http.post<any>(`${this.baseUrl}/reservas`, body);
   }
 
+  dynamicSearch(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/reservas/dynamicSearch`, body);
+  }
+
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/reservas/${id}`);
+  }
+
 }

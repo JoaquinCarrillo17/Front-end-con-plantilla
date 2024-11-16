@@ -1,0 +1,135 @@
+.padding {
+  padding: 5% 15%;
+}
+
+.hoteles-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.hotel-card {
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.hotel-card:hover {
+  transform: scale(1.02);
+}
+
+.hotel-card img {
+  width: 200px;
+  height: auto;
+  object-fit: cover;
+}
+
+.hotel-info {
+  flex: 1;
+  padding: 20px;
+  position: relative;
+}
+
+.hotel-info h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.hotel-info p {
+  margin: 5px 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.ver-disponibilidad-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Añade una sombra suave */
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #003366; /* Azul oscuro */
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px; /* Espacio entre botones */
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-actions button:first-child {
+  background-color: #ff4d4d; /* Rojo para "Sí" */
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #cc0000;
+}
+
+.modal-actions button:last-child {
+  background-color: #cccccc; /* Gris claro para "No" */
+  color: #333;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #999999;
+}
+
