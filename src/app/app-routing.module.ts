@@ -17,6 +17,13 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'reservas',
+        loadChildren: () =>
+          import('./demo/reservas/reservas-admin/reservas-admin.module').then(
+            (m) => m.ReservasAdminModule,
+          ),
+      },
+      {
         path: 'hoteles',
         loadChildren: () =>
           import('./demo/hoteles/hoteles.module').then(

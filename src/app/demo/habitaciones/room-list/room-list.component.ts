@@ -61,7 +61,7 @@ export class RoomListComponent implements OnInit {
 
   private getDataForRequest(value: any): any {
     const validServices = ['COCINA', 'TERRAZA', 'JACUZZI'];
-    const validRoom = ['INDIVIDUAL', 'DOBLE', 'CUADRUPLE', 'SUITE'];
+    const validRoom = ['INDIVIDUAL', 'DOBLE', 'TRIPLE', 'CUADRUPLE', 'SUITE'];
 
     let listSearchCriteria: any[] = [];
 

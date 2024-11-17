@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MisReservasRoutingModule } from './mis-reservas-routing.module';
+import { ReservasAdminRoutingModule } from './reservas-admin-routing.module';
 
 
 
@@ -8,7 +8,7 @@ import { MisReservasRoutingModule } from './mis-reservas-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    MisReservasRoutingModule
+    ReservasAdminRoutingModule
   ]
 })
-export class MisReservasModule { }
+export class ReservasAdminModule { }

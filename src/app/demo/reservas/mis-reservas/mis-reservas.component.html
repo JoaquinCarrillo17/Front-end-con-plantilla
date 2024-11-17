@@ -1,7 +1,12 @@
 <div class="padding">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
 
-  <h3>{{totalItems}} Reservas realizadas</h3>
+  <h3 *ngIf="reservas.length > 0">
+    {{ totalItems }} Reserva(s) realizada(s)
+  </h3>
+  <h3 *ngIf="reservas.length === 0">
+    No se encontraron reservas en su historial
+  </h3>
 
   <div class="hoteles-lista">
     <div class="hotel-card" *ngFor="let reserva of reservas">
@@ -17,7 +22,7 @@
       </div>
     </div>
   </div>
-  <div class="pagination-container">
+  <div class="pagination-container" *ngIf="reservas.length > 0">
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
                     (itemsPerPageChange)="onItemPerPageChange($event)">
     </app-pagination>

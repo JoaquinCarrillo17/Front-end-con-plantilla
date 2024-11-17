@@ -1,0 +1,45 @@
+<div class="col-xl-12">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+  <app-card
+    cardTitle="Lista de Reservas"
+    [options]="false"
+    blockClass="table-border-style"
+  >
+  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('hotel.nombre')" class="cursor-pointer">Hotel</th>
+            <th (click)="order('habitacion.numero')" class="cursor-pointer">Habitación</th>
+            <th (click)="order('habitacion.tipoHabitacion')" class="cursor-pointer">Tipo de Habitación</th>
+            <th (click)="order('coste')" class="cursor-pointer">Precio Total</th>
+            <th>Fecha</th>
+            <th>Huéspedes</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reserva of reservas">
+            <td>{{ reserva.id }}</td>
+            <td>{{ reserva.hotel.nombre }}</td>
+            <td>{{ reserva.habitacion.numero }}</td>
+            <td>{{ reserva.habitacion.tipoHabitacion }}</td>
+            <td>{{ reserva.coste }}</td>
+            <td>{{ reserva.checkIn | date: 'dd/MM/yyyy' }} - {{ reserva.checkOut | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ getNombresHuespedes(reserva) }}</td>
+            <td>
+              <span class="material-icons edit-icon" style="color: orange;"
+              > edit </span>
+              <span class="material-icons delete-icon" style="color: red;"
+              > delete </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+  </app-card>
+  <!-- <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button> -->
+</div>

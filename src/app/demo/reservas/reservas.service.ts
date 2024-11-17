@@ -18,6 +18,10 @@ export class ReservasService {
     return this.http.post<any>(`${this.baseUrl}/reservas/dynamicSearch`, body);
   }
 
+  getReservasDynamicFilterOr(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/reservas/dynamicFilterOr`, body);
+  }
+
   delete(id: any): Observable<any> {
     return this.http.delete(`${this.baseUrl}/reservas/${id}`);
   }

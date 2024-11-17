@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MisReservasComponent } from './reservas/mis-reservas/mis-reservas.component';
+import { ReservasAdminComponent } from './reservas-admin.component';
 import { Routes, RouterModule } from '@angular/router';
 
 
@@ -11,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: MisReservasComponent,
+        component: ReservasAdminComponent,
       },
     ]
   }
@@ -21,4 +20,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MisReservasRoutingModule { }
+export class ReservasAdminRoutingModule { }
