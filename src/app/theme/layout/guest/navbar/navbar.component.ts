@@ -1,8 +1,7 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule, Location } from "@angular/common";
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
-import { UbicacionService } from "src/app/demo/ubicacion/ubicacion.service";
 
 @Component({
   selector: 'app-navbar',
@@ -17,8 +16,17 @@ import { UbicacionService } from "src/app/demo/ubicacion/ubicacion.service";
 })
 export class NavbarComponent implements OnInit {
 
+  showDropdown = false;
+
+  toggleDropdown() {
+    if (localStorage.getItem('auth_token') === null) {
+      this.goToLogin()
+    } else this.showDropdown = !this.showDropdown;
+  }
+
   constructor(
     private router: Router,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -27,5 +35,18 @@ export class NavbarComponent implements OnInit {
   goToLogin(): void {
     this.router.navigate(['/auth/login']);
   }
+
+  logOut() {
+    localStorage.removeItem('auth_token');
+    this.showDropdown = false;
+
+    this.router.navigate(['/']).then(() => {
+      console.log(this.location.path())
+      if (this.location.path() === '') {
+        window.location.reload();
+      }
+    });
+  }
+
 
 }

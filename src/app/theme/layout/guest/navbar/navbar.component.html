@@ -1,4 +1,4 @@
-<nav class="navbar">
+<div class="navbar">
   <div class="navbar-brand-links">
     <a [routerLink]="'/'" style="text-decoration: none; color: inherit; cursor: pointer;">
       <span>JC Hotel Group</span>
@@ -10,6 +10,24 @@
     </div>
   </div>
   <div>
-    <span class="material-icons user-icon" style="color: white; font-size: 30px; cursor: pointer;" (click)="goToLogin()">person</span>
+    <span class="material-icons user-icon" style="color: white; font-size: 25px; cursor: pointer; margin-right: 15px;" (click)="toggleDropdown()">person</span>
+    <div class="dropdown-menu dropdown-menu-end profile-notification" *ngIf="showDropdown">
+      <div class="dropdown-header">
+          <img
+            src="assets/images/user/avatar-2.jpg"
+            alt="User Avatar"
+            class="user-avatar"
+          />
+          <span class="username">admin</span>
+      </div>
+      <a routerLink="/profile" class="dropdown-item">
+        <span class="material-icons">person</span>
+        Perfil
+      </a>
+      <a (click)="logOut()" class="dropdown-item">
+        <span class="material-icons">settings</span>
+        Cerrar sesión
+      </a>
+    </div>
   </div>
-</nav>
+</div>

@@ -65,23 +65,15 @@
         <div class="pro-head">
           <img src="assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image" />
           <span>{{ username }}</span>
-          <a (click)="logOut()" href="javascript:" class="dud-logout" title="Logout"><i
-              class="fas fa-arrow-right"></i></a>
         </div>
         <ul class="pro-body">
           <li>
-            <a (click)="mostrarModal()" href="javascript:" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+            <a (click)="mostrarModal()" href="javascript:" class="dropdown-item"><i class="fas fa-user"></i>Perfil</a>
           </li>
           <li>
-            <a href="javascript:" class="dropdown-item"><i class="fas fa-cogs"></i> Settings</a>
+            <a (click)="logOut()" href="javascript:" class="dropdown-item"><i class="fas fa-cogs"></i>Cerrar Sesión</a>
           </li>
 
-          <!-- <li>
-            <a href="javascript:" class="dropdown-item"><i class="fas fa-envelope"></i> My Messages</a>
-          </li>
-          <li>
-            <a href="javascript:" class="dropdown-item"><i class="fas fa-lock"></i> Lock Screen</a>
-          </li> -->
         </ul>
       </div>
     </div>

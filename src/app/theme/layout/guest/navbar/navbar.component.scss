@@ -110,4 +110,57 @@
   color: #007BFF; /* Color de enlace activo */
 }
 
+.user-dropdown-container {
+  position: relative;
+}
 
+.dropdown-menu {
+  padding: 0px;
+  display: block;
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  background-color: white;
+  color: black;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 230px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.dropdown-header {
+  color: #fff;
+  border-radius: 0.25rem 0.25rem 0 0;
+  padding: 15px;
+  position: relative;
+  background: #04a9f5;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  text-decoration: none;
+  color: #888;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-item .material-icons {
+  margin-right: 10px;
+}
