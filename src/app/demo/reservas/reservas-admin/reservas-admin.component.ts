@@ -158,4 +158,16 @@ export class ReservasAdminComponent implements OnInit {
     return reserva.huespedes.map(huesped => huesped?.nombreCompleto || 'Sin nombre').join(', ');
   }
 
+  deleteReserva(id: any) {
+    this.reservasService.delete(id).subscribe(
+      () => {
+        console.log('Reserva cancelada');
+        this.getReservas(this.query); // Refresca la lista de reservas
+      },
+      error => {
+        console.error('Error al cancelar la reserva:', error);
+      }
+    );
+  }
+
 }

@@ -30,9 +30,9 @@
             <td>{{ reserva.checkIn | date: 'dd/MM/yyyy' }} - {{ reserva.checkOut | date: 'dd/MM/yyyy' }}</td>
             <td>{{ getNombresHuespedes(reserva) }}</td>
             <td>
-              <span class="material-icons edit-icon" style="color: orange;"
-              > edit </span>
-              <span class="material-icons delete-icon" style="color: red;"
+              <!--<span class="material-icons edit-icon" style="color: orange;"
+              > edit </span>-->
+              <span (click)="deleteReserva(reserva.id)" class="material-icons delete-icon" style="color: red;"
               > delete </span>
             </td>
           </tr>

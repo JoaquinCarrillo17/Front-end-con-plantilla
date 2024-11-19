@@ -164,3 +164,62 @@
 .dropdown-item .material-icons {
   margin-right: 10px;
 }
+
+.modal-columns {
+  display: flex;
+}
+
+.modal-column {
+  flex: 1;
+  padding: 0 15px;
+  overflow-y: auto;
+  max-height: 430px; /* Altura máxima para permitir el desplazamiento */
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  z-index: 1030;
+}
+
+.modal-content.delete-modal {
+  max-width: 400px;
+}
+
+.modal-content.delete-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+  margin: auto;
+}
+
+.modal-content.edit-modal {
+  max-width: 500px;
+}
+
+.modal-content.edit-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+  margin: auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Distribuir los botones horizontalmente */
+  margin-top: 20px; /* Espacio entre los botones y el párrafo */
+}
+
+.button-container button {
+  flex: 1; /* Los botones ocupan todo el espacio disponible */
+  margin-right: 10px; /* Espacio entre los botones */
+}

@@ -11,7 +11,11 @@ export class UbicacionService {
   constructor(private http: HttpClient) { }
 
   getAllUbicaciones(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/ubicaciones`);
+    return this.http.get<any>(`${this.baseUrl}/ubicaciones/getActivas`);
   }
 
+  /*getUbicacionesActivas(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/ubicaciones/getActivas`);
+  }
+*/
 }

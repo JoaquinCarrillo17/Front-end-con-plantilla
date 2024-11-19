@@ -1,10 +1,11 @@
 .notification-wrapper {
   position: fixed;
-  bottom: 20px; /* Distancia desde la parte inferior */
-  left: 50%; /* Centra horizontalmente */
-  transform: translateX(-50%);
+  top: 20px; /* Distancia desde la parte superior */
+  right: 20px; /* Distancia desde el lado derecho */
+  transform: none; /* No es necesario centrarla horizontalmente */
   z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
+
 
 .notification {
   opacity: 1;
