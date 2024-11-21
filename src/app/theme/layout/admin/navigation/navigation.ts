@@ -63,6 +63,14 @@ const NavigationItems = [
         requiredRoles: ['ROLE_HABITACIONES_R', 'ROLE_HABITACIONES_W', 'ROLE_SUPER_ADMIN']
       },
       {
+        id: 'reservas',
+        title: 'Reservas',
+        type: 'item',
+        icon: 'fa fa-sack-dollar',
+        url: '/admin/reservas',
+        requiredRoles: ['ROLE_RESERVAS_R', 'ROLE_RESERVAS_W', 'ROLE_SUPER_ADMIN']
+      },
+      {
         id: 'huespedes',
         title: 'Huéspedes',
         type: 'item',
@@ -71,12 +79,12 @@ const NavigationItems = [
         requiredRoles: ['ROLE_HUESPEDES_R', 'ROLE_HUESPEDES_W', 'ROLE_SUPER_ADMIN']
       },
       {
-        id: 'reservas',
-        title: 'Reservas',
+        id: 'ubicaciones',
+        title: 'Ubicaciones',
         type: 'item',
-        icon: 'fa fa-sack-dollar',
-        url: '/admin/reservas',
-        requiredRoles: ['ROLE_RESERVAS_R', 'ROLE_RESERVAS_W', 'ROLE_SUPER_ADMIN']
+        icon: 'fa fa-map-marker-alt',
+        url: '/admin/ubicaciones',
+        requiredRoles: ['ROLE_UBICACIONES_R', 'ROLE_UBICACIONES_W', 'ROLE_SUPER_ADMIN']
       },
       {
         id: 'roles',

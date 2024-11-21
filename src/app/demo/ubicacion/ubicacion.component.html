@@ -1,0 +1,39 @@
+<div class="col-xl-12">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
+  <app-card
+    cardTitle="Lista de Reservas"
+    [options]="false"
+    blockClass="table-border-style"
+  >
+  <app-search-bar (searchEvent)="search($event)"></app-search-bar>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th (click)="order('id')" class="cursor-pointer">ID</th>
+            <th (click)="order('ciudad')" class="cursor-pointer">Ciudad</th>
+            <th (click)="order('continente')" class="cursor-pointer">Continente</th>
+            <th (click)="order('pais')" class="cursor-pointer">País</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ubicacion of ubicaciones">
+            <td>{{ ubicacion.id }}</td>
+            <td>{{ ubicacion.ciudad }}</td>
+            <td>{{ ubicacion.continente }}</td>
+            <td>{{ ubicacion.pais }}</td>
+            <td>
+              <!--<span class="material-icons edit-icon" style="color: orange;"
+              > edit </span>-->
+              <span (click)="deleteUbicacion(ubicacion.id)" class="material-icons delete-icon" style="color: red;"
+              > delete </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+  </app-card>
+  <!--<app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button>-->
+</div>

@@ -14,6 +14,14 @@ export class UbicacionService {
     return this.http.get<any>(`${this.baseUrl}/ubicaciones/getActivas`);
   }
 
+  getUbicacionesDynamicFilterOr(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/ubicaciones/dynamicFilterOr`, body);
+  }
+
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/ubicaciones/${id}`);
+  }
+
   /*getUbicacionesActivas(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/ubicaciones/getActivas`);
   }

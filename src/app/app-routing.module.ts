@@ -66,6 +66,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'ubicaciones',
+        loadChildren: () =>
+          import('./demo/ubicacion/ubicacion.module').then(
+            (m) => m.UbicacionModule,
+          ),
+      },
+      {
         path: 'hotel-chart',
         loadComponent: () =>
           import('./demo/historicos/historico/historico.component'), /* DECLARO EL HISTORICO CON PUBLIC DEFAULT CLASS.. PARA QUE PUEDA CARGARLO ASI */
@@ -111,7 +118,7 @@ const routes: Routes = [
           import('./demo/reservas/mis-reservas/mis-reservas.module').then(
             (m) => m.MisReservasModule,
           ),
-      }
+      },
     ],
   },
 
