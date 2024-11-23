@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { TokenService } from '../token/token.service';
 import { UbicacionService } from './ubicacion.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UbicacionModalComponent } from './ubicacion-modal/ubicacion-modal.component';
 
 @Component({
   selector: 'app-ubicacion',
@@ -28,6 +30,7 @@ export class UbicacionComponent implements OnInit {
   public puedeCrear: boolean;
 
   constructor(
+    private dialog: MatDialog,
     private tokenService: TokenService,
     private ubicacionesService: UbicacionService
   ) {}
@@ -140,5 +143,34 @@ export class UbicacionComponent implements OnInit {
     );
   }
 
+  onFloatingButtonClick(): void {
+    const dialogRef = this.dialog.open(UbicacionModalComponent, {
+      width: '400px',
+      data: null // No pasamos datos porque es para crear
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.ubicacionesService.create(result).subscribe(() => {
+          this.getUbicaciones(this.query); // Refresca la lista
+        });
+      }
+    });
+  }
+
+  editUbicacion(ubicacion: any): void {
+    const dialogRef = this.dialog.open(UbicacionModalComponent, {
+      width: '400px',
+      data: ubicacion // Pasamos la ubicación para editar
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.ubicacionesService.update(ubicacion.id, result).subscribe(() => {
+          this.getUbicaciones(this.query); // Refresca la lista
+        });
+      }
+    });
+  }
 
 }

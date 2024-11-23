@@ -22,6 +22,15 @@ export class UbicacionService {
     return this.http.delete(`${this.baseUrl}/ubicaciones/${id}`);
   }
 
+  create(ubicacion: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/ubicaciones`, ubicacion);
+  }
+
+  update(id: number, ubicacion: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/ubicaciones/${id}`, ubicacion);
+  }
+
+
   /*getUbicacionesActivas(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/ubicaciones/getActivas`);
   }

@@ -24,8 +24,8 @@
             <td>{{ ubicacion.continente }}</td>
             <td>{{ ubicacion.pais }}</td>
             <td>
-              <!--<span class="material-icons edit-icon" style="color: orange;"
-              > edit </span>-->
+              <span (click)="editUbicacion(ubicacion)" class="material-icons edit-icon" style="color: orange;"
+              > edit </span>
               <span (click)="deleteUbicacion(ubicacion.id)" class="material-icons delete-icon" style="color: red;"
               > delete </span>
             </td>
@@ -35,5 +35,5 @@
     </div>
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)" (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
   </app-card>
-  <!--<app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button>-->
+  <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>

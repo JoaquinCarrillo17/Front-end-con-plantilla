@@ -1,0 +1,23 @@
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.modal-content {
+  margin-top: 20px;
+  padding: 0 20px; /* Padding horizontal del contenedor */
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaciado vertical entre grupos */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
