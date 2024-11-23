@@ -6,43 +6,26 @@
         <label for="nombreCompleto">Nombre Completo</label>
         <input type="text" class="form-control" id="nombreCompleto" placeholder="Nombre Completo" #nombreCompletoInput
           required formControlName="nombreCompleto"/>
-          <span *ngIf="isValidFieldHuesped('nombreCompleto')" class="form-text text-danger">{{ getFieldErrorHuesped('nombreCompleto') }}</span>
+          <div *ngIf="huespedForm.get('nombreCompleto')?.invalid && huespedForm.get('nombreCompleto')?.touched" class="error-message">
+            El nombre completo es obligatorio.
+          </div>
       </div>
 
       <div class="form-group">
         <label for="dni">DNI</label>
         <input type="text" class="form-control" id="dni" placeholder="DNI" #dniInput required formControlName="dni"/>
-        <span *ngIf="isValidFieldHuesped('dni')" class="form-text text-danger">{{ getFieldErrorHuesped('dni') }}</span>
+        <div *ngIf="huespedForm.get('dni')?.invalid && huespedForm.get('dni')?.touched" class="error-message">
+          El DNI es obligatorio.
+        </div>
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required formControlName="email"/>
-        <span *ngIf="isValidFieldHuesped('email')" class="form-text text-danger">{{ getFieldErrorHuesped('email') }}</span>
-      </div>
-
-      <div class="form-group">
-        <label for="fechaCheckIn">Fecha Check-In</label>
-        <input type="datetime-local" class="form-control" id="fechaCheckIn" placeholder="Fecha Check-In"
-          #fechaCheckInInput required formControlName="fechaEntrada"/>
-          <span *ngIf="isValidFieldHuesped('fechaEntrada')" class="form-text text-danger">{{ getFieldErrorHuesped('fechaEntrada') }}</span>
-      </div>
-
-      <div class="form-group">
-        <label for="fechaCheckOut">Fecha Check-Out</label>
-        <input type="datetime-local" class="form-control" id="fechaCheckOut" placeholder="Fecha Check-Out"
-          #fechaCheckOutInput required formControlName="fechaSalida"/>
-          <span *ngIf="isValidFieldHuesped('fechaSalida')" class="form-text text-danger">{{ getFieldErrorHuesped('fechaSalida') }}</span>
-      </div>
-
-      <div class="form-group">
-        <label for="habitacion">Habitación</label>
-        <select class="form-control" id="habitacion" #habitacionSelect required formControlName="idHabitacion">
-          <option value="" selected disabled>Elige una habitación</option>
-          <option *ngFor="let habitacion of habitaciones" [value]="habitacion.id">{{ habitacion.numero }} - {{
-            habitacion.tipoHabitacion }}</option>
-        </select>
-        <span *ngIf="isValidFieldHuesped('idHabitacion')" class="form-text text-danger">{{ getFieldErrorHuesped('idHabitacion') }}</span>
+        <div *ngIf="huespedForm.get('email')?.invalid && huespedForm.get('email')?.touched" class="error-message">
+          <span *ngIf="huespedForm.get('email')?.errors?.['required']">El email es obligatorio.</span>
+          <span *ngIf="huespedForm.get('email')?.errors?.['email']">Debes introducir un email válido.</span>
+        </div>
       </div>
 
     </div>
@@ -57,5 +40,4 @@
 
 </form>
 
-<app-notification [showNotification]="showCrearHuespedNotification" message="Huésped creado con éxito" [color]="true"></app-notification>
-<app-notification [showNotification]="showCrearHuespedErrorNotification" message="No tienes permisos para crear un huésped" [color]="false"></app-notification>
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

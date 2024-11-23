@@ -1,7 +1,7 @@
 <div class="col-xl-12">
   <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
   <app-card
-    cardTitle="Lista de Reservas"
+    cardTitle="Lista de Ubicaciones"
     [options]="false"
     blockClass="table-border-style"
   >
@@ -12,8 +12,8 @@
           <tr>
             <th (click)="order('id')" class="cursor-pointer">ID</th>
             <th (click)="order('ciudad')" class="cursor-pointer">Ciudad</th>
-            <th (click)="order('continente')" class="cursor-pointer">Continente</th>
             <th (click)="order('pais')" class="cursor-pointer">País</th>
+            <th (click)="order('continente')" class="cursor-pointer">Continente</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -21,8 +21,8 @@
           <tr *ngFor="let ubicacion of ubicaciones">
             <td>{{ ubicacion.id }}</td>
             <td>{{ ubicacion.ciudad }}</td>
-            <td>{{ ubicacion.continente }}</td>
             <td>{{ ubicacion.pais }}</td>
+            <td>{{ ubicacion.continente }}</td>
             <td>
               <span (click)="editUbicacion(ubicacion)" class="material-icons edit-icon" style="color: orange;"
               > edit </span>
@@ -37,3 +37,5 @@
   </app-card>
   <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button>
 </div>
+
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

@@ -37,3 +37,16 @@ a {
   background-color: $secondary-color-blue !important;
   color: white !important;
 }
+
+.error-message {
+  color: #dc3545; /* Color rojo para el error */
+  font-size: 0.75rem; /* Tamaño de fuente más pequeño */
+  text-align: left; /* Alineación del texto a la izquierda */
+  z-index: 9999;
+}
+
+.button-container {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}

@@ -10,10 +10,9 @@ import { UbicacionModalComponent } from './ubicacion-modal/ubicacion-modal.compo
   standalone: true,
   imports: [SharedModule],
   templateUrl: './ubicacion.component.html',
-  styleUrl: './ubicacion.component.scss'
+  styleUrl: './ubicacion.component.scss',
 })
 export class UbicacionComponent implements OnInit {
-
   isSpinnerVisible: boolean = true;
 
   ubicaciones: any[];
@@ -29,78 +28,85 @@ export class UbicacionComponent implements OnInit {
   public esSuperAdmin: boolean;
   public puedeCrear: boolean;
 
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
+
   constructor(
     private dialog: MatDialog,
     private tokenService: TokenService,
-    private ubicacionesService: UbicacionService
+    private ubicacionesService: UbicacionService,
   ) {}
 
   ngOnInit(): void {
-    this.query = "";
-    this.usuario = localStorage.getItem("usuario");
-    this.esSuperAdmin = localStorage.getItem("superadmin") === "true";
+    this.query = '';
+    this.usuario = localStorage.getItem('usuario');
+    this.esSuperAdmin = localStorage.getItem('superadmin') === 'true';
     this.getUbicaciones(this.query);
-    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_UBICACIONES_W');
+    this.puedeCrear = this.tokenService
+      .getRoles()
+      .includes('ROLE_UBICACIONES_W');
   }
 
   getUbicaciones(value: any): void {
-    this.ubicacionesService.getUbicacionesDynamicFilterOr(this.getDataForRequest(value)).subscribe(response => {
-      this.ubicaciones = response.content;
-      this.totalItems = response.totalElements;
-      this.isSpinnerVisible = false;
-    },
-    (error) => {
-      if (error.status === 404) {
-        this.ubicaciones = [];
-        this.totalItems = 0;
-      }
-      this.isSpinnerVisible = false;
-    });
+    this.ubicacionesService
+      .getUbicacionesDynamicFilterOr(this.getDataForRequest(value))
+      .subscribe(
+        (response) => {
+          this.ubicaciones = response.content;
+          this.totalItems = response.totalElements;
+          this.isSpinnerVisible = false;
+        },
+        (error) => {
+          if (error.status === 404) {
+            this.ubicaciones = [];
+            this.totalItems = 0;
+          }
+          this.isSpinnerVisible = false;
+        },
+      );
   }
 
   private getDataForRequest(value: any): any {
-
     let listSearchCriteria: any[] = [];
 
     // Filtros dinámicos
-    if (value !== "" && value !== null) {
-
+    if (value !== '' && value !== null) {
       listSearchCriteria.push({
-        key: "id",
-        operation: "equals",
-        value: parseInt(value, 10)
+        key: 'id',
+        operation: 'equals',
+        value: parseInt(value, 10),
       });
 
       listSearchCriteria.push({
-        key: "ciudad",
-        operation: "contains",
-        value: value
+        key: 'ciudad',
+        operation: 'contains',
+        value: value,
       });
 
       listSearchCriteria.push({
-        key: "continente",
-        operation: "contains",
-        value: value
+        key: 'continente',
+        operation: 'contains',
+        value: value,
       });
 
       listSearchCriteria.push({
-        key: "pais",
-        operation: "contains",
-        value: value
+        key: 'pais',
+        operation: 'contains',
+        value: value,
       });
-
     }
 
     return {
       listOrderCriteria: {
         valueSortOrder: this.valueSortOrder,
-        sortBy: this.sortBy
+        sortBy: this.sortBy,
       },
       listSearchCriteria: listSearchCriteria,
       page: {
         pageIndex: this.pageNumber,
-        pageSize: this.itemsPerPage
-      }
+        pageSize: this.itemsPerPage,
+      },
     };
   }
 
@@ -135,25 +141,52 @@ export class UbicacionComponent implements OnInit {
   deleteUbicacion(id: any) {
     this.ubicacionesService.delete(id).subscribe(
       () => {
+        this.showNotification = true;
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
         this.getUbicaciones(this.query); // Refresca la lista de reservas
       },
-      error => {
-        console.error('Error al cancelar la reserva:', error);
-      }
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      },
     );
   }
 
   onFloatingButtonClick(): void {
     const dialogRef = this.dialog.open(UbicacionModalComponent, {
       width: '400px',
-      data: null // No pasamos datos porque es para crear
+      data: null, // No pasamos datos porque es para crear
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.ubicacionesService.create(result).subscribe(() => {
-          this.getUbicaciones(this.query); // Refresca la lista
-        });
+        this.ubicacionesService.create(result).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getUbicaciones(this.query); // Refresca la lista
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          },
+        );
       }
     });
   }
@@ -161,16 +194,31 @@ export class UbicacionComponent implements OnInit {
   editUbicacion(ubicacion: any): void {
     const dialogRef = this.dialog.open(UbicacionModalComponent, {
       width: '400px',
-      data: ubicacion // Pasamos la ubicación para editar
+      data: ubicacion, // Pasamos la ubicación para editar
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.ubicacionesService.update(ubicacion.id, result).subscribe(() => {
-          this.getUbicaciones(this.query); // Refresca la lista
-        });
+        this.ubicacionesService.update(ubicacion.id, result).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getUbicaciones(this.query); // Refresca la lista
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          },
+        );
       }
     });
   }
-
 }

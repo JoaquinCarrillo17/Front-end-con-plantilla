@@ -9,6 +9,9 @@
         formControlName="ciudad"
         placeholder="Introduce la ciudad"
       />
+      <div *ngIf="ubicacionForm.get('ciudad')?.invalid && ubicacionForm.get('ciudad')?.touched" class="error-message">
+        La ciudad es obligatoria.
+      </div>
     </div>
     <div class="form-group">
       <label for="pais">País</label>
@@ -19,6 +22,9 @@
         formControlName="pais"
         placeholder="Introduce el país"
       />
+      <div *ngIf="ubicacionForm.get('pais')?.invalid && ubicacionForm.get('pais')?.touched" class="error-message">
+        El país es obligatorio.
+      </div>
     </div>
     <div class="form-group">
       <label for="continente">Continente</label>
@@ -29,11 +35,14 @@
         formControlName="continente"
         placeholder="Introduce el continente"
       />
+      <div *ngIf="ubicacionForm.get('continente')?.invalid && ubicacionForm.get('continente')?.touched" class="error-message">
+        El continente es obligatorio.
+      </div>
     </div>
   </form>
 </div>
 
 <div class="button-container">
-  <button class="btn btn-primary" [disabled]="ubicacionForm.invalid" (click)="onSave()">Guardar</button>
+  <button class="btn btn-primary" (click)="onSave()">Guardar</button>
   <button class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
 </div>

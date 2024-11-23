@@ -11,31 +11,89 @@
         <div class="mb-4">
           <i class="feather icon-user-plus auth-icon"></i>
         </div>
-        <h3 class="mb-4" style="color: black !important; margin-right: 10px;">Sign up</h3>
+        <h3 class="mb-4" style="color: black !important; margin-right: 10px;">Registro</h3>
         <form #signupForm="ngForm">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Nombre Completo" name="nombre" ngModel />
+          <div class="mb-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nombre Completo"
+              name="nombre"
+              ngModel
+              #nombre="ngModel"
+              required
+            />
+            <div *ngIf="nombre.invalid && nombre.touched" class="error-message">
+              El nombre es obligatorio.
+            </div>
           </div>
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username" name="username" ngModel />
+          <div class="mb-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Username"
+              name="username"
+              ngModel
+              #username="ngModel"
+              required
+            />
+            <div *ngIf="username.invalid && username.touched" class="error-message">
+              El nombre de usuario es obligatorio.
+            </div>
           </div>
-          <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email" name="email" ngModel />
+          <div class="mb-4">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Email"
+              name="email"
+              ngModel
+              #email="ngModel"
+              required
+              email
+            />
+            <div *ngIf="email.invalid && email.touched" class="error-message">
+              Debes introducir un email válido.
+            </div>
           </div>
-          <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password" name="password" ngModel />
+          <div class="mb-4">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Password"
+              name="password"
+              ngModel
+              #password="ngModel"
+              required
+            />
+            <div *ngIf="password.invalid && password.touched" class="error-message">
+              La contraseña es obligatoria.
+            </div>
           </div>
-          <div class="input-group mb-4">
-            <input type="date" class="form-control" placeholder="Fecha de Nacimiento" name="fechaNacimiento" ngModel />
+          <div class="mb-4">
+            <input
+              type="date"
+              class="form-control"
+              placeholder="Fecha de Nacimiento"
+              name="fechaNacimiento"
+              ngModel
+              #fechaNacimiento="ngModel"
+              required
+            />
+            <div *ngIf="fechaNacimiento.invalid && fechaNacimiento.touched" class="error-message">
+              La fecha de nacimiento es obligatoria.
+            </div>
           </div>
 
-          <button class="btn btn-primary shadow-2 mb-4" (click)="signUp()">Sign up</button>
+          <button class="btn btn-primary shadow-2 mb-4" (click)="signUp()">Acceder</button>
         </form>
         <p class="mb-0 text-muted">
-          Already have an account?
-          <a [routerLink]="['/auth/login']"> Log in</a>
+          ¿Ya estás registrado?
+          <a [routerLink]="['/auth/login']"> Iniciar sesión</a>
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

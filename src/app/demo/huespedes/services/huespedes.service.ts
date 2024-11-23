@@ -43,4 +43,8 @@ export class HuespedesService {
     return this.http.put(`${this.baseUrl}/huespedes/${idHuesped}`, huesped);
   }
 
+  addHuesped(huesped: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/huespedes`, huesped);
+  }
+
 }

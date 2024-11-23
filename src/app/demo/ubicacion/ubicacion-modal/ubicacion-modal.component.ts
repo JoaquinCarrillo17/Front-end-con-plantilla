@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -5,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-ubicacion-modal',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './ubicacion-modal.component.html',
   styleUrl: './ubicacion-modal.component.scss'
 })
@@ -29,7 +30,7 @@ export class UbicacionModalComponent implements OnInit {
   onSave(): void {
     if (this.ubicacionForm.valid) {
       this.dialogRef.close(this.ubicacionForm.value);
-    }
+    } else this.ubicacionForm.markAllAsTouched();
   }
 
   onCancel(): void {

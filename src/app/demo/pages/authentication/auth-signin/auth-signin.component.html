@@ -11,23 +11,48 @@
         <div class="mb-4">
           <i class="feather icon-unlock auth-icon"></i>
         </div>
-        <h3 class="mb-4" style="color: black !important; margin-right: 10px;">Login</h3>
+        <h3 class="mb-4" style="color: black !important; margin-right: 10px;">Iniciar sesión</h3>
         <form #loginForm="ngForm">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username" name="username" ngModel />
-        </div>
-        <div class="input-group mb-4">
-          <input type="password" class="form-control" placeholder="Password" name="password" ngModel />
-        </div>
-        <button class="btn btn-primary mb-4" (click)="login()">Login</button>
+          <div class="mb-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nombre de usuario"
+              name="username"
+              ngModel
+              #username="ngModel"
+              required
+            />
+            <div *ngIf="username.invalid && username.touched" class="error-message">
+              El nombre de usuario es obligatorio.
+            </div>
+          </div>
+          <div class="mb-4">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Contraseña"
+              name="password"
+              ngModel
+              #password="ngModel"
+              required
+            />
+            <div *ngIf="password.invalid && password.touched" class="error-message">
+              La contraseña es obligatoria.
+            </div>
+          </div>
+        <button class="btn btn-primary mb-4" (click)="login()">Acceder</button>
       </form>
         <p class="mb-2 text-muted">
           Forgot password? <a [routerLink]="['/auth/reset-password']">Reset</a>
         </p>
         <p class="mb-0 text-muted">
-          Don’t have an account? <a [routerLink]="['/auth/signup']">Sign up</a>
+          ¿Todavía no estás registrado? <a [routerLink]="['/auth/signup']">Regístrate</a>
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>
+
