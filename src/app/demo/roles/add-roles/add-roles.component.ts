@@ -5,6 +5,7 @@ import { Permiso } from '../interfaces/permiso.interface';
 import { PermisosService } from '../services/permisos.service';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-rol',
@@ -15,14 +16,6 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 })
 export class AddRolesComponent implements OnInit{
 
-  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>();
-
-  @ViewChild('nombreInput') nombreInput: { nativeElement: { value: string; }; };
-  @ViewChild('descripcionInput') descripcionInput: { nativeElement: { value: string; }; };
-
-  public showCrearRolNotification = false;
-  public showCrearRolErrorNotification = false;
-
   public rol: Rol = {
     id: 0,
     nombre: "",
@@ -32,7 +25,11 @@ export class AddRolesComponent implements OnInit{
 
   public permisos: Permiso[];
 
-  constructor(private rolesService: RolesService, private permisosService: PermisosService) { }
+  constructor(
+    private rolesService: RolesService,
+    private permisosService: PermisosService,
+    private dialogRef: MatDialogRef<AddRolesComponent>,
+  ) { }
 
   ngOnInit(): void {
     this.permisosService.getAllPermisos().subscribe(data => {
@@ -44,28 +41,7 @@ export class AddRolesComponent implements OnInit{
   }
 
   onSubmit() {
-
-    const nombre = this.nombreInput.nativeElement.value;
-    const descripcion = this.descripcionInput.nativeElement.value;
-
-    this.rol = {
-      nombre: nombre,
-      descripcion: descripcion,
-      permisos: this.rol.permisos
-    }
-
-    this.rolesService.addRol(this.rol).subscribe(response => {
-      this.showCrearRolNotification = true; // Mostrar la notificación
-      setTimeout(() => {
-        this.showCrearRolNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-    }, error => {
-      this.showCrearRolErrorNotification = true; // Mostrar la notificación
-      setTimeout(() => {
-        this.showCrearRolErrorNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-    })
-
+    this.dialogRef.close(this.rol)
   }
 
   rolTienePermiso(permiso: Permiso): boolean {
@@ -84,7 +60,7 @@ export class AddRolesComponent implements OnInit{
   }
 
   ocultarModalCrearRol() {
-    this.cancelarCrear.emit();
+    this.dialogRef.close(null);
   }
 
 }

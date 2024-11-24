@@ -5,13 +5,14 @@ import { UsuariosService } from '../services/usuarios.service';
 import { EditUsuarioComponent } from "../edit-usuario/edit-usuario.component";
 import { AddUsuarioComponent } from "../add-usuario/add-usuario.component";
 import { TokenService } from '../../token/token.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-usuarios-list',
     standalone: true,
     templateUrl: './usuarios-list.component.html',
     styleUrl: './usuarios-list.component.scss',
-    imports: [SharedModule, EditUsuarioComponent, AddUsuarioComponent]
+    imports: [SharedModule]
 })
 export class UsuariosListComponent implements OnInit{
 
@@ -24,20 +25,24 @@ export class UsuariosListComponent implements OnInit{
   public valueSortOrder: string = 'ASC';
   public sortBy: string = 'id';
 
-  public mostrarModalEliminar = false;
-  public mostrarModalEditarCrear = false;
-  accionModal: 'editar' | 'crear' = 'editar';
-
-  public showBorrarUsuarioNotification = false;
-  public showBorrarUsuarioErrorNotification = false;
-
   public puedeCrear: boolean;
 
-  public idUsuario: number; // ? Para saber que rol tiene que ser editado/creado
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
 
-  constructor(private usuariosService: UsuariosService, private tokenService: TokenService) { }
+  constructor(
+    private usuariosService: UsuariosService,
+    private tokenService: TokenService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
+    this.loadUsuarios();
+    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_USUARIOS_W');
+  }
+
+  loadUsuarios() {
     this.usuariosService.getAllUsuariosMagicFilter().subscribe(response => {
       this.usuarios = response.usuarios;
       this.totalItems = response.totalItems;
@@ -48,8 +53,6 @@ export class UsuariosListComponent implements OnInit{
         this.isSpinnerVisible = false;
       }
     );
-
-    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_USUARIOS_W');
   }
 
   search(value: string): void {
@@ -112,43 +115,81 @@ export class UsuariosListComponent implements OnInit{
 
   // ? Editar/crear/borrar rol
 
-  deleteUsuario(){
-    this.usuariosService.deleteUsuario(this.idUsuario).subscribe(response => {
-      this.showBorrarUsuarioNotification = true;
+  deleteUsuario(id){
+    this.usuariosService.deleteUsuario(id).subscribe(response => {
+      this.showNotification = true;
+      this.message = 'Operación realizada con éxito';
+      this.color = true;
       setTimeout(() => {
-        this.showBorrarUsuarioNotification = false;
+        this.showNotification = false;
       }, 3000);
-      window.location.reload();
+    this.loadUsuarios();
     }, error => {
-      this.showBorrarUsuarioErrorNotification = true;
+      this.showNotification = true;
+      this.message = 'Error al realizar la operación';
+      this.color = false;
       setTimeout(() => {
-        this.showBorrarUsuarioErrorNotification = false;
+        this.showNotification = false;
       }, 3000);
     })
   }
 
-  mostrarModalEditarCrearUsuario(idUsuario: number) {
-    this.idUsuario = idUsuario;
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'editar';
+
+  abrirModalCrearUsuario(): void {
+    const dialogRef = this.dialog.open(AddUsuarioComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((nuevoUsuario: Usuario) => {
+      if (nuevoUsuario) {
+        this.usuariosService.addUsuario(nuevoUsuario).subscribe(() => {
+          this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          this.loadUsuarios();
+        }, error => {
+          this.showNotification = true;
+          this.message = 'Error al realizar la operación';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+        });
+      }
+    });
   }
 
-  ocultarModalEditarCrearUsuario() {
-    this.mostrarModalEditarCrear = false;
-  }
+  // Método para abrir el modal de edición
+  abrirModalEditarUsuario(usuario: Usuario): void {
+    const dialogRef = this.dialog.open(EditUsuarioComponent, {
+      width: '400px',
+      data: usuario, // Pasar el usuario completo al modal
+    });
 
-  mostrarModalEliminarUsuario(idUsuario: number) {
-    this.idUsuario = idUsuario;
-    this.mostrarModalEliminar = true;
-  }
-
-  ocultarModalEliminarUsuario() {
-    this.mostrarModalEliminar = false;
-  }
-
-  onFloatingButtonClick() {
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'crear'
+    dialogRef.afterClosed().subscribe((usuarioEditado: Usuario) => {
+      if (usuarioEditado) {
+        usuarioEditado.id = usuario.id;
+        this.usuariosService.editUsuario(usuario.id, usuarioEditado).subscribe(() => {
+          this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          this.loadUsuarios();
+        }, error => {
+          this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+        });
+      }
+    });
   }
 
 }

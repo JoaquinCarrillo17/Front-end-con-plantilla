@@ -5,13 +5,14 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { EditRolesComponent } from "../edit-roles/edit-roles.component";
 import { AddRolesComponent } from "../add-roles/add-roles.component";
 import { TokenService } from '../../token/token.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-roles-list',
     standalone: true,
     templateUrl: './roles-list.component.html',
     styleUrl: './roles-list.component.scss',
-    imports: [SharedModule, EditRolesComponent, AddRolesComponent]
+    imports: [SharedModule]
 })
 export class RolesListComponent implements OnInit {
 
@@ -24,32 +25,34 @@ export class RolesListComponent implements OnInit {
   public valueSortOrder: string = 'ASC';
   public sortBy: string = 'id';
 
-  public mostrarModalEliminar = false;
-  public mostrarModalEditarCrear = false;
-  accionModal: 'editar' | 'crear' = 'editar';
-
-  public showBorrarRolNotification = false;
-  public showBorrarRolErrorNotification = false;
-
   public puedeCrear: boolean;
 
-  public idRol: number; // ? Para saber que rol tiene que ser editado/creado
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
 
-  constructor(private rolesService: RolesService, private tokenService: TokenService) { }
+  constructor(
+    private rolesService: RolesService,
+    private tokenService: TokenService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
-    this.rolesService.getAllRolesMagicFilter().subscribe(response => {
-      this.roles = response.roles;
-      this.totalItems = response.totalItems;
-      this.isSpinnerVisible = false;
-    },
+    this.cargarRoles();
+  }
+
+  cargarRoles(): void {
+    this.rolesService.getAllRolesMagicFilter().subscribe(
+      (response) => {
+        this.roles = response.roles;
+        this.totalItems = response.totalItems;
+        this.isSpinnerVisible = false;
+      },
       (error) => {
-        console.error('Error al cargar los roles: ' + error);
+        console.error('Error al cargar los roles:', error);
         this.isSpinnerVisible = false;
       }
-    )
-
-    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_ROLES_W');
+    );
   }
 
   search(value: string): void {
@@ -112,43 +115,84 @@ export class RolesListComponent implements OnInit {
 
   // ? Editar/crear/borrar rol
 
-  deleteRol(){
-    this.rolesService.deleteRol(this.idRol).subscribe(response => {
-      this.showBorrarRolNotification = true;
+  deleteRol(id){
+    this.rolesService.deleteRol(id).subscribe(response => {
+      this.showNotification = true;
+      this.message = 'Operación realizada con éxito';
+      this.color = true;
       setTimeout(() => {
-        this.showBorrarRolNotification = false;
+        this.showNotification = false;
       }, 3000);
-      window.location.reload();
     }, error => {
-      this.showBorrarRolErrorNotification = true;
+      this.showNotification = true;
+      this.message = 'Error al realizar la operación';
+      this.color = false;
       setTimeout(() => {
-        this.showBorrarRolErrorNotification = false;
+        this.showNotification = false;
       }, 3000);
     })
   }
 
-  mostrarModalEditarCrearRol(idRol: number) {
-    this.idRol = idRol;
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'editar';
+  abrirModalCrearRol(): void {
+    const dialogRef = this.dialog.open(AddRolesComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((rol: Rol) => {
+      if (rol) {
+        this.rolesService.addRol(rol).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.cargarRoles(); // Recargar la lista de roles
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          }
+        );
+      }
+    });
   }
 
-  ocultarModalEditarCrearRol() {
-    this.mostrarModalEditarCrear = false;
-  }
+  abrirModalEditarRol(rol: Rol): void {
+    const dialogRef = this.dialog.open(EditRolesComponent, {
+      width: '400px',
+      data: { rol },
+    });
 
-  mostrarModalEliminarRol(idRol: number) {
-    this.idRol = idRol;
-    this.mostrarModalEliminar = true;
-  }
-
-  ocultarModalEliminarRol() {
-    this.mostrarModalEliminar = false;
-  }
-
-  onFloatingButtonClick() {
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'crear'
+    dialogRef.afterClosed().subscribe((updatedRol: Rol) => {
+      if (updatedRol) {
+        updatedRol.id = rol.id;
+        this.rolesService.editRol(rol.id, updatedRol).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.cargarRoles(); // Recargar la lista de roles
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          }
+        );
+      }
+    });
   }
 
 }

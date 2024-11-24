@@ -1,38 +1,37 @@
-<form (ngSubmit)="onSubmit()">
-  <div class="modal-columns">
-    <div class="modal-column">
+<div class="modal-content">
+  <form (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="modal-columns">
+      <div class="modal-column">
 
-      <div class="form-group">
-        <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required formControlName="nombre"/>
-      </div>
+        <div class="form-group">
+          <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" placeholder="Nombre" [(ngModel)]="rol.nombre" required
+             />
+        </div>
 
-      <div class="form-group">
-        <label for="descripcion" class="col-sm-3 col-form-label">Descripción</label>
-        <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #descripcionInput required formControlName="descripcion"/>
-      </div>
+        <div class="form-group">
+          <label for="descripcion" class="col-sm-3 col-form-label">Descripción</label>
+          <input type="text" class="form-control" id="descripcion" placeholder="Descripción" [(ngModel)]="rol.descripcion" required
+            />
+        </div>
 
-      <div class="listaPermisos">
-      <div *ngFor="let permiso of permisos">
-        <label>
-          <input type="checkbox" [checked]="rolTienePermiso(permiso)" (change)="anadirPermiso(permiso)">
-          {{ permiso.descripcion }}
-        </label>
+        <div class="listaPermisos">
+          <div *ngFor="let permiso of permisos">
+            <label>
+              <input type="checkbox" [checked]="rolTienePermiso(permiso)" (change)="anadirPermiso(permiso)">
+              {{ permiso.descripcion }}
+            </label>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button type="button" (click)="onSubmit()" class="btn btn-primary"
+            title="btn btn-glow-primary btn-primary" data-toggle="tooltip">Aceptar</button>
+          <button type="button" class="btn btn-secondary"
+            (click)="ocultarModalCrearRol()">Cancelar</button>
+        </div>
+
       </div>
     </div>
-
-      <div class="button-container">
-        <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary"
-          title="btn btn-glow-primary btn-primary" data-toggle="tooltip">Crear Rol</button>
-          <button type="button" class="btn btn-glow-secondary btn-secondary"
-      (click)="ocultarModalCrearRol()">Cancelar</button>
-      </div>
-
-    </div>
-  </div>
-</form>
-
-
-<app-notification [showNotification]="showCrearRolNotification" message="Rol creado con éxito" [color]="true"></app-notification>
-<app-notification [showNotification]="showCrearRolErrorNotification" message="No tienes permisos para crear un rol" [color]="false"></app-notification>
-
+  </form>
+</div>

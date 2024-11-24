@@ -5,6 +5,7 @@ import { UsuariosService } from '../services/usuarios.service';
 import { RolesService } from '../../roles/services/roles.service';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-usuario',
@@ -14,17 +15,6 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   styleUrl: './add-usuario.component.scss'
 })
 export class AddUsuarioComponent implements OnInit {
-
-  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>();
-
-  @ViewChild('nombreInput') nombreInput: { nativeElement: { value: string; }; };
-  @ViewChild('usernameInput') usernameInput: { nativeElement: { value: string; }; };
-  @ViewChild('emailInput') emailInput: { nativeElement: { value: string; }; };
-  @ViewChild('passwordInput') passwordInput: { nativeElement: { value: string; }; };
-  @ViewChild('fechaInput') fechaInput: { nativeElement: { value: Date; }; };
-
-  public showCrearUsuarioNotification = false;
-  public showCrearUsuarioErrorNotification = false;
 
   public usuario: Usuario = {
     id: 0,
@@ -38,7 +28,11 @@ export class AddUsuarioComponent implements OnInit {
 
   public roles: Rol[];
 
-  constructor(private rolesService: RolesService, private usuariosService: UsuariosService) { }
+  constructor(
+    private rolesService: RolesService,
+    private usuariosService: UsuariosService,
+    private dialogRef: MatDialogRef<AddUsuarioComponent>
+  ) { }
 
   ngOnInit(): void {
     this.rolesService.getAllRoles().subscribe(data => {
@@ -50,35 +44,7 @@ export class AddUsuarioComponent implements OnInit {
   }
 
   onSubmit() {
-
-    const nombre = this.nombreInput.nativeElement.value;
-    const username = this.usernameInput.nativeElement.value;
-    const email = this.emailInput.nativeElement.value;
-    const password = this.passwordInput.nativeElement.value;
-    const fechaNacimiento = this.fechaInput.nativeElement.value;
-
-    this.usuario = {
-      nombre: nombre,
-      username: username,
-      email: email,
-      password: password,
-      fechaNacimiento: fechaNacimiento,
-      roles: this.usuario.roles
-    }
-
-    this.usuariosService.addUsuario(this.usuario).subscribe(response => {
-      this.ocultarModalCrearUsuario();
-      this.showCrearUsuarioNotification = true; // Mostrar la notificación
-      setTimeout(() => {
-        this.showCrearUsuarioNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-    }, error => {
-      this.showCrearUsuarioErrorNotification = true; // Mostrar la notificación
-      setTimeout(() => {
-        this.showCrearUsuarioErrorNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-    })
-
+    this.dialogRef.close(this.usuario);
   }
 
   usuarioTieneRol(rol: Rol): boolean {
@@ -96,8 +62,8 @@ export class AddUsuarioComponent implements OnInit {
     }
   }
 
-  ocultarModalCrearUsuario() {
-    this.cancelarCrear.emit();
+  cancelar(): void {
+    this.dialogRef.close(null); // Cerrar sin acción
   }
 
 

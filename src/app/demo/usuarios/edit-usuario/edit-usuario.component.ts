@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Usuario } from '../../pages/authentication/interfaces/usuario.interface';
 import { Rol } from '../../roles/interfaces/rol.interface';
 import { RolesService } from '../../roles/services/roles.service';
@@ -6,6 +6,7 @@ import { UsuariosService } from '../services/usuarios.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-usuario',
@@ -15,12 +16,6 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   styleUrl: './edit-usuario.component.scss'
 })
 export class EditUsuarioComponent implements OnInit {
-
-  @Input() idUsuario: number;
-  @Output() editComplete: EventEmitter<void> = new EventEmitter<void>();
-
-  public showEditarUsuarioNotification = false;
-  public showEditarUsuarioErrorNotification = false;
 
   public usuario: Usuario = {
     id: 0,
@@ -34,47 +29,22 @@ export class EditUsuarioComponent implements OnInit {
 
   public roles: Rol[];
 
-  constructor(private rolesService: RolesService, private usuariosService: UsuariosService) { }
+  constructor(
+    private rolesService: RolesService,
+    private usuariosService: UsuariosService,
+    private dialogRef: MatDialogRef<EditUsuarioComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Usuario
+  ) {
+    this.usuario = { ...data };
+  }
 
   ngOnInit(): void {
-    this.usuariosService.getUsuario(this.idUsuario).subscribe(data => {
-      this.usuario = data;
-    },
-      error => {
-        console.log("Error al obtener el usuario: " + error)
-      })
-
     this.rolesService.getAllRoles().subscribe(data => {
       this.roles = data;
     },
       error => {
         console.log("Error al obtener los roles: " + error);
       })
-  }
-
-  editUsuario() {
-    this.usuariosService.editUsuario(this.idUsuario, this.usuario).subscribe(response => {
-      this.usuario = {
-        id: 0,
-        nombre: "",
-        username: "",
-        email: "",
-        password: "",
-        fechaNacimiento: null,
-        roles: []
-      }
-      this.ocultarModalEditarUsuario();
-      this.showEditarUsuarioNotification = true;
-      setTimeout(() => {
-        this.showEditarUsuarioNotification = false;
-      }, 3000);
-    }, error => {
-      this.showEditarUsuarioErrorNotification = true;
-      setTimeout(() => {
-        this.showEditarUsuarioErrorNotification = false;
-      }, 3000);
-    }
-    )
   }
 
   usuarioTieneRol(rol: Rol): boolean {
@@ -92,8 +62,12 @@ export class EditUsuarioComponent implements OnInit {
     }
   }
 
-  ocultarModalEditarUsuario() {
-    this.editComplete.emit();
+  onSubmit(): void {
+    this.dialogRef.close(this.usuario); // Devolver el usuario editado
+  }
+
+  cancelar(): void {
+    this.dialogRef.close(null); // Cerrar sin acción
   }
 
 }

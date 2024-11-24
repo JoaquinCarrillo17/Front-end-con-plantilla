@@ -1,54 +1,54 @@
-<form (ngSubmit)="onSubmit()">
-  <div class="modal-columns">
+<div class="modal-content">
+  <form (ngSubmit)="onSubmit()" class="modal-form">
+    <div class="modal-columns">
 
-    <div class="modal-column">
+      <div class="modal-column">
 
-      <div class="form-group">
-        <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Nombre" #nombreInput required formControlName="nombre"/>
-      </div>
-
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" placeholder="Username" #usernameInput required>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Correo electrónico</label>
-        <input type="email" class="form-control" id="email" placeholder="Email" #emailInput required>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input type="password" class="form-control" id="password" placeholder="Password" #passwordInput required>
-      </div>
-
-      <div class="form-group">
-        <label for="fechaNacimiento">Fecha de Nacimiento</label>
-        <input type="date" class="form-control" id="fechaNacimiento" placeholder="Fecha de Nacimiento" #fechaInput required>
-      </div>
-
-
-      <div class="listaRoles">
-        <div *ngFor="let rol of roles">
-          <label>
-            <input type="checkbox" [checked]="usuarioTieneRol(rol)" (change)="anadirRol(rol)">
-            {{ rol.descripcion }}
-          </label>
+        <div class="form-group">
+          <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" placeholder="Nombre" [(ngModel)]="usuario.nombre"
+            required />
         </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" placeholder="Username" [(ngModel)]="usuario.username"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="usuario.email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" class="form-control" id="password" placeholder="Password"
+            [(ngModel)]="usuario.password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de Nacimiento</label>
+          <input type="date" class="form-control" id="fechaNacimiento" placeholder="Fecha de Nacimiento"
+            [(ngModel)]="usuario.fechaNacimiento" required>
+        </div>
+
+
+        <div class="listaRoles">
+          <div *ngFor="let rol of roles">
+            <label>
+              <input type="checkbox" [checked]="usuarioTieneRol(rol)" (change)="anadirRol(rol)">
+              {{ rol.descripcion }}
+            </label>
+          </div>
+        </div>
+
       </div>
-
     </div>
-  </div>
 
-  <div class="button-container">
-    <button type="button" (click)="onSubmit()" class="btn btn-glow-primary btn-primary">Crear</button>
-    <button type="button" class="btn btn-glow-secondary btn-secondary"
-      (click)="ocultarModalCrearUsuario()">Cancelar</button>
-  </div>
-</form>
-
-
-<app-notification [showNotification]="showCrearUsuarioNotification" message="Usuario creado con éxito" [color]="true"></app-notification>
-<app-notification [showNotification]="showCrearUsuarioErrorNotification" message="No tienes permisos para crear un usuario" [color]="false"></app-notification>
-
+    <div class="button-container">
+      <button type="button" (click)="onSubmit()" class="btn btn-primary">Crear</button>
+      <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>
