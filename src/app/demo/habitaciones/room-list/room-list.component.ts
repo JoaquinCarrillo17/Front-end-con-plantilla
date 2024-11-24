@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-import { Habitacion } from '../interfaces/habitacion.interface';
 import { HabitacionesService } from '../services/habitaciones.service';
-import { AddRoomComponent } from '../add-room/add-room.component';
-import { EditRoomComponent } from '../edit-room/edit-room.component';
 import { TokenService } from '../../token/token.service';
+import { RoomModalComponent } from '../room-modal/room-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-room-list',
   standalone: true,
-  imports: [SharedModule, AddRoomComponent, EditRoomComponent],
+  imports: [SharedModule],
   templateUrl: './room-list.component.html',
-  styleUrl: './room-list.component.scss'
+  styleUrl: './room-list.component.scss',
 })
 export class RoomListComponent implements OnInit {
-
   isSpinnerVisible: boolean = true;
   public habitaciones: any[];
   public habitacionSeleccionada: any = null;
@@ -25,38 +23,47 @@ export class RoomListComponent implements OnInit {
   public valueSortOrder: string = 'ASC';
   public sortBy: string = 'id';
 
-  public mostrarModalEliminar = false;
-  public mostrarModalEditarCrear = false;
-  accionModal: 'editar' | 'crear' = 'editar';
-
   public puedeCrear: boolean;
-  public idHabitacion: number;
   public usuario: any;
   public esSuperAdmin: boolean;
 
-  constructor(private habitacionesService: HabitacionesService, private tokenService: TokenService) { }
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
+
+  constructor(
+    private habitacionesService: HabitacionesService,
+    private tokenService: TokenService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
-    this.query = "";
-    this.usuario = localStorage.getItem("usuario");
-    this.esSuperAdmin = localStorage.getItem("superadmin") === "true";
+    this.query = '';
+    this.usuario = localStorage.getItem('usuario');
+    this.esSuperAdmin = localStorage.getItem('superadmin') === 'true';
     this.getHabitaciones(this.query);
-    this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HABITACIONES_W');
+    this.puedeCrear = this.tokenService
+      .getRoles()
+      .includes('ROLE_HABITACIONES_W');
   }
 
   getHabitaciones(value: any): void {
-    this.habitacionesService.getHabitacionesDynamicFilterOr(this.getDataForRequest(value)).subscribe(response => {
-      this.habitaciones = response.content;
-      this.totalItems = response.totalElements;
-      this.isSpinnerVisible = false;
-    },
-    (error) => {
-      if (error.status === 404) {
-        this.habitaciones = [];
-        this.totalItems = 0;
-      }
-      this.isSpinnerVisible = false;
-    });
+    this.habitacionesService
+      .getHabitacionesDynamicFilterOr(this.getDataForRequest(value))
+      .subscribe(
+        (response) => {
+          this.habitaciones = response.content;
+          this.totalItems = response.totalElements;
+          this.isSpinnerVisible = false;
+        },
+        (error) => {
+          if (error.status === 404) {
+            this.habitaciones = [];
+            this.totalItems = 0;
+          }
+          this.isSpinnerVisible = false;
+        },
+      );
   }
 
   private getDataForRequest(value: any): any {
@@ -66,49 +73,49 @@ export class RoomListComponent implements OnInit {
     let listSearchCriteria: any[] = [];
 
     // Filtros dinámicos
-    if (value !== "" && value !== null) {
+    if (value !== '' && value !== null) {
       if (!isNaN(value)) {
         listSearchCriteria.push({
-          key: "id",
-          operation: "equals",
-          value: parseInt(value, 10)
+          key: 'id',
+          operation: 'equals',
+          value: parseInt(value, 10),
         });
       }
 
       listSearchCriteria.push(
         {
-          key: "numero",
-          operation: "equals",
-          value: value
+          key: 'numero',
+          operation: 'equals',
+          value: value,
         },
         {
-          key: "hotel.nombre",
-          operation: "contains",
-          value: value
-        }
-        );
+          key: 'hotel.nombre',
+          operation: 'contains',
+          value: value,
+        },
+      );
 
       if (!isNaN(value)) {
         listSearchCriteria.push({
-          key: "precioNoche",
-          operation: "equals",
-          value: parseFloat(value)
+          key: 'precioNoche',
+          operation: 'equals',
+          value: parseFloat(value),
         });
       }
 
       // Filtrar por servicios válidos
       if (validServices.includes(value.toUpperCase())) {
         listSearchCriteria.push({
-          key: "servicios",
-          operation: "equals",
-          value: value.toUpperCase()
+          key: 'servicios',
+          operation: 'equals',
+          value: value.toUpperCase(),
         });
       }
       if (validRoom.includes(value.toUpperCase())) {
         listSearchCriteria.push({
-          key: "tipoHabitacion",
-          operation: "equals",
-          value: value.toUpperCase()
+          key: 'tipoHabitacion',
+          operation: 'equals',
+          value: value.toUpperCase(),
         });
       }
     }
@@ -116,22 +123,22 @@ export class RoomListComponent implements OnInit {
     // Si no es superadmin, añadir filtro idUsuario
     if (!this.esSuperAdmin) {
       listSearchCriteria.push({
-        key: "hotel.idUsuario",
-        operation: "equals",
-        value: this.usuario
+        key: 'hotel.idUsuario',
+        operation: 'equals',
+        value: this.usuario,
       });
     }
 
     return {
       listOrderCriteria: {
         valueSortOrder: this.valueSortOrder,
-        sortBy: this.sortBy
+        sortBy: this.sortBy,
       },
       listSearchCriteria: listSearchCriteria,
       page: {
         pageIndex: this.pageNumber,
-        pageSize: this.itemsPerPage
-      }
+        pageSize: this.itemsPerPage,
+      },
     };
   }
 
@@ -163,52 +170,96 @@ export class RoomListComponent implements OnInit {
     this.getHabitaciones(this.query);
   }
 
-  deleteHabitacion() {
-    this.habitacionesService.deleteHabitacion(this.idHabitacion).subscribe(response => {
-      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
-    },
-    error => {
-      console.error(`Error al eliminar la habitación ${this.idHabitacion}`, error);
-    }
-  )
-  this.ocultarModalEliminarHabitacion();
+  deleteHabitacion(id) {
+    this.habitacionesService.deleteHabitacion(id).subscribe(
+      (response) => {
+        this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getHabitaciones(this.query);
+      },
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      },
+    );
   }
 
   toggleHabitacion(id: number): void {
     if (this.habitacionSeleccionada?.id === id) {
       this.habitacionSeleccionada = null; // Si es en la misma fila se cierra
     } else {
-      this.habitacionesService.getHabitacion(id).subscribe(habitacion => {
+      this.habitacionesService.getHabitacion(id).subscribe((habitacion) => {
         this.habitacionSeleccionada = habitacion;
       });
     }
   }
 
-  // ? Gestion de los modales
-  mostrarModalEliminarHabitacion(idHabitacion: number) {
-    this.idHabitacion = idHabitacion;
-    this.mostrarModalEliminar = true;
+  onFloatingButtonClick(): void {
+    const dialogRef = this.dialog.open(RoomModalComponent, {
+      width: '600px',
+      data: null, // No se pasa habitación, es para crear
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.habitacionesService.crearHabitacion(result).subscribe(() => {
+          this.showNotification = true;
+          this.message = 'Operación realizada con éxito';
+          this.color = true;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+          this.getHabitaciones(this.query); // Refrescar la lista
+        }, error => {
+          this.showNotification = true;
+          this.message = 'Error al realizar la operación';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+        });
+      }
+    });
   }
 
-  ocultarModalEliminarHabitacion() {
-    this.mostrarModalEliminar = false;
+  mostrarModalEditarHabitacion(habitacion: any): void {
+    const dialogRef = this.dialog.open(RoomModalComponent, {
+      width: '400px',
+      data: habitacion, // Se pasa la habitación seleccionada para edición
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        result.id = habitacion.id;
+        result.numero = habitacion.numero;
+        result.hotel = habitacion.hotel;
+        this.habitacionesService
+          .editHabitacion(habitacion.id, result)
+          .subscribe(() => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getHabitaciones(this.query); // Refrescar la lista
+          }, error => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          });
+      }
+    });
   }
-
-  mostrarModalEditarHabitacion(idHabitacion: number) {
-    this.idHabitacion = idHabitacion;
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'editar';
-  }
-
-  ocultarModalEditarHabitacion() {
-    this.mostrarModalEditarCrear = false;
-  }
-
-  onFloatingButtonClick() {
-    console.log("pulso el boton")
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'crear'
-  }
-
-
 }

@@ -31,9 +31,9 @@
              <!-- <span class="material-icons view-icon" style="color: #04a9f5;"
               (click)="toggleHabitacion(habitacion.id)"> visibility </span> -->
               <span class="material-icons edit-icon" style="color: orange;"
-              (click)="mostrarModalEditarHabitacion(habitacion.id)"> edit </span>
+              (click)="mostrarModalEditarHabitacion(habitacion)"> edit </span>
               <span class="material-icons delete-icon" style="color: red;"
-              (click)="mostrarModalEliminarHabitacion(habitacion.id)"> delete </span>
+              (click)="deleteHabitacion(habitacion.id)"> delete </span>
             </td>
           </tr>
         </tbody>
@@ -43,38 +43,6 @@
   </app-card>
   <!-- <app-floating-button *ngIf="esSuperAdmin" (click)="onFloatingButtonClick()"></app-floating-button> -->
 </div>
-
-<!-- Modal eliminar -->
-<ng-container *ngIf="mostrarModalEliminar">
-  <div class="modal">
-    <div class="modal-content delete-modal">
-      <p>¿Estás seguro de que deseas eliminar la habitacion? Esta operación es irreversible.</p>
-      <div class="button-container">
-        <button class="btn btn-glow-danger btn-danger" (click)="deleteHabitacion()">Aceptar</button>
-        <button class="btn btn-glow-secondary btn-secondary" (click)="ocultarModalEliminarHabitacion()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</ng-container>
-
-<!-- Modal editar/crear -->
-
-<ng-container *ngIf="mostrarModalEditarCrear">
-  <div class="modal">
-    <div class="modal-content edit-modal">
-      <div class="modal-header-view-more">
-        <h5>{{ accionModal === 'editar' ? 'Editar Habitación' : 'Añadir Habitación' }}</h5>
-        <span class="modal-close-icon" (click)="ocultarModalEditarHabitacion()">&times;</span>
-      </div>
-      <ng-container *ngIf="accionModal === 'editar'; else addHabitacionForm">
-        <app-edit-room [idHabitacion]="idHabitacion" (editComplete)="ocultarModalEditarHabitacion()"></app-edit-room>
-      </ng-container>
-      <ng-template #addHabitacionForm>
-        <app-add-room (cancelarCrear)="ocultarModalEditarHabitacion()"></app-add-room>
-      </ng-template>
-    </div>
-  </div>
-</ng-container>
 
 <ng-container *ngIf="habitacionSeleccionada != null">
   <div class="modal modal-view-more">
@@ -104,3 +72,4 @@
   </div>
 </ng-container>
 
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

@@ -8,12 +8,23 @@
   flex: 1;
 }
 
-.button-container {
-  display: flex;
-  justify-content: end;
+.modal-content {
   margin-top: 20px;
+  padding: 0 20px; /* Padding horizontal del contenedor */
 }
 
-.form-control {
-  margin-bottom: 15px;
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaciado vertical entre grupos */
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-secondary {
+  margin-right: 0px;
 }

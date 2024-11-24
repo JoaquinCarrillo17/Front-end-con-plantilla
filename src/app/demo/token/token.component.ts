@@ -7,8 +7,11 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-
-  constructor(private tokenService: TokenService, private router: Router, private jwtHelper: JwtHelperService) {}
+  constructor(
+    private tokenService: TokenService,
+    private router: Router,
+    private jwtHelper: JwtHelperService,
+  ) {}
 
   private publicUrls: string[] = [
     '/auth/signUp',
@@ -16,11 +19,15 @@ export class TokenInterceptor implements HttpInterceptor {
     '/ubicaciones',
     '/hoteles/dynamicFilterAnd',
     '/habitaciones/dynamicFilterAnd',
-    '/habitaciones/'
   ];
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken();
+
+    console.log(`Es publica la ruta ${req.url}? ${this.isPublicUrl(req.url)}`)
 
     if (this.isPublicUrl(req.url)) {
       return next.handle(req); // Continuar sin autenticación
@@ -33,15 +40,17 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(authReq);
     } else {
       // Token inválido o no disponible, redirigir al login
-      console.log(req.url)
-      console.log("NO TENGO TOKEN");
+      console.log(req.url);
+      console.log('NO TENGO TOKEN');
       this.router.navigate(['/auth/login']);
       return next.handle(req);
     }
   }
 
   private isPublicUrl(url: string): boolean {
-    return this.publicUrls.some(publicUrl => url.includes(publicUrl));
+    return this.publicUrls.some(
+      (publicUrl) =>
+        url.includes(publicUrl)
+    );
   }
-
 }

@@ -70,4 +70,8 @@ export class HotelesService {
     return this.http.get(`${this.baseUrl}/hoteles/${id}`);
   }
 
+  getHotelPorUsuario(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/hoteles/getHotelByUsuario/${id}`);
+  }
+
 }

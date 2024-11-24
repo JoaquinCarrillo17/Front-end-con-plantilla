@@ -5,6 +5,7 @@ import { TipoHabitacion, Habitacion } from '../interfaces/habitacion.interface';
 import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { HabitacionesService } from '../services/habitaciones.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-room',
@@ -15,7 +16,6 @@ import { HabitacionesService } from '../services/habitaciones.service';
 })
 export class AddRoomComponent {
 
-  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>(); // Para cerrar el modal con el boton de cancelar
   @Input() hotel: any; // Recibe el hotel seleccionado
 
   public tiposHabitacion = [
@@ -37,9 +37,9 @@ export class AddRoomComponent {
   };
 
   public preciosServicios = {
-    Cocina: 0,
-    Terraza: 0,
-    Jacuzzi: 0
+    COCINA: 0,
+    TERRAZA: 0,
+    JACUZZI: 0
   };
 
   public serviciosSeleccionados = {
@@ -54,7 +54,7 @@ export class AddRoomComponent {
 
   private habitacionServicios: string[] = [];
 
-  constructor(private formBuilder: FormBuilder, private habitacionesService: HabitacionesService) {
+  constructor(private formBuilder: FormBuilder, private habitacionesService: HabitacionesService, public dialogRef: MatDialogRef<AddRoomComponent>) {
     this.generadorForm = this.formBuilder.group({
       cantidad: [1, [Validators.required, Validators.min(1)]],
       tipoHabitacion: ['', Validators.required]
@@ -79,6 +79,43 @@ export class AddRoomComponent {
 
   // Función para agregar habitaciones
   agregarHabitaciones() {
+    // Validar todos los campos requeridos
+    let camposInvalidos = false;
+
+    // Verificar que todos los precios base están rellenados
+    for (const tipo in this.preciosBase) {
+      if (!this.preciosBase[tipo] || this.preciosBase[tipo] <= 0) {
+        console.log("precios base invalidos")
+        camposInvalidos = true;
+        break;
+      }
+    }
+
+    // Verificar que todos los precios adicionales por servicio están rellenados
+    for (const servicio in this.preciosServicios) {
+      if (!this.preciosServicios[servicio] || this.preciosServicios[servicio] <= 0) {
+        console.log("servicio ", servicio)
+        console.log("precio: " , this.preciosServicios[servicio])
+        console.log("servicios invalidos")
+
+        camposInvalidos = true;
+        break;
+      }
+    }
+
+    // Verificar que los campos del formulario están válidos
+    if (this.generadorForm.invalid) {
+      this.generadorForm.markAllAsTouched(); // Mostrar errores en el formulario
+      console.log("form invalido")
+
+      camposInvalidos = true;
+    }
+
+    // Si hay campos inválidos, no cerrar el diálogo
+    if (camposInvalidos) {
+      return;
+    }
+
     const cantidad = this.generadorForm.value.cantidad;
     const tipoHabitacion = this.generadorForm.value.tipoHabitacion;
 
@@ -101,29 +138,13 @@ export class AddRoomComponent {
   }
 
   // Función para guardar todas las habitaciones generadas
-  guardarHabitaciones() {
-    this.habitacionesGeneradas.forEach(habitacion => {
-      this.habitacionesService.crearHabitacion(habitacion).subscribe(
-        response => {
-          // Muestra una notificación de éxito o cualquier otro manejo
-          window.location.reload();
-        },
-        error => {
-          // Muestra una notificación de error o cualquier otro manejo
-        })
-    })
-    /*this.habitacionesService.crearHabitacion(this.habitacionesGeneradas).subscribe(
-      response => {
-        // Muestra una notificación de éxito o cualquier otro manejo
-      },
-      error => {
-        // Muestra una notificación de error o cualquier otro manejo
-      }
-    );*/
+  guardarHabitaciones(): void {
+    this.dialogRef.close(this.habitacionesGeneradas);
   }
 
+
   ocultarModalEditarHabitacion() {
-    this.cancelarCrear.emit();
+    this.dialogRef.close(null);
   }
 
 }

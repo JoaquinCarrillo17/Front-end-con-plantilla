@@ -67,14 +67,14 @@ export class GuestListComponent implements OnInit {
     }
 
     // Si no es superadmin, filtrar por idUsuario
-    /*if (!this.esSuperAdmin) {
+    if (!this.esSuperAdmin) {
       listSearchCriteria.push({
-        key: 'habitacion.hotel.idUsuario',
+        key: 'idUsuario',
         operation: 'equals',
         value: this.usuario
       });
     }
-*/
+
     return {
       listOrderCriteria: {
         valueSortOrder: this.valueSortOrder,

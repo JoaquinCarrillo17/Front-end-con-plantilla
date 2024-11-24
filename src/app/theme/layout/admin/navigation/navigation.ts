@@ -84,7 +84,7 @@ const NavigationItems = [
         type: 'item',
         icon: 'fa fa-map-marker-alt',
         url: '/admin/ubicaciones',
-        requiredRoles: ['ROLE_UBICACIONES_R', 'ROLE_UBICACIONES_W', 'ROLE_SUPER_ADMIN']
+        requiredRoles: ['ROLE_SUPER_ADMIN']
       },
       {
         id: 'roles',

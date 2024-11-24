@@ -5,7 +5,18 @@
       <h5>Precios Base</h5>
       <div *ngFor="let tipo of tiposHabitacion" style="margin-bottom: 10px;">
         <label>{{ tipo.label }}:</label>
-        <input type="number" [(ngModel)]="preciosBase[tipo.value]" placeholder="Precio base para {{ tipo.label }}" class="form-control"/>
+        <input
+          type="number"
+          [(ngModel)]="preciosBase[tipo.value]"
+          placeholder="Precio base para {{ tipo.label }}"
+          class="form-control"
+          #preciosBaseInput="ngModel"
+          required>
+        <div
+          *ngIf="(preciosBase[tipo.value] <= 0 || !preciosBase[tipo.value]) && preciosBaseInput.touched"
+          class="error-message">
+          El precio base para {{ tipo.label }} es obligatorio y debe ser mayor a 0.
+        </div>
       </div>
     </div>
 
@@ -14,7 +25,18 @@
       <h5>Precios Adicionales por Servicio</h5>
       <div *ngFor="let servicio of serviciosDisponibles" style="margin-bottom: 10px;">
         <label>{{ servicio }}:</label>
-        <input type="number" [(ngModel)]="preciosServicios[servicio]" placeholder="Precio adicional para {{ servicio }}" class="form-control"/>
+        <input
+          type="number"
+          [(ngModel)]="preciosServicios[servicio]"
+          placeholder="Precio adicional para {{ servicio }}"
+          class="form-control"
+          #preciosServiciosInput="ngModel"
+          required>
+        <div
+          *ngIf="(preciosServicios[servicio] <= 0 || !preciosServicios[servicio]) && preciosServiciosInput.touched"
+          class="error-message">
+          El precio adicional para {{ servicio }} es obligatorio y debe ser mayor a 0.
+        </div>
       </div>
     </div>
 
@@ -24,13 +46,31 @@
       <form [formGroup]="generadorForm" (ngSubmit)="agregarHabitaciones()">
         <div class="form-group">
           <label for="cantidad">Número de Habitaciones a Crear</label>
-          <input type="number" id="cantidad" formControlName="cantidad" placeholder="Número de habitaciones" class="form-control"/>
+          <input
+            type="number"
+            id="cantidad"
+            formControlName="cantidad"
+            placeholder="Número de habitaciones"
+            class="form-control">
+          <div
+            *ngIf="generadorForm.get('cantidad')?.invalid && generadorForm.get('cantidad')?.touched"
+            class="error-message">
+            La cantidad de habitaciones es obligatoria y debe ser mayor a 0.
+          </div>
         </div>
         <div class="form-group">
           <label for="tipoHabitacion">Tipo de Habitación</label>
-          <select id="tipoHabitacion" formControlName="tipoHabitacion" class="form-control">
+          <select
+            id="tipoHabitacion"
+            formControlName="tipoHabitacion"
+            class="form-control">
             <option *ngFor="let tipo of tiposHabitacion" [value]="tipo.value">{{ tipo.label }}</option>
           </select>
+          <div
+            *ngIf="generadorForm.get('tipoHabitacion')?.invalid && generadorForm.get('tipoHabitacion')?.touched"
+            class="error-message">
+            El tipo de habitación es obligatorio.
+          </div>
         </div>
         <div class="form-group">
           <label for="servicios">Servicios</label>
@@ -48,8 +88,8 @@
     </div>
   </div>
 
-  <!-- Lista de habitaciones generadas con scroll -->
-  <div class="modal-column">
+  <!-- Lista de habitaciones generadas (solo visible si hay habitaciones) -->
+  <div *ngIf="habitacionesGeneradas.length > 0" class="modal-column" style="margin-bottom: 15px;">
     <h5>Habitaciones Generadas</h5>
     <ul class="habitaciones-list">
       <li *ngFor="let habitacion of habitacionesGeneradas">
@@ -59,4 +99,3 @@
     <button class="btn btn-primary" (click)="guardarHabitaciones()">Guardar Habitaciones</button>
   </div>
 </div>
-

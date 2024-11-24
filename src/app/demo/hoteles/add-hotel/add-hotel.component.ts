@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Hotel } from '../interfaces/hotel.interface';
 import { HotelesService } from '../services/hoteles.service';
-import { CategoriaServicio } from '../../servicios/interfaces/servicio.interface';
-import { TipoHabitacion } from '../../habitaciones/interfaces/habitacion.interface';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-hotel',
@@ -16,21 +14,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 })
 export class AddHotelComponent {
 
-
-  @Output() cancelarCrear: EventEmitter<void> = new EventEmitter<void>(); // Para cerrar el modal con el boton de cancelar
-  @Output() hotelCreado = new EventEmitter<any>(); // Emite el hotel creado
-
-  @ViewChild('nombreInput') nombreInput: { nativeElement: { value: string; }; };
-  @ViewChild('direccionInput') direccionInput: { nativeElement: { value: string; }; };
-  @ViewChild('telefonoInput') telefonoInput: { nativeElement: { value: string; }; };
-  @ViewChild('emailInput') emailInput: { nativeElement: { value: string; }; };
-  @ViewChild('sitioWebInput') sitioWebInput: { nativeElement: { value: string; }; };
-  @ViewChild('categoriaServicio') categoriaServicio: { nativeElement: { value: string[]; }; };
-
   public categorias: string[] = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
-
-  public showCrearHotelNotification = false;
-  public showCrearHotelErrorNotification = false;
 
   public hotelForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required]],
@@ -54,7 +38,8 @@ export class AddHotelComponent {
     servicios: [],
   };
 
-  constructor(private hotelesService: HotelesService, private formBuilder: FormBuilder) { }
+  constructor(private hotelesService: HotelesService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddHotelComponent>,
+  ) { }
 
   isValidFieldHotel(field: string) {
     return this.hotelForm.controls[field].errors && this.hotelForm.controls[field].touched
@@ -126,25 +111,11 @@ export class AddHotelComponent {
       }
     };
 
-    this.hotelesService.addHotel(this.hotel).subscribe(
-      response => {
-        this.showCrearHotelNotification = true; // Mostrar la notificación
-        setTimeout(() => {
-        this.showCrearHotelNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-      this.hotelCreado.emit(response);
-      },
-      error => {
-        this.showCrearHotelErrorNotification = true; // Mostrar la notificación
-        setTimeout(() => {
-        this.showCrearHotelErrorNotification = false; // Ocultar la notificación después de 2 segundos
-      }, 3000);
-      }
-    );
+    this.dialogRef.close(this.hotel);
   }
 
   ocultarModalEditarHotel() {
-    this.cancelarCrear.emit();
+    this.dialogRef.close(null);
   }
 
 

@@ -3,32 +3,23 @@ import { Hotel } from '../interfaces/hotel.interface';
 import { HotelesService } from '../services/hoteles.service';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
-import { AddHotelComponent } from "../add-hotel/add-hotel.component";
+import { AddHotelComponent } from '../add-hotel/add-hotel.component';
 import { EditHotelComponent } from '../edit-hotel/edit-hotel.component';
 import { TokenService } from '../../token/token.service';
-import { AddRoomComponent } from "../../habitaciones/add-room/add-room.component";
+import { MatDialog } from '@angular/material/dialog';
+import { AddRoomComponent } from '../../habitaciones/add-room/add-room.component';
+import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
 
 @Component({
-    selector: 'app-hotel-list',
-    standalone: true,
-    templateUrl: './hotel-list.component.html',
-    styleUrls: ['./hotel-list.component.scss', './hotel-list.component.css'],
-    imports: [CommonModule, SharedModule, AddHotelComponent, EditHotelComponent, AddRoomComponent]
+  selector: 'app-hotel-list',
+  standalone: true,
+  templateUrl: './hotel-list.component.html',
+  styleUrls: ['./hotel-list.component.scss', './hotel-list.component.css'],
+  imports: [CommonModule, SharedModule],
 })
 export class HotelListComponent implements OnInit {
-
   mostrarAddRoomModal = false;
   hotelSeleccionado: any;
-
-  mostrarAddRoom(hotel: any) {
-    this.hotelSeleccionado = hotel;
-    this.mostrarModalEditarCrear = false; // Cerrar el modal de hotel
-    this.mostrarAddRoomModal = true; // Abrir el modal de habitación
-  }
-
-  ocultarModalAddRoom() {
-    this.mostrarAddRoomModal = false;
-  }
 
   isSpinnerVisible: boolean = true; // Agrega una variable para controlar la visibilidad del spinner
   public hoteles: any[];
@@ -39,113 +30,145 @@ export class HotelListComponent implements OnInit {
   public valueSortOrder: string = 'ASC';
   public sortBy: string = 'id';
 
-  public mostrarModalEliminar = false;
-  public mostrarModalEditarCrear = false;
-  accionModal: 'editar' | 'crear' = 'editar';
-
-  public showBorrarHotelNotification = false;
-  public showBorrarHotelErrorNotification = false;
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
 
   public puedeCrear: boolean; // ? Para saber si tengo rol y mostrar las acciones
 
-  public idHotel: number; // ? cuando abro un modal actualizo este id para saber sobre que hotel ejecuto la accion
   public usuario;
   public esSuperAdmin: any;
 
-  constructor(private hotelesService: HotelesService, private tokenService: TokenService) { }
+  constructor(
+    private hotelesService: HotelesService,
+    private tokenService: TokenService,
+    private dialog: MatDialog,
+    private habitacionesService: HabitacionesService,
+  ) {}
 
   ngOnInit(): void {
-    this.query = "";
+    this.query = '';
     //this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HOTELES_W');
-    this.usuario = localStorage.getItem("usuario");
-    this.esSuperAdmin = localStorage.getItem("superadmin") == "true" ? true : false;
-    this.getHoteles(this.query);
+    this.usuario = localStorage.getItem('usuario');
+    this.esSuperAdmin =
+      localStorage.getItem('superadmin') == 'true' ? true : false;
+    this.comprobarHotelUsuario();
   }
 
+  comprobarHotelUsuario(): void {
+    this.hotelesService.getHotelPorUsuario(this.usuario).subscribe(
+      (response) => {
+        // Si el usuario tiene un hotel, se carga la lista de hoteles
+        this.getHoteles(this.query);
+      },
+      (error) => {
+        if (error.status === 404) {
+          // Si no tiene hotel, abrir el flujo de creación
+          this.isSpinnerVisible = false;
+          this.openAddHotelModal();
+        } else {
+          console.error('Error al comprobar hotel del usuario:', error);
+        }
+      },
+    );
+  }
 
   getHoteles(value: any) {
-    this.hotelesService.getHotelesDynamicFilterOr(this.getDataForRequest(value)).subscribe(response => {
-      this.hoteles = response.content;
-      this.totalItems = response.totalElements;
-      this.isSpinnerVisible = false;
-    },
-    (error) => {
-      if (error.status === 404) {
-        this.hoteles = [];
-        this.totalItems = 0;
-      }
-      this.isSpinnerVisible = false;
-    })
+    this.hotelesService
+      .getHotelesDynamicFilterOr(this.getDataForRequest(value))
+      .subscribe(
+        (response) => {
+          this.hoteles = response.content;
+          this.totalItems = response.totalElements;
+          this.isSpinnerVisible = false;
+        },
+        (error) => {
+          if (error.status === 404) {
+            this.hoteles = [];
+            this.totalItems = 0;
+          }
+          this.isSpinnerVisible = false;
+        },
+      );
   }
 
   private getDataForRequest(value: any): any {
-    const validServices = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
+    const validServices = [
+      'GIMNASIO',
+      'LAVANDERIA',
+      'BAR',
+      'CASINO',
+      'KARAOKE',
+      'MASCOTA',
+      'PISCINA',
+      'PARKING',
+    ];
 
     // Inicializar la lista de criterios de búsqueda
     let listSearchCriteria: any[] = [];
 
     // Añadir filtros dinámicos
-    if (value !== "" && value !== null) {
+    if (value !== '' && value !== null) {
       // Añadir id al filtro solo si value es un número
       if (!isNaN(value)) {
         listSearchCriteria.push({
-          key: "id",
-          operation: "equals",
-          value: parseInt(value, 10)
+          key: 'id',
+          operation: 'equals',
+          value: parseInt(value, 10),
         });
       }
 
       listSearchCriteria.push(
         {
-          key: "nombre",
-          operation: "contains",
-          value: value
+          key: 'nombre',
+          operation: 'contains',
+          value: value,
         },
         {
-          key: "direccion",
-          operation: "contains",
-          value: value
-        }
+          key: 'direccion',
+          operation: 'contains',
+          value: value,
+        },
       );
 
       // Añadir telefono al filtro solo si value es un número
       if (!isNaN(value)) {
         listSearchCriteria.push({
-          key: "telefono",
-          operation: "equals",
-          value: parseInt(value, 10)
+          key: 'telefono',
+          operation: 'equals',
+          value: parseInt(value, 10),
         });
       }
 
       listSearchCriteria.push(
         {
-          key: "email",
-          operation: "contains",
-          value: value
+          key: 'email',
+          operation: 'contains',
+          value: value,
         },
         {
-          key: "sitioWeb",
-          operation: "contains",
-          value: value
+          key: 'sitioWeb',
+          operation: 'contains',
+          value: value,
         },
         {
-          key: "ubicacion.ciudad",
-          operation: "contains",
-          value: value
+          key: 'ubicacion.ciudad',
+          operation: 'contains',
+          value: value,
         },
         {
-          key: "ubicacion.pais",
-          operation: "contains",
-          value: value
-        }
+          key: 'ubicacion.pais',
+          operation: 'contains',
+          value: value,
+        },
       );
 
       // Añadir servicios al filtro solo si value coincide con uno de los valores válidos
       if (validServices.includes(value.toUpperCase())) {
         listSearchCriteria.push({
-          key: "servicios",
-          operation: "equals",
-          value: value.toUpperCase()
+          key: 'servicios',
+          operation: 'equals',
+          value: value.toUpperCase(),
         });
       }
     }
@@ -153,28 +176,24 @@ export class HotelListComponent implements OnInit {
     // Si no es superadmin, añadir el filtro idUsuario
     if (!this.esSuperAdmin) {
       listSearchCriteria.push({
-        key: "idUsuario",
-        operation: "equals",
-        value: this.usuario
+        key: 'idUsuario',
+        operation: 'equals',
+        value: this.usuario,
       });
     }
 
     return {
       listOrderCriteria: {
         valueSortOrder: this.valueSortOrder,
-        sortBy: this.sortBy
+        sortBy: this.sortBy,
       },
       listSearchCriteria: listSearchCriteria,
       page: {
         pageIndex: this.pageNumber,
-        pageSize: this.itemsPerPage
-      }
+        pageSize: this.itemsPerPage,
+      },
     };
   }
-
-
-
-
 
   search(value: string) {
     this.isSpinnerVisible = true;
@@ -192,7 +211,7 @@ export class HotelListComponent implements OnInit {
     }
     this.sortBy = columnName;
     this.valueSortOrder = direction;
-    this.getHoteles(this.query)
+    this.getHoteles(this.query);
   }
 
   onPageChange(value: number) {
@@ -202,53 +221,141 @@ export class HotelListComponent implements OnInit {
   }
 
   onItemPerPageChange(value: number) {
-    this.isSpinnerVisible = true
+    this.isSpinnerVisible = true;
     this.itemsPerPage = value; // Para que me actualice el valor que por defecto tengo a 5
-    this.getHoteles(this.query)
+    this.getHoteles(this.query);
   }
 
-  deleteHotel() {
-    this.hotelesService.deleteHotel(this.idHotel).subscribe(response => {
-      this.showBorrarHotelNotification = true;
-      setTimeout(() => {
-        this.showBorrarHotelNotification = false;
-      }, 3000);
-      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
-    },
-      error => {
-        this.showBorrarHotelErrorNotification = true;
-      setTimeout(() => {
-        this.showBorrarHotelErrorNotification = false;
-      }, 3000);
+  deleteHotel(id) {
+    this.hotelesService.deleteHotel(id).subscribe(
+      (response) => {
+        this.showNotification = true;
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+        this.getHoteles(this.query);
+      },
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      },
+    );
+  }
+
+  openEditHotelModal(hotel: any): void {
+    const dialogRef = this.dialog.open(EditHotelComponent, {
+      width: '600px',
+      data: { hotel }, // Pasar el objeto completo en lugar del ID
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        result.id = hotel.id;
+        result.foto = hotel.foto;
+        result.idUsuario = hotel.idUsuario;
+
+        const ubicacion = {
+          ciudad: result.ciudad,
+          pais: result.pais,
+          continente: result.continente,
+        };
+
+        result.ubicacion = ubicacion;
+        delete result.ciudad;
+        delete result.pais;
+        delete result.continente;
+        this.hotelesService.editHotel(hotel.id, result).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getHoteles(this.query); // Refresca la lista
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          },
+        );
       }
-    )
-    this.ocultarModalEliminarHotel();
+    });
   }
 
-  // ? Gestion de los modales
-  mostrarModalEliminarHotel(idHotel: number) {
-    this.idHotel = idHotel;
-    this.mostrarModalEliminar = true;
+  openAddHotelModal(): void {
+    const dialogRef = this.dialog.open(AddHotelComponent, {
+      width: '600px',
+      disableClose: true, // Evitar cerrar el modal sin completar
+    });
+
+    dialogRef.afterClosed().subscribe((hotel) => {
+      if (hotel) {
+        this.openAddRoomModal(hotel); // Abrir el modal de agregar habitaciones
+      }
+    });
   }
 
-  ocultarModalEliminarHotel() {
-    this.mostrarModalEliminar = false;
+  openAddRoomModal(hotel: any): void {
+    const dialogRef = this.dialog.open(AddRoomComponent, {
+      width: '800px',
+      disableClose: true, // Evitar cerrar el modal sin completar
+      data: { hotel }, // Pasar el hotel creado
+    });
+
+    dialogRef.afterClosed().subscribe((habitaciones) => {
+      if (habitaciones) {
+        this.saveHotelAndRooms(hotel, habitaciones);
+      }
+    });
   }
 
-  mostrarModalEditarHotel(idHotel: number) {
-    this.idHotel = idHotel;
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'editar';
+  saveHotelAndRooms(hotel: any, habitaciones: any[]): void {
+    // Realizar el POST del hotel y las habitaciones
+    this.hotelesService.addHotel(hotel).subscribe(
+      (hotelResponse) => {
+        habitaciones.forEach((habitacion) => {
+          habitacion.hotel = hotelResponse; // Asociar el hotel creado a las habitaciones
+          this.habitacionesService.crearHabitacion(habitacion).subscribe(
+            () => {
+              this.showNotification = true;
+              this.message = 'Operación realizada con éxito';
+              this.color = true;
+              setTimeout(() => {
+                this.showNotification = false;
+              }, 3000);
+            },
+            (error) => {
+              this.showNotification = true;
+              this.message = 'Error al realizar la operación';
+              this.color = false;
+              setTimeout(() => {
+                this.showNotification = false;
+              }, 3000);
+            },
+          );
+        });
+        // Recargar la lista de hoteles
+        this.getHoteles(this.query);
+      },
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      },
+    );
   }
-
-  ocultarModalEditarHotel() {
-    this.mostrarModalEditarCrear = false;
-  }
-
-  onFloatingButtonClick() {
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'crear'
-  }
-
-
 }

@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { HotelesService } from '../services/hoteles.service';
 import { SharedModule } from "../../../theme/shared/shared.module";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-hotel',
@@ -9,68 +11,68 @@ import { SharedModule } from "../../../theme/shared/shared.module";
   styleUrls: ['./edit-hotel.component.scss'],
   imports: [SharedModule]
 })
-export class EditHotelComponent implements OnInit {
+export class EditHotelComponent {
 
-  @Input() idHotel: number;
-  @Output() editComplete: EventEmitter<void> = new EventEmitter<void>();
-  public hotel: any = {
-    id: 0,
-    nombre: '',
-    direccion: '',
-    telefono: '',
-    email: '',
-    sitioWeb: '',
-    ubicacion: { ciudad: '', pais: '', continente: '' },
-    servicios: [],
-  };
+  hotelForm: FormGroup;
+
 
   public categorias: string[] = ['GIMNASIO', 'LAVANDERIA', 'BAR', 'CASINO', 'KARAOKE', 'MASCOTA', 'PISCINA', 'PARKING'];
 
-  public showEditarHotelNotification = false;
-  public showEditarHotelErrorNotification = false;
 
-  constructor(private hotelesService: HotelesService) { }
 
-  ngOnInit(): void {
-    this.hotelesService.getById(this.idHotel).subscribe(data => {
-      this.hotel = data;
-    },
-    error => {
-      console.log("Error al obtener el hotel: " + error);
+  constructor(
+    private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<EditHotelComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { hotel: any } // Recibir el objeto hotel directamente
+  ) {
+    this.hotelForm = this.formBuilder.group({
+      nombre: [data.hotel.nombre, Validators.required],
+      direccion: [data.hotel.direccion, Validators.required],
+      telefono: [data.hotel.telefono, Validators.required],
+      email: [data.hotel.email, [Validators.required, Validators.email]],
+      sitioWeb: [data.hotel.sitioWeb],
+      ciudad: [data.hotel.ubicacion.ciudad, Validators.required],
+      pais: [data.hotel.ubicacion.pais, Validators.required],
+      continente: [data.hotel.ubicacion.continente, Validators.required],
+      servicios: [data.hotel.servicios],
     });
   }
 
   isChecked(categoria: string): boolean {
-    return this.hotel.servicios.includes(categoria);
+    const servicios: string[] = this.hotelForm.get('servicios')?.value || [];
+    return servicios.includes(categoria);
   }
 
-  onCheckboxChange(event: any) {
+  onCheckboxChange(event: any): void {
     const value = event.target.value;
     const isChecked = event.target.checked;
 
+    const servicios: string[] = this.hotelForm.get('servicios')?.value || [];
+
     if (isChecked) {
-      this.hotel.servicios.push(value);
+      // Añadir el servicio al array si no existe
+      if (!servicios.includes(value)) {
+        servicios.push(value);
+      }
     } else {
-      const index = this.hotel.servicios.indexOf(value);
+      // Eliminar el servicio del array si está presente
+      const index = servicios.indexOf(value);
       if (index !== -1) {
-        this.hotel.servicios.splice(index, 1);
+        servicios.splice(index, 1);
       }
     }
+
+    // Actualizar el control de servicios en el formulario
+    this.hotelForm.get('servicios')?.setValue(servicios);
   }
 
-  editHotel() {
-    this.hotelesService.editHotel(this.idHotel, this.hotel).subscribe(response => {
-      this.ocultarModalEditarHotel();
-      this.showEditarHotelNotification = true;
-      setTimeout(() => this.showEditarHotelNotification = false, 3000);
-    },
-    error => {
-      this.showEditarHotelErrorNotification = true;
-      setTimeout(() => this.showEditarHotelErrorNotification = false, 3000);
-    });
+  saveHotel(): void {
+    if (this.hotelForm.valid) {
+      this.dialogRef.close(this.hotelForm.value);
+    } else this.hotelForm.markAllAsTouched()
   }
 
-  ocultarModalEditarHotel() {
-    this.editComplete.emit();
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }
