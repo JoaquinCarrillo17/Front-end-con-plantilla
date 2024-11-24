@@ -1,4 +1,3 @@
-
 .modal-content {
   margin-top: 20px;
   padding: 0 20px; /* Padding horizontal del contenedor */
@@ -8,7 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px; /* Espaciado vertical entre grupos */
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Espacio vertical entre formularios */
 }
 
 .form-group {

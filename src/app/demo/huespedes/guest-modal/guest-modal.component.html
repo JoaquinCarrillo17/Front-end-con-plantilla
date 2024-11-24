@@ -1,0 +1,35 @@
+<div class="modal-content">
+  <form [formGroup]="huespedForm" class="modal-form">
+    <div class="form-group">
+      <label for="nombreCompleto">Nombre Completo</label>
+      <input id="nombreCompleto" type="text" class="form-control" formControlName="nombreCompleto"
+        placeholder="Introduce el nombre completo" />
+      <div *ngIf="huespedForm.get('nombreCompleto')?.invalid && huespedForm.get('nombreCompleto')?.touched"
+        class="error-message">
+        El nombre completo es obligatorio.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dni">DNI</label>
+      <input id="dni" type="text" class="form-control" formControlName="dni" placeholder="Introduce el DNI" />
+      <div *ngIf="huespedForm.get('dni')?.invalid && huespedForm.get('dni')?.touched" class="error-message">
+        El DNI es obligatorio.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" class="form-control" formControlName="email" placeholder="Introduce el email" />
+      <div *ngIf="huespedForm.get('email')?.invalid && huespedForm.get('email')?.touched" class="error-message">
+        <span *ngIf="huespedForm.get('email')?.errors?.['required']">El email es obligatorio.</span>
+        <span *ngIf="huespedForm.get('email')?.errors?.['email']">Introduce un email válido.</span>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button class="btn btn-primary" (click)="onSave()">Guardar</button>
+      <button class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

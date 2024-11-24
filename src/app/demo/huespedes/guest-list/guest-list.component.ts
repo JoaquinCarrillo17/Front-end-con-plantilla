@@ -2,21 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { Huesped } from '../interfaces/huesped.interface';
 import { HuespedesService } from '../services/huespedes.service';
-import { AddGuestComponent } from '../add-guest/add-guest.component';
-import { EditGuestComponent } from '../edit-guest/edit-guest.component';
-import { DatePipe } from '@angular/common';
 import { TokenService } from '../../token/token.service';
-import { dateFormatter } from 'src/app/theme/shared/dateFormatter';
+import { GuestModalComponent } from '../guest-modal/guest-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-guest-list',
   standalone: true,
-  imports: [SharedModule, AddGuestComponent, EditGuestComponent],
+  imports: [SharedModule],
   templateUrl: './guest-list.component.html',
-  styleUrl: './guest-list.component.scss'
+  styleUrl: './guest-list.component.scss',
 })
 export class GuestListComponent implements OnInit {
-
   isSpinnerVisible: boolean = true;
   public huespedes: any[];
   public totalItems: number = 0;
@@ -26,26 +23,25 @@ export class GuestListComponent implements OnInit {
   public valueSortOrder: string = 'ASC';
   public sortBy: string = 'id';
 
-  public mostrarModalEliminar = false;
-  public mostrarModalEditarCrear = false;
-  accionModal: 'editar' | 'crear' = 'editar';
-
-  public showBorrarHuespedNotification = false;
-  public showBorrarHuespedErrorNotification = false;
-
   public puedeCrear: boolean;
-
-  public idHuesped: number; // ? cuando abro un modal actualizo este id para saber sobre que Huesped ejecuto la accion
 
   public usuario: any;
   public esSuperAdmin: boolean;
 
-  constructor(private huespedesService: HuespedesService, private tokenService: TokenService) { }
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
+
+  constructor(
+    private huespedesService: HuespedesService,
+    private tokenService: TokenService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
-    this.query = "";
-    this.usuario = localStorage.getItem("usuario");
-    this.esSuperAdmin = localStorage.getItem("superadmin") === "true";
+    this.query = '';
+    this.usuario = localStorage.getItem('usuario');
+    this.esSuperAdmin = localStorage.getItem('superadmin') === 'true';
     this.puedeCrear = this.tokenService.getRoles().includes('ROLE_HUESPEDES_W');
 
     this.getHuespedes(this.query);
@@ -63,12 +59,11 @@ export class GuestListComponent implements OnInit {
 
       if (!isNaN(Number(value))) {
         listSearchCriteria.push({
-          key: "id",
-          operation: "equals",
-          value: parseInt(value, 10)
+          key: 'id',
+          operation: 'equals',
+          value: parseInt(value, 10),
         });
       }
-
     }
 
     // Si no es superadmin, filtrar por idUsuario
@@ -83,24 +78,26 @@ export class GuestListComponent implements OnInit {
     return {
       listOrderCriteria: {
         valueSortOrder: this.valueSortOrder,
-        sortBy: this.sortBy
+        sortBy: this.sortBy,
       },
       listSearchCriteria: listSearchCriteria,
       page: {
         pageIndex: this.pageNumber,
-        pageSize: this.itemsPerPage
-      }
+        pageSize: this.itemsPerPage,
+      },
     };
   }
 
   getHuespedes(value: string): void {
     this.isSpinnerVisible = true;
-    this.huespedesService.getHuespedesDynamicFilterOr(this.getDataForRequest(value))
-      .subscribe(response => {
-        this.huespedes = response.content;
-        this.totalItems = response.totalElements;
-        this.isSpinnerVisible = false;
-      },
+    this.huespedesService
+      .getHuespedesDynamicFilterOr(this.getDataForRequest(value))
+      .subscribe(
+        (response) => {
+          this.huespedes = response.content;
+          this.totalItems = response.totalElements;
+          this.isSpinnerVisible = false;
+        },
         (error) => {
           if (error.status === 404) {
             this.huespedes = [];
@@ -108,7 +105,8 @@ export class GuestListComponent implements OnInit {
           }
           console.error('Error al cargar los huespedes:', error);
           this.isSpinnerVisible = false;
-        });
+        },
+      );
   }
 
   search(value: string): void {
@@ -139,49 +137,88 @@ export class GuestListComponent implements OnInit {
     this.getHuespedes(this.query);
   }
 
-  deleteHuesped() {
-    this.huespedesService.deleteHuesped(this.idHuesped).subscribe(response => {
-      this.showBorrarHuespedNotification = true;
-      setTimeout(() => {
-        this.showBorrarHuespedNotification = false;
-      }, 3000);
-      window.location.reload(); // ? Recargo la pagina para mostrar los cambios
-    },
-      error => {
-        this.showBorrarHuespedErrorNotification = true;
+  deleteHuesped(id) {
+    this.huespedesService.deleteHuesped(id).subscribe(
+      (response) => {
+        this.showNotification = true;
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
         setTimeout(() => {
-          this.showBorrarHuespedErrorNotification = false;
+          this.showNotification = false;
         }, 3000);
+        this.getHuespedes(this.query);
+      },
+      (error) => {
+        this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+      },
+    );
+  }
+
+  onAddGuest(): void {
+    const dialogRef = this.dialog.open(GuestModalComponent, {
+      width: '500px',
+      data: null, // No pasamos datos para crear
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.huespedesService.addHuesped(result).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getHuespedes(this.query); // Refresca la lista
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          },
+        );
       }
-    )
-    this.ocultarModalEliminarHuesped();
+    });
   }
 
-  // ? Gestion de los modales
-  mostrarModalEliminarHuesped(idHuesped: number) {
-    this.idHuesped = idHuesped;
-    this.mostrarModalEliminar = true;
+  onEditGuest(huesped: Huesped): void {
+    const dialogRef = this.dialog.open(GuestModalComponent, {
+      width: '500px',
+      data: huesped, // Pasamos el huésped para editar
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        result.id = huesped.id;
+        this.huespedesService.editHuesped(huesped.id, result).subscribe(
+          () => {
+            this.showNotification = true;
+            this.message = 'Operación realizada con éxito';
+            this.color = true;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+            this.getHuespedes(this.query); // Refresca la lista
+          },
+          (error) => {
+            this.showNotification = true;
+            this.message = 'Error al realizar la operación';
+            this.color = false;
+            setTimeout(() => {
+              this.showNotification = false;
+            }, 3000);
+          },
+        );
+      }
+    });
   }
-
-  ocultarModalEliminarHuesped() {
-    this.mostrarModalEliminar = false;
-  }
-
-  mostrarModalEditarHuesped(idHuesped: number) {
-    this.idHuesped = idHuesped;
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'editar';
-  }
-
-  ocultarModalEditarHuesped() {
-    this.mostrarModalEditarCrear = false;
-  }
-
-  onFloatingButtonClick() {
-    this.mostrarModalEditarCrear = true;
-    this.accionModal = 'crear'
-  }
-
-
-
 }

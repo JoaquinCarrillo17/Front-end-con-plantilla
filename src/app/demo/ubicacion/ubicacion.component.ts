@@ -199,6 +199,7 @@ export class UbicacionComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        result.id = ubicacion.id;
         this.ubicacionesService.update(ubicacion.id, result).subscribe(
           () => {
             this.showNotification = true;
