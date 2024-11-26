@@ -6,6 +6,7 @@ import { EditUsuarioComponent } from "../edit-usuario/edit-usuario.component";
 import { AddUsuarioComponent } from "../add-usuario/add-usuario.component";
 import { TokenService } from '../../token/token.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-usuarios-list',
@@ -113,25 +114,44 @@ export class UsuariosListComponent implements OnInit{
       });
   }
 
-  // ? Editar/crear/borrar rol
+  confirmDeleteUsuario(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Usuario',
+        message: '¿Estás seguro de que deseas eliminar este usuario?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      },
+    });
 
-  deleteUsuario(id){
-    this.usuariosService.deleteUsuario(id).subscribe(response => {
-      this.showNotification = true;
-      this.message = 'Operación realizada con éxito';
-      this.color = true;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 3000);
-    this.loadUsuarios();
-    }, error => {
-      this.showNotification = true;
-      this.message = 'Error al realizar la operación';
-      this.color = false;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 3000);
-    })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteUsuario(id);
+      }
+    });
+  }
+
+  deleteUsuario(id: number): void {
+    this.usuariosService.deleteUsuario(id).subscribe(
+      () => {
+        this.showNotification = true;
+        this.message = 'Usuario eliminado con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+        this.loadUsuarios();
+      },
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al eliminar el usuario';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      }
+    );
   }
 
 

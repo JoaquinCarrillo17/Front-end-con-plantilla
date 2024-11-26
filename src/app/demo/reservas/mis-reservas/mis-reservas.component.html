@@ -29,15 +29,4 @@
   </div>
 </div>
 
-
-<!-- Modal de confirmación -->
-<div class="modal-overlay" *ngIf="isCancelModalVisible">
-  <div class="modal-content">
-    <h2>Cancelar Reserva</h2>
-    <p>¿Estás seguro de que quieres cancelar tu reserva?</p>
-    <div class="modal-actions">
-      <button mat-button (click)="confirmarCancelarReserva()">Sí</button>
-      <button mat-button (click)="cerrarModalCancelar()">No</button>
-    </div>
-  </div>
-</div>
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

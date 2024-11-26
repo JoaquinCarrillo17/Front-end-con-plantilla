@@ -5,6 +5,7 @@ import { HuespedesService } from '../services/huespedes.service';
 import { TokenService } from '../../token/token.service';
 import { GuestModalComponent } from '../guest-modal/guest-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-guest-list',
@@ -137,7 +138,25 @@ export class GuestListComponent implements OnInit {
     this.getHuespedes(this.query);
   }
 
-  deleteHuesped(id) {
+  confirmDeleteHuesped(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Huésped',
+        message: '¿Estás seguro de que quieres eliminar este huésped?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteHuesped(id);
+      }
+    });
+  }
+
+  deleteHuesped(id: number): void {
     this.huespedesService.deleteHuesped(id).subscribe(
       (response) => {
         this.showNotification = true;
@@ -150,11 +169,11 @@ export class GuestListComponent implements OnInit {
       },
       (error) => {
         this.showNotification = true;
-            this.message = 'Error al realizar la operación';
-            this.color = false;
-            setTimeout(() => {
-              this.showNotification = false;
-            }, 3000);
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
       },
     );
   }

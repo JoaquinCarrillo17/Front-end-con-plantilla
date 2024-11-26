@@ -6,6 +6,7 @@ import { EditRolesComponent } from "../edit-roles/edit-roles.component";
 import { AddRolesComponent } from "../add-roles/add-roles.component";
 import { TokenService } from '../../token/token.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-roles-list',
@@ -113,24 +114,44 @@ export class RolesListComponent implements OnInit {
       });
   }
 
-  // ? Editar/crear/borrar rol
+  confirmDeleteRol(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Rol',
+        message: '¿Estás seguro de que deseas eliminar este rol?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      },
+    });
 
-  deleteRol(id){
-    this.rolesService.deleteRol(id).subscribe(response => {
-      this.showNotification = true;
-      this.message = 'Operación realizada con éxito';
-      this.color = true;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 3000);
-    }, error => {
-      this.showNotification = true;
-      this.message = 'Error al realizar la operación';
-      this.color = false;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 3000);
-    })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteRol(id);
+      }
+    });
+  }
+
+  deleteRol(id: number): void {
+    this.rolesService.deleteRol(id).subscribe(
+      () => {
+        this.showNotification = true;
+        this.message = 'Rol eliminado con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+        this.cargarRoles();
+      },
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al eliminar el rol';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      }
+    );
   }
 
   abrirModalCrearRol(): void {

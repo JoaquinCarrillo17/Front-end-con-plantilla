@@ -1,0 +1,14 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>{{ data.title }}</h2>
+    <p>{{ data.message }}</p>
+    <div class="modal-actions">
+      <button mat-button (click)="onConfirm()">
+        {{ data.confirmText || 'Sí' }}
+      </button>
+      <button mat-button (click)="onCancel()">
+        {{ data.cancelText || 'No' }}
+      </button>
+    </div>
+  </div>
+</div>

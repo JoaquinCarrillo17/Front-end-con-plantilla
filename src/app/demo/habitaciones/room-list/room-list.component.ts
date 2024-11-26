@@ -4,6 +4,7 @@ import { HabitacionesService } from '../services/habitaciones.service';
 import { TokenService } from '../../token/token.service';
 import { RoomModalComponent } from '../room-modal/room-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-room-list',
@@ -170,16 +171,34 @@ export class RoomListComponent implements OnInit {
     this.getHabitaciones(this.query);
   }
 
-  deleteHabitacion(id) {
+  confirmDeleteHabitacion(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Habitación',
+        message: '¿Estás seguro de que quieres eliminar esta habitación?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteHabitacion(id);
+      }
+    });
+  }
+
+  deleteHabitacion(id: number): void {
     this.habitacionesService.deleteHabitacion(id).subscribe(
-      (response) => {
+      () => {
         this.showNotification = true;
-            this.message = 'Operación realizada con éxito';
-            this.color = true;
-            setTimeout(() => {
-              this.showNotification = false;
-            }, 3000);
-            this.getHabitaciones(this.query);
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+        this.getHabitaciones(this.query); // Refresca la lista
       },
       (error) => {
         this.showNotification = true;
@@ -188,7 +207,7 @@ export class RoomListComponent implements OnInit {
         setTimeout(() => {
           this.showNotification = false;
         }, 3000);
-      },
+      }
     );
   }
 

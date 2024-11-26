@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { ReservasService } from '../reservas.service';
 import { TokenService } from '../../token/token.service';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-reservas-admin',
@@ -27,9 +29,14 @@ export class ReservasAdminComponent implements OnInit {
   public esSuperAdmin: boolean;
   public puedeCrear: boolean;
 
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
+
   constructor(
     private tokenService: TokenService,
-    private reservasService: ReservasService
+    private reservasService: ReservasService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -158,14 +165,42 @@ export class ReservasAdminComponent implements OnInit {
     return reserva.huespedes.map(huesped => huesped?.nombreCompleto || 'Sin nombre').join(', ');
   }
 
-  deleteReserva(id: any) {
+  confirmDeleteReserva(id: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Reserva',
+        message: '¿Estás seguro de que deseas eliminar esta reserva?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteReserva(id);
+      }
+    });
+  }
+
+  deleteReserva(id: any): void {
     this.reservasService.delete(id).subscribe(
       () => {
-        console.log('Reserva cancelada');
+        this.showNotification = true;
+        this.message = 'Reserva eliminada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
         this.getReservas(this.query); // Refresca la lista de reservas
       },
       error => {
-        console.error('Error al cancelar la reserva:', error);
+        this.showNotification = true;
+        this.message = 'Error al eliminar la reserva';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
       }
     );
   }

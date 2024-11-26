@@ -4,6 +4,7 @@ import { TokenService } from '../token/token.service';
 import { UbicacionService } from './ubicacion.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UbicacionModalComponent } from './ubicacion-modal/ubicacion-modal.component';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-ubicacion',
@@ -138,7 +139,25 @@ export class UbicacionComponent implements OnInit {
     this.getUbicaciones(this.query);
   }
 
-  deleteUbicacion(id: any) {
+  confirmDeleteUbicacion(id: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Ubicación',
+        message: '¿Estás seguro de que deseas eliminar esta ubicación?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteUbicacion(id);
+      }
+    });
+  }
+
+  deleteUbicacion(id: any): void {
     this.ubicacionesService.delete(id).subscribe(
       () => {
         this.showNotification = true;
@@ -147,7 +166,7 @@ export class UbicacionComponent implements OnInit {
         setTimeout(() => {
           this.showNotification = false;
         }, 3000);
-        this.getUbicaciones(this.query); // Refresca la lista de reservas
+        this.getUbicaciones(this.query); // Refresca la lista de ubicaciones
       },
       (error) => {
         this.showNotification = true;

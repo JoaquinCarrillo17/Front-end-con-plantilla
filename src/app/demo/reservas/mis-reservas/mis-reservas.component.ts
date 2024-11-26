@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mis-reservas',
@@ -28,10 +30,9 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   styleUrl: './mis-reservas.component.scss',
 })
 export class MisReservasComponent implements OnInit {
-
   isSpinnerVisible: boolean = true;
 
-  reservas = []
+  reservas = [];
   totalItems: number = 0;
   pageNumber: number = 0;
   itemsPerPage: number = 5;
@@ -40,50 +41,70 @@ export class MisReservasComponent implements OnInit {
 
   idUsuario: any;
 
-  isCancelModalVisible = false;
-  selectedReservaId: any;
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
 
-
-  constructor(private reservasService: ReservasService) {}
+  constructor(
+    private reservasService: ReservasService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
+    this.idUsuario = localStorage.getItem('usuario');
 
-    this.idUsuario = localStorage.getItem("usuario");
-
-    this.getMisReservas()
-
+    this.getMisReservas();
   }
 
   getMisReservas() {
     const body = {
       listOrderCriteria: [
         {
-        "valueSortOrder": this.valueSortOrder,
-        "sortBy": this.sortBy
-      }
-    ],
+          valueSortOrder: this.valueSortOrder,
+          sortBy: this.sortBy,
+        },
+      ],
       listSearchCriteria: [
-        { "key": 'idUsuario', "operation": 'EQUAL', "value": this.idUsuario },
+        { key: 'idUsuario', operation: 'EQUAL', value: this.idUsuario },
       ],
       page: {
-        "pageIndex": this.pageNumber,
-        "pageSize": this.itemsPerPage
-      }
-    }
-    this.reservasService.dynamicSearch(body)
-     .subscribe((response: any) => {
+        pageIndex: this.pageNumber,
+        pageSize: this.itemsPerPage,
+      },
+    };
+    this.reservasService.dynamicSearch(body).subscribe(
+      (response: any) => {
         this.isSpinnerVisible = false;
         this.reservas = response.content;
         this.totalItems = response.totalElements;
       },
-        (error) => {
-          console.error('Error al obtener las reservas: ', error);
-          this.isSpinnerVisible = false;
-        });
+      (error) => {
+        console.error('Error al obtener las reservas: ', error);
+        this.isSpinnerVisible = false;
+      },
+    );
   }
 
   cancelarReserva(idReserva) {
-    this.reservasService.delete(idReserva).subscribe()
+    this.reservasService.delete(idReserva).subscribe(
+      (response) => {
+        this.showNotification = true;
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+        this.getMisReservas();
+      },
+      (error) => {
+        this.showNotification = true;
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      },
+    );
   }
 
   onPageChange(value: number) {
@@ -102,33 +123,41 @@ export class MisReservasComponent implements OnInit {
     if (!reserva || !reserva.huespedes) {
       return '';
     }
-    return reserva.huespedes.map(huesped => huesped?.nombreCompleto || 'Sin nombre').join(', ');
+    return reserva.huespedes
+      .map((huesped) => huesped?.nombreCompleto || 'Sin nombre')
+      .join(', ');
   }
 
-  mostrarModalCancelar(reservaId: number): void {
-    this.isCancelModalVisible = true;
-    this.selectedReservaId = reservaId; // Almacena el ID de la reserva que se quiere cancelar
+  mostrarModalCancelar(idReserva: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Cancelar Reserva',
+        message: '¿Estás seguro de que quieres cancelar tu reserva?',
+        confirmText: 'Sí',
+        cancelText: 'No',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.confirmarCancelarReserva(idReserva);
+      }
+    });
   }
 
-  confirmarCancelarReserva(): void {
-    if (this.selectedReservaId !== null) {
-      this.reservasService.delete(this.selectedReservaId).subscribe(
-        () => {
-          console.log('Reserva cancelada');
-          this.getMisReservas(); // Refresca la lista de reservas
-          this.cerrarModalCancelar();
-        },
-        error => {
-          console.error('Error al cancelar la reserva:', error);
-        }
-      );
-    }
+  confirmarCancelarReserva(idReserva: number): void {
+    this.reservasService.delete(idReserva).subscribe(
+      () => {
+        console.log('Reserva cancelada');
+        this.getMisReservas();
+      },
+      (error) => {
+        console.error('Error al cancelar la reserva:', error);
+      },
+    );
   }
-
-  cerrarModalCancelar(): void {
-    this.isCancelModalVisible = false;
-    this.selectedReservaId = null;
-  }
-
-
 }
+
+
+

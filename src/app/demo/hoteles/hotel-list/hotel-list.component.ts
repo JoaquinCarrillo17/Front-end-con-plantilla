@@ -9,6 +9,7 @@ import { TokenService } from '../../token/token.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddRoomComponent } from '../../habitaciones/add-room/add-room.component';
 import { HabitacionesService } from '../../habitaciones/services/habitaciones.service';
+import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-hotel-list',
@@ -226,16 +227,36 @@ export class HotelListComponent implements OnInit {
     this.getHoteles(this.query);
   }
 
-  deleteHotel(id) {
+  // Método para confirmar y eliminar un hotel
+  confirmDeleteHotel(hotelId: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Eliminar Hotel',
+        message: '¿Estás seguro de que quieres eliminar este hotel?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteHotel(hotelId);
+      }
+    });
+  }
+
+  // Método para eliminar un hotel
+  deleteHotel(id: number): void {
     this.hotelesService.deleteHotel(id).subscribe(
-      (response) => {
+      () => {
         this.showNotification = true;
         this.message = 'Operación realizada con éxito';
         this.color = true;
         setTimeout(() => {
           this.showNotification = false;
         }, 3000);
-        this.getHoteles(this.query);
+        this.getHoteles(this.query); // Refresca la lista de hoteles
       },
       (error) => {
         this.showNotification = true;
@@ -244,7 +265,7 @@ export class HotelListComponent implements OnInit {
         setTimeout(() => {
           this.showNotification = false;
         }, 3000);
-      },
+      }
     );
   }
 
