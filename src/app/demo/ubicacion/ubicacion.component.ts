@@ -170,7 +170,7 @@ export class UbicacionComponent implements OnInit {
       },
       (error) => {
         this.showNotification = true;
-        this.message = 'Error al realizar la operación';
+        this.message = 'No puedes borrar una ubicación que tiene un hotel asociado';
         this.color = false;
         setTimeout(() => {
           this.showNotification = false;

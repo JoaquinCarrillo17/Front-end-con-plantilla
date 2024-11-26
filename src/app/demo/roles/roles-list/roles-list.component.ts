@@ -141,6 +141,7 @@ export class RolesListComponent implements OnInit {
         setTimeout(() => {
           this.showNotification = false;
         }, 3000);
+        this.pageNumber = 0;
         this.cargarRoles();
       },
       (error) => {

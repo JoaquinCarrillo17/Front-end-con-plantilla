@@ -141,6 +141,7 @@ export class UsuariosListComponent implements OnInit{
         setTimeout(() => {
           this.showNotification = false;
         }, 3000);
+        this.pageNumber = 0;
         this.loadUsuarios();
       },
       (error) => {

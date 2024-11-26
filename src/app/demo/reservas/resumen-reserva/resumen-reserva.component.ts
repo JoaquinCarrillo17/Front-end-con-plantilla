@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from "../../../theme/shared/shared.module";
 
 @Component({
   selector: 'app-resumen-reserva',
@@ -23,16 +24,21 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule,],
+    MatNativeDateModule,
+    SharedModule
+],
   templateUrl: './resumen-reserva.component.html',
-  styleUrl: './resumen-reserva.component.scss'
+  styleUrl: './resumen-reserva.component.scss',
 })
 export class ResumenReservaComponent implements OnInit {
-
   habitacion: any;
   checkIn: string;
   checkOut: string;
   huespedForm: FormGroup;
+
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,18 +46,16 @@ export class ResumenReservaComponent implements OnInit {
     private reservasService: ReservasService,
     private router: Router,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
-  ) {
-
-  }
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   // Método para inicializar un FormGroup para un huésped
   private createHuespedFormGroup(huesped): FormGroup {
     return this.fb.group({
-        dni: [huesped.dni],
-        email: [huesped.email],
-        id: [huesped.id],
-        nombreCompleto: [huesped.nombreCompleto]
+      dni: [huesped.dni],
+      email: [huesped.email],
+      id: [huesped.id],
+      nombreCompleto: [huesped.nombreCompleto],
     });
   }
 
@@ -62,38 +66,38 @@ export class ResumenReservaComponent implements OnInit {
 
     const reservaData = sessionStorage.getItem('reservaData');
     if (reservaData) {
-        const { habitacionId, checkIn, checkOut, huespedes } = JSON.parse(reservaData);
+      const { habitacionId, checkIn, checkOut, huespedes } =
+        JSON.parse(reservaData);
 
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
-        // Limpia el FormArray actual antes de asignar nuevos valores
-        const huespedesFormArray = this.huespedForm.get('huespedes') as FormArray;
-        huespedesFormArray.clear();
+      this.checkIn = checkIn;
+      this.checkOut = checkOut;
+      // Limpia el FormArray actual antes de asignar nuevos valores
+      const huespedesFormArray = this.huespedForm.get('huespedes') as FormArray;
+      huespedesFormArray.clear();
 
-        // Mapea cada huesped a un nuevo FormGroup o FormControl dentro del FormArray
-        huespedes.forEach(huesped => {
-          huespedesFormArray.push(this.createHuespedFormGroup(huesped));
-        });
+      // Mapea cada huesped a un nuevo FormGroup o FormControl dentro del FormArray
+      huespedes.forEach((huesped) => {
+        huespedesFormArray.push(this.createHuespedFormGroup(huesped));
+      });
 
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
+      this.cdr.markForCheck();
+      this.cdr.detectChanges();
 
+      this.loadHabitacion(habitacionId);
 
-        this.loadHabitacion(habitacionId);
-
-        // Puedes limpiar el sessionStorage si ya no necesitas los datos
-        sessionStorage.removeItem('reservaData');
+      // Puedes limpiar el sessionStorage si ya no necesitas los datos
+      sessionStorage.removeItem('reservaData');
     } else {
-    this.route.queryParams.subscribe(params => {
-      const habitacionId = params['habitacionId'];
-      this.checkIn = params['checkIn'];
-      this.checkOut = params['checkOut'];
+      this.route.queryParams.subscribe((params) => {
+        const habitacionId = params['habitacionId'];
+        this.checkIn = params['checkIn'];
+        this.checkOut = params['checkOut'];
 
-      if (habitacionId) {
-        this.loadHabitacion(habitacionId);
-      }
-    });
-  }
+        if (habitacionId) {
+          this.loadHabitacion(habitacionId);
+        }
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -101,18 +105,22 @@ export class ResumenReservaComponent implements OnInit {
   }
 
   loadHabitacion(habitacionId: string): void {
-    this.habitacionesService.getHabitacionById(habitacionId).subscribe(habitacion => {
-      this.habitacion = habitacion;
-      const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
-      if (huespedesArray.length === 0) {
-        this.initializeHuespedesForm();
-      }
-      this.cdr.markForCheck();
-    });
+    this.habitacionesService
+      .getHabitacionById(habitacionId)
+      .subscribe((habitacion) => {
+        this.habitacion = habitacion;
+        const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
+        if (huespedesArray.length === 0) {
+          this.initializeHuespedesForm();
+        }
+        this.cdr.markForCheck();
+      });
   }
 
   initializeHuespedesForm(): void {
-    const capacidad = this.getCapacidadHabitacion(this.habitacion.tipoHabitacion);
+    const capacidad = this.getCapacidadHabitacion(
+      this.habitacion.tipoHabitacion,
+    );
     const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
 
     for (let i = 0; i < capacidad; i++) {
@@ -121,8 +129,8 @@ export class ResumenReservaComponent implements OnInit {
           id: [null],
           nombreCompleto: ['', Validators.required],
           dni: ['', Validators.required],
-          email: ['', [Validators.required, Validators.email]]
-        })
+          email: ['', [Validators.required, Validators.email]],
+        }),
       );
     }
   }
@@ -133,27 +141,30 @@ export class ResumenReservaComponent implements OnInit {
 
   getCapacidadHabitacion(tipoHabitacion: string): number {
     const capacidadMap = {
-      'INDIVIDUAL': 1,
-      'DOBLE': 2,
-      'TRIPLE': 3,
-      'CUADRUPLE': 4,
-      'SUITE': 2
+      INDIVIDUAL: 1,
+      DOBLE: 2,
+      TRIPLE: 3,
+      CUADRUPLE: 4,
+      SUITE: 2,
     };
     return capacidadMap[tipoHabitacion] || 1;
   }
 
   confirmarReserva(): void {
     if (localStorage.getItem('auth_token') == null) {
-      sessionStorage.setItem('reservaData', JSON.stringify({
-        habitacionId: this.habitacion.id,
-        checkIn: this.checkIn,
-        checkOut: this.checkOut,
-        huespedes: this.huespedes.value
-      }));
+      sessionStorage.setItem(
+        'reservaData',
+        JSON.stringify({
+          habitacionId: this.habitacion.id,
+          checkIn: this.checkIn,
+          checkOut: this.checkOut,
+          huespedes: this.huespedes.value,
+        }),
+      );
 
       this.router.navigate(['/auth/login'], {
-        queryParams: { redirectUrl: '/resumen-reserva' }
-    });
+        queryParams: { redirectUrl: '/resumen-reserva' },
+      });
     } else {
       const reserva = {
         idUsuario: localStorage.getItem('usuario'),
@@ -162,27 +173,36 @@ export class ResumenReservaComponent implements OnInit {
         coste: this.calcularTotal(),
         habitacion: this.habitacion,
         hotel: this.habitacion.hotel,
-        huespedes: this.huespedes.value
+        huespedes: this.huespedes.value,
       };
 
       this.reservasService.createReserva(reserva).subscribe(
-        response => {
-          console.log('Reserva creada:', response);
-          //this.router.navigate(['/confirmacion']); // Redirigir a una página de confirmación
+        (response) => {
+          this.showNotification = true;
+          this.message = 'Operación realizada con éxito';
+          this.color = true;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
         },
-        error => {
-          console.error('Error al crear la reserva', error);
-        }
+        (error) => {
+          this.showNotification = true;
+          this.message = 'Error al realizar la operación';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+        },
       );
-      console.log("Reserva a crear: ", reserva)
     }
-
   }
 
   calcularNoches(): number {
     const checkInDate = new Date(this.checkIn);
     const checkOutDate = new Date(this.checkOut);
-    return Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.ceil(
+      (checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24),
+    );
   }
 
   calcularTotal(): number {
