@@ -68,7 +68,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logOut() {
-    localStorage.removeItem('auth_token');
+    this.tokenService.removeToken();
     this.showDropdown = false;
 
     this.router.navigate(['/']).then(() => {
@@ -103,6 +103,14 @@ export class NavbarComponent implements OnInit {
 
   ocultarModal() {
     this.mostrarModalEditarPerfil = false;
+  }
+
+  goToReservas() {
+    if (localStorage.getItem('auth_token') == null) {
+      this.router.navigate(['/auth/login'], {
+        queryParams: { redirectUrl: '/reservas' },
+      });
+    } else this.router.navigate(['/reservas']);
   }
 
 }

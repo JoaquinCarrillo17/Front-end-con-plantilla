@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { DatePipe } from '@angular/common';
+import { DatePickerComponent } from "../../theme/shared/components/date-picker/date-picker.component";
 
 
 @Component({
@@ -25,8 +26,9 @@ import { DatePipe } from '@angular/common';
     MatNativeDateModule,
     CommonModule,
     FormsModule,
-    SharedModule
-  ],
+    SharedModule,
+    DatePickerComponent
+],
   providers: [DatePipe],
   templateUrl: './habitaciones-guest.component.html',
   styleUrls: ['./habitaciones-guest.component.scss']

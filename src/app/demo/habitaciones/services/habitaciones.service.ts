@@ -63,7 +63,24 @@ export class HabitacionesService {
   }
 
   getHabitacionById(idHabitacion: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/habitaciones/${idHabitacion}`);
+    const body = {
+      "listOrderCriteria": {
+        "valueSortOrder": "ASC",
+        "sortBy": "id"
+      },
+      "listSearchCriteria": [
+        {
+          "key": "id",
+          "operation": "equals",
+          "value": idHabitacion
+        }
+      ],
+      "page": {
+        "pageIndex": 0,
+        "pageSize": 1
+      }
+    }
+    return this.http.post(`${this.baseUrl}/habitaciones/dynamicFilterAnd`, body);
   }
 
 }

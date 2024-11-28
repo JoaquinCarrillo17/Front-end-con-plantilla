@@ -42,6 +42,9 @@ export class TokenInterceptor implements HttpInterceptor {
       // Token inválido o no disponible, redirigir al login
       console.log(req.url);
       console.log('NO TENGO TOKEN');
+      if (this.jwtHelper.isTokenExpired(token)) {
+console.log("Tengo el token caducado");
+      }
       this.router.navigate(['/auth/login']);
       return next.handle(req);
     }

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TokenService } from 'src/app/demo/token/token.service';
@@ -12,11 +12,13 @@ import { SharedModule } from "../../../../theme/shared/shared.module";
   templateUrl: './auth-signin.component.html',
   styleUrls: ['./auth-signin.component.scss'],
 })
-export class AuthSigninComponent {
+export class AuthSigninComponent implements OnInit {
   @ViewChild('loginForm') loginForm: NgForm;
   showNotification: boolean = false;
   message: any;
   color: boolean = false;
+
+  redirectUrl: any;
 
   constructor(
     private authService: AuthService,
@@ -24,6 +26,9 @@ export class AuthSigninComponent {
     private tokenService: TokenService,
     private route: ActivatedRoute,
   ) {}
+  ngOnInit(): void {
+    this.redirectUrl = this.route.snapshot.queryParamMap.get('redirectUrl');
+  }
 
   login() {
     if (this.loginForm.invalid) {
@@ -43,10 +48,9 @@ export class AuthSigninComponent {
             this.tokenService.esSuperAdmin() ? 'true' : 'false',
           );
           localStorage.setItem('usuario', usuario);
-          const redirectUrl =
-            this.route.snapshot.queryParamMap.get('redirectUrl');
-          if (redirectUrl) {
-            this.router.navigateByUrl(redirectUrl);
+
+          if (this.redirectUrl) {
+            this.router.navigateByUrl(this.redirectUrl);
           } else if (username.includes('admin')) {
             this.router.navigate(['/admin']);
           } else {
@@ -62,5 +66,10 @@ export class AuthSigninComponent {
           }, 3000);
         },
       );
+  }
+
+  goToSignUp() {
+    const queryParams = this.redirectUrl ? { redirectUrl: this.redirectUrl } : {};
+    this.router.navigate(['/auth/signup'], { queryParams });
   }
 }

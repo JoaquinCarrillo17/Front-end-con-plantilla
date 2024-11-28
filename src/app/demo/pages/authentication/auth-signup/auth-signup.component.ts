@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Usuario } from '../interfaces/usuario.interface';
@@ -13,12 +13,14 @@ import { SharedModule } from "../../../../theme/shared/shared.module";
   templateUrl: './auth-signup.component.html',
   styleUrls: ['./auth-signup.component.scss'],
 })
-export class AuthSignupComponent {
+export class AuthSignupComponent implements OnInit {
   @ViewChild('signupForm') signupForm: NgForm;
 
   showNotification: boolean = false;
   message: any;
   color: boolean = false;
+
+  redirectUrl: any;
 
   constructor(
     private authService: AuthService,
@@ -27,10 +29,14 @@ export class AuthSignupComponent {
     private route: ActivatedRoute,
   ) {}
 
+  ngOnInit(): void {
+    this.redirectUrl = this.route.snapshot.queryParamMap.get('redirectUrl');
+  }
+
   signUp(): void {
     if (this.signupForm.invalid) {
       this.signupForm.form.markAllAsTouched();
-      return; 
+      return;
     }
 
     const usuario: Usuario = {
@@ -52,15 +58,14 @@ export class AuthSignupComponent {
           this.tokenService.esSuperAdmin() ? 'true' : 'false',
         );
         localStorage.setItem('usuario', usuario);
-        const redirectUrl =
-            this.route.snapshot.queryParamMap.get('redirectUrl');
-          if (redirectUrl) {
-            this.router.navigateByUrl(redirectUrl);
-          } else if (username.includes('admin')) {
-            this.router.navigate(['/admin']);
-          } else {
-            this.router.navigate(['/']); // Ruta por defecto si no hay redirectUrl
-          }
+        
+        if (this.redirectUrl) {
+          this.router.navigateByUrl(this.redirectUrl);
+        } else if (username.includes('admin')) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']); // Ruta por defecto si no hay redirectUrl
+        }
       },
       (error) => {
         this.showNotification = true;

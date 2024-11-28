@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { UbicacionService } from '../ubicacion/ubicacion.service';
 import { Router } from '@angular/router';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { DatePickerComponent } from "../../theme/shared/components/date-picker/date-picker.component";
 
 @Component({
   selector: 'app-main-page',
@@ -22,7 +23,8 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
     ReactiveFormsModule,
     SharedModule,
     CommonModule,
-  ],
+    DatePickerComponent
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss',
 })

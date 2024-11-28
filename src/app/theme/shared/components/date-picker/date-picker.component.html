@@ -1,0 +1,12 @@
+<div class="form-group">
+  <label>{{ label }}</label>
+  <input
+    type="date"
+    [min]="minDate"
+    [value]="model"
+    (change)="onDateChange($event)"
+  />
+  <div *ngIf="condition" class="error-message" style="color: red;">
+    {{ message }}
+  </div>
+</div>

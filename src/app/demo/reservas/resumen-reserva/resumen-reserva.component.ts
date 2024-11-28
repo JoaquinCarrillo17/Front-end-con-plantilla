@@ -108,7 +108,7 @@ export class ResumenReservaComponent implements OnInit {
     this.habitacionesService
       .getHabitacionById(habitacionId)
       .subscribe((habitacion) => {
-        this.habitacion = habitacion;
+        this.habitacion = habitacion.content[0];
         const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
         if (huespedesArray.length === 0) {
           this.initializeHuespedesForm();

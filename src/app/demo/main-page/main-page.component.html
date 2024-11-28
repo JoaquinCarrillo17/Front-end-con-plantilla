@@ -9,17 +9,10 @@
     </select>
   </div>
 
-  <!-- Input de Check-in -->
-  <div class="form-group">
-    <label for="checkin">Check-in</label>
-    <input type="date" id="checkin" [(ngModel)]="checkIn">
-  </div>
+  <app-date-picker label="Check-in" [(model)]="checkIn"></app-date-picker>
 
-  <!-- Input de Check-out -->
-  <div class="form-group">
-    <label for="checkout">Check-out</label>
-    <input type="date" id="checkout" [(ngModel)]="checkOut">
-  </div>
+  <app-date-picker label="Check-out" [(model)]="checkOut" [minDate]="checkIn || ''"></app-date-picker>
+
 
   <!-- Select de Ocupación -->
   <div class="form-group">

@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from "../../theme/shared/shared.module";
 import { ActivatedRoute, Router } from '@angular/router';
 import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { DatePickerComponent } from "../../theme/shared/components/date-picker/date-picker.component";
 
 
 @Component({
@@ -27,7 +28,8 @@ import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-d
     CommonModule,
     FormsModule,
     SharedModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    DatePickerComponent
 ],
   templateUrl: './hoteles-guest.component.html',
   styleUrls: ['./hoteles-guest.component.scss']

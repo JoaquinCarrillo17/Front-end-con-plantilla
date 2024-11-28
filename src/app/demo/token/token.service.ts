@@ -18,6 +18,8 @@ export class TokenService {
 
   removeToken(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem("superadmin");
+    localStorage.removeItem("usuario");
   }
 
   getRoles(): string[] {

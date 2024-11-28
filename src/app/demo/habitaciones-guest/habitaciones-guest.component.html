@@ -3,15 +3,10 @@
   <div class="search-filter-container">
     <!-- Fila de Inputs -->
     <div class="form-row">
-      <div class="form-group">
-        <label for="checkin">Check-in</label>
-        <input type="date" id="checkin" [(ngModel)]="checkIn">
-      </div>
+      
+      <app-date-picker label="Check-in" [(model)]="checkIn"></app-date-picker>
 
-      <div class="form-group">
-        <label for="checkout">Check-out</label>
-        <input type="date" id="checkout" [(ngModel)]="checkOut">
-      </div>
+      <app-date-picker label="Check-out" [(model)]="checkOut" [minDate]="checkIn || ''"></app-date-picker>
 
       <app-range-slider
         [min]="0"
