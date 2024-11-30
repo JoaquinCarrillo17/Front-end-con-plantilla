@@ -1,134 +1,163 @@
-// angular import
-import { Component, ViewChild } from '@angular/core';
-
-// project import
-import { SharedModule } from 'src/app/theme/shared/shared.module';
-
-// third party
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ChartOptions } from '../../chart/apex-chart/apex-chart.component';
-import { Historico } from '../interfaces/historico.interface';
 import { HistoricoService } from '../services/historicos.service';
+import { HotelesService } from '../../hoteles/services/hoteles.service';
+import { SharedModule } from '../../../theme/shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-historico',
-  standalone: true,
-  imports: [SharedModule, NgApexchartsModule],
   templateUrl: './historico.component.html',
-  styleUrl: './historico.component.scss'
+  styleUrls: ['./historico.component.scss'],
+  imports: [SharedModule, NgApexchartsModule, FormsModule],
+  standalone: true,
 })
-export default class HistoricoComponent {
-
+export default class HistoricoComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
 
-  areaAngleChart: Partial<ChartOptions>;
+  reservasChart: Partial<ChartOptions>;
+  gananciasChart: Partial<ChartOptions>;
   habitacionesChart: Partial<ChartOptions>;
-  categories: string[] = [];
-  hotelesData: number[] = [];
-  habitacionesData: number[] = [];
-  habitacionesDisponiblesData: number[] = [];
-  habitacionesReservadasData: number[] = [];
-  huespedesData: number[] = [];
 
-  public usuario: any;
-  public esSuperAdmin: boolean;
+  hoteles: any;
+  years: any = [];
+  selectedHotel: any;
+  selectedYear: any;
 
-  constructor(private historicoService: HistoricoService) {}
+  idUsuario: any;
+  esSuperAdmin: boolean;
+
+  dataLoaded: boolean = false;
+
+  constructor(
+    private historicoService: HistoricoService,
+    private hotelesService: HotelesService,
+  ) {}
 
   ngOnInit() {
-    this.loadDataForChart();
+    this.idUsuario = localStorage.getItem('usuario');
+    this.esSuperAdmin = localStorage.getItem('superadmin') === 'true';
+    this.loadInitialData();
   }
 
-  loadDataForChart() {
-    this.usuario = localStorage.getItem("usuario");
-    this.esSuperAdmin = localStorage.getItem("superadmin") === "true";
-
-    const historicoObservable = this.esSuperAdmin ? this.historicoService.getAllHistoricos(this.usuario) : this.historicoService.getHistoricosDeUsuario(this.usuario);
-
-    historicoObservable.subscribe((historicos: Historico[]) => {
-      historicos.forEach((historico: Historico) => {
-        const fecha = new Date(historico.fecha);
-        // Formatear la fecha en "dd/mm/yyyy"
-        const fechaFormateada = fecha.toLocaleDateString('es-ES');
-        this.categories.push(fechaFormateada);
-        this.hotelesData.push(historico.hotelesTotales)
-        this.habitacionesData.push(historico.habitacionesTotales);
-        this.habitacionesDisponiblesData.push(historico.habitacionesDisponibles);
-        this.habitacionesReservadasData.push(historico.habitacionesReservadas);
-        this.huespedesData.push(historico.huespedesTotales);
-      });
-
-      // Configura el gráfico con los datos obtenidos
-      this.areaAngleChart = {
-        chart: {
-          height: 380,
-          type: 'area',
-          stacked: false,
-        },
-        stroke: {
-          curve: 'straight',
-        },
-        series: [
-          {
-            name: 'Hoteles',
-            data: this.hotelesData,
-          },
-          {
-            name: 'Habitaciones',
-            data: this.habitacionesData,
-          },
-          {
-            name: 'Huéspedes',
-            data: this.huespedesData,
-          },
-        ],
-        xaxis: {
-          categories: this.categories,
-        },
-        tooltip: {
-          followCursor: true,
-        },
-        fill: {
-          opacity: 1,
-        },
-      };
-
-      // Grafico para las habitaciones, habitaciones disponibles y reservadas
-      this.habitacionesChart = {
-        chart: {
-          height: 380,
-          type: 'area',
-          stacked: false,
-        },
-        stroke: {
-          curve: 'straight',
-        },
-        series: [
-          {
-            name: 'Habitaciones',
-            data: this.habitacionesData,
-          },
-          {
-            name: 'Habitaciones Disponibles',
-            data: this.habitacionesDisponiblesData,
-          },
-          {
-            name: 'Habitaciones Reservadas',
-            data: this.habitacionesReservadasData,
-          },
-        ],
-        xaxis: {
-          categories: this.categories,
-        },
-        tooltip: {
-          followCursor: true,
-        },
-        fill: {
-          opacity: 1,
-        },
-      };
+  loadInitialData() {
+    // Obtener lista de hoteles
+    this.hotelesService.getAllHoteles().subscribe((hoteles) => {
+      this.hoteles = hoteles;
+      //this.selectedHotel = hoteles[0]?.id; // Selecciona el primer hotel por defecto
     });
+
+    // Generar lista de años
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= currentYear - 5; year--) {
+      this.years.push(year);
+    }
+    //this.selectedYear = currentYear; // Año actual por defecto
   }
 
+  generateCharts() {
+    this.dataLoaded = false;
 
+    // Si no es superadmin, selecciona automáticamente el hotel del usuario actual
+    let hotelId = null;
+    if (!this.esSuperAdmin) {
+      const hotelDelUsuario = this.hoteles.find(
+        (hotel) => hotel.idUsuario == this.idUsuario,
+      );
+      hotelId = hotelDelUsuario.id;
+    } else {
+      // Usar el hotel seleccionado en el dropdown (si es superadmin)
+      hotelId = this.selectedHotel || null;
+    }
+
+    this.historicoService
+      .getEstadisticas(hotelId, this.selectedYear)
+      .subscribe((data) => {
+        const monthNames = [
+          'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
+          'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
+        ];
+        // Configurar Reservas por Mes
+        const reservasPorMes = Object.keys(data.reservasPorMes).map((mes) => ({
+          x: monthNames[parseInt(mes, 10) - 1],
+          y: data.reservasPorMes[mes],
+        }));
+        this.reservasChart = {
+          chart: {
+            type: 'bar',
+            height: 350,
+          },
+          series: [
+            {
+              name: 'Reservas',
+              data: reservasPorMes,
+            },
+          ],
+          xaxis: {
+            categories: Object.keys(data.reservasPorMes).map(
+              (mes) => monthNames[parseInt(mes, 10) - 1],
+            ),
+          },
+          tooltip: {
+            followCursor: true,
+          },
+        };
+
+        // Configurar Ganancias por Mes
+        const gananciasPorMes = Object.keys(data.gananciasPorMes).map(
+          (mes) => ({
+            x: monthNames[parseInt(mes, 10) - 1],
+            y: data.gananciasPorMes[mes],
+          }),
+        );
+        this.gananciasChart = {
+          chart: {
+            type: 'bar',
+            height: 350,
+          },
+          series: [
+            {
+              name: 'Ganancias (€)',
+              data: gananciasPorMes,
+            },
+          ],
+          xaxis: {
+            categories: Object.keys(data.gananciasPorMes).map(
+              (mes) => monthNames[parseInt(mes, 10) - 1],
+            ),
+          },
+          tooltip: {
+            followCursor: true,
+          },
+        };
+
+        // Configurar Habitaciones
+        this.habitacionesChart = {
+          chart: {
+            type: 'pie',
+            height: 350,
+          },
+          series: [
+            data.totalHabitaciones,
+            data.habitacionesReservadas,
+            data.habitacionesLibres,
+          ],
+          labels: ['Total', 'Reservadas', 'Disponibles'],
+          legend: {
+            show: true, // Mostrar leyenda
+            position: 'right', // Posición de la leyenda (puedes usar 'top', 'bottom', 'left', 'right')
+          },
+          tooltip: {
+            followCursor: true,
+            y: {
+              formatter: function (val) {
+                return `${val} habitaciones`; // Formato del tooltip
+              },
+            },
+          },
+        };
+        this.dataLoaded = true;
+      });
+  }
 }

@@ -1,27 +1,59 @@
-<div class="row">
-  <div class="col-md-6">
-    <app-card cardTitle="Entidades" [options]="false">
-      <apx-chart
-        [series]="areaAngleChart.series"
-        [chart]="areaAngleChart.chart"
-        [fill]="areaAngleChart.fill"
-        [stroke]="areaAngleChart.stroke"
-        [xaxis]="areaAngleChart.xaxis"
-        [tooltip]="areaAngleChart.tooltip"
-      ></apx-chart>
-    </app-card>
+<div class="row align-items-end">
+  <!-- Selector de Hotel -->
+  <div class="col-md-4" *ngIf="esSuperAdmin">
+    <div class="form-group" style="margin-bottom: 0px !important;">
+      <label for="hotelSelector">Seleccionar Hotel:</label>
+      <select id="hotelSelector" class="form-control" [(ngModel)]="selectedHotel">
+        <option value="">Todos</option>
+        <option *ngFor="let hotel of hoteles" [value]="hotel.id">{{ hotel.nombre }}</option>
+      </select>
+    </div>
   </div>
-  
-  <div class="col-md-6">
-    <app-card cardTitle="Habitaciones" [options]="false">
-      <apx-chart
-        [series]="habitacionesChart.series"
-        [chart]="habitacionesChart.chart"
-        [fill]="habitacionesChart.fill"
-        [stroke]="habitacionesChart.stroke"
-        [xaxis]="habitacionesChart.xaxis"
-        [tooltip]="habitacionesChart.tooltip"
-      ></apx-chart>
-    </app-card>
+
+  <!-- Selector de Año -->
+  <div class="col-md-4">
+    <div class="form-group" style="margin-bottom: 0px !important;">
+      <label for="yearSelector">Seleccionar Año:</label>
+      <select id="yearSelector" class="form-control" [(ngModel)]="selectedYear">
+        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Botón Generar -->
+  <div class="col-md-4">
+    <button class="btn btn-primary btn-block" style="margin-bottom: 0px !important;" (click)="generateCharts()">Generar</button>
+  </div>
+</div>
+
+
+
+<div *ngIf="dataLoaded">
+  <div class="row" style="margin-top: 35px;">
+    <!-- Gráfica Reservas por Mes -->
+    <div class="col-md-6">
+      <app-card cardTitle="Reservas por Mes" [options]="false">
+        <apx-chart [series]="reservasChart.series" [chart]="reservasChart.chart" [xaxis]="reservasChart.xaxis"
+          [tooltip]="reservasChart.tooltip"></apx-chart>
+      </app-card>
+    </div>
+
+    <!-- Gráfica Ganancias por Mes -->
+    <div class="col-md-6">
+      <app-card cardTitle="Ganancias por Mes" [options]="false">
+        <apx-chart [series]="gananciasChart.series" [chart]="gananciasChart.chart" [xaxis]="gananciasChart.xaxis"
+          [tooltip]="gananciasChart.tooltip"></apx-chart>
+      </app-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Gráfica Habitaciones -->
+    <div class="col-md-12">
+      <app-card cardTitle="Habitaciones" [options]="false">
+        <apx-chart [series]="habitacionesChart.series" [chart]="habitacionesChart.chart" [labels]="habitacionesChart.labels"
+          [xaxis]="habitacionesChart.xaxis" [tooltip]="habitacionesChart.tooltip"></apx-chart>
+      </app-card>
+    </div>
   </div>
 </div>
