@@ -6,13 +6,19 @@
 
         <div class="form-group">
           <label for="nombre">Nombre</label>
-          <input type="text" class="form-control" id="nombre" [(ngModel)]="rol.nombre" name="nombre" required>
+          <input type="text" class="form-control" id="nombre" [(ngModel)]="rol.nombre" name="nombre" #nombre="ngModel" required>
+          <div *ngIf="nombre.invalid && nombre.touched" class="error-message">
+            El nombre es obligatorio.
+          </div>
         </div>
 
         <div class="form-group">
           <label for="descripcion">Descripción</label>
-          <input type="text" class="form-control" id="descripcion" [(ngModel)]="rol.descripcion" name="descripcion"
+          <input type="text" class="form-control" id="descripcion" [(ngModel)]="rol.descripcion" name="descripcion" #descripcion="ngModel"
             required>
+            <div *ngIf="descripcion.invalid && descripcion.touched" class="error-message">
+              La descripción es obligatoria.
+            </div>
         </div>
 
         <div class="listaPermisos">

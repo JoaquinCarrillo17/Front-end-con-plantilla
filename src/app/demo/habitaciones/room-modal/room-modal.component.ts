@@ -13,6 +13,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class RoomModalComponent implements OnInit {
   roomForm: FormGroup;
   serviciosDisponibles: string[] = ['COCINA', 'TERRAZA', 'JACUZZI'];
+  roomDataCopy: any; // Copia de los datos originales
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,15 +22,21 @@ export class RoomModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Crear una copia de los datos para evitar modificar el objeto original
+    this.roomDataCopy = {
+      ...this.data,
+      servicios: [...(this.data?.servicios || [])], // Copia profunda del array de servicios
+    };
+
     this.roomForm = this.formBuilder.group({
-      id: [this.data?.id || '', []], // Solo para referencia, no editable
+      id: [this.roomDataCopy?.id || '', []], // Solo para referencia, no editable
       numero: [
-        { value: this.data?.numero || '', disabled: this.data != null },
+        { value: this.roomDataCopy?.numero || '', disabled: this.roomDataCopy != null },
         [Validators.required],
       ],
-      tipoHabitacion: [this.data?.tipoHabitacion || '', [Validators.required]],
-      precioNoche: [this.data?.precioNoche || '', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')]],
-      servicios: [this.data?.servicios || [], [Validators.required]],
+      tipoHabitacion: [this.roomDataCopy?.tipoHabitacion || '', [Validators.required]],
+      precioNoche: [this.roomDataCopy?.precioNoche || '', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')]],
+      servicios: [this.roomDataCopy?.servicios || [], [Validators.required]],
     });
   }
 
@@ -50,7 +57,7 @@ export class RoomModalComponent implements OnInit {
 
   onSave(): void {
     if (this.roomForm.valid) {
-      this.dialogRef.close(this.roomForm.value);
+      this.dialogRef.close(this.roomForm.value); // Devuelve los datos del formulario sin modificar el original
     } else this.roomForm.markAllAsTouched();
   }
 

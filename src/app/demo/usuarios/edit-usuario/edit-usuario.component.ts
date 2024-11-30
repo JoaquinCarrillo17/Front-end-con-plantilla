@@ -35,7 +35,10 @@ export class EditUsuarioComponent implements OnInit {
     private dialogRef: MatDialogRef<EditUsuarioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Usuario
   ) {
-    this.usuario = { ...data };
+    this.usuario = {
+      ...data,
+      roles: [...(data.roles || [])] // Copia profunda del array de roles
+    };
   }
 
   ngOnInit(): void {
@@ -52,14 +55,16 @@ export class EditUsuarioComponent implements OnInit {
   }
 
   anadirRol(rol: Rol): void {
-    const index = this.usuario.roles.findIndex(u => u.id === rol.id);
+    const rolesCopy = [...this.usuario.roles]; // Trabajar con una copia
+    const index = rolesCopy.findIndex((u) => u.id === rol.id);
+
     if (index !== -1) {
-      // Si el permiso ya está en la lista, lo eliminamos
-      this.usuario.roles.splice(index, 1);
+      rolesCopy.splice(index, 1); // Eliminar rol
     } else {
-      // Si el permiso no está en la lista, lo agregamos
-      this.usuario.roles.push(rol);
+      rolesCopy.push(rol); // Añadir rol
     }
+
+    this.usuario.roles = rolesCopy; // Actualizar el array
   }
 
   onSubmit(): void {

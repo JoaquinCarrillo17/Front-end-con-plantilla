@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RolesService } from '../services/roles.service';
 import { Rol } from '../interfaces/rol.interface';
 import { CommonModule } from '@angular/common';
@@ -16,56 +16,60 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrl: './edit-roles.component.scss'
 })
 export class EditRolesComponent implements OnInit {
-
   public rol: Rol = {
     id: 0,
-    nombre: "",
-    descripcion: "",
+    nombre: '',
+    descripcion: '',
     permisos: []
-  }
+  };
 
   public permisos: Permiso[];
-
 
   constructor(
     private dialogRef: MatDialogRef<EditRolesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { rol: Rol },
     private permisosService: PermisosService
   ) {
-    this.rol = { ...data.rol }; // Clonar el rol para evitar modificar el original directamente
+    // Clonar el rol y la lista de permisos para evitar referencias directas
+    this.rol = {
+      ...data.rol,
+      permisos: [...(data.rol.permisos || [])] // Copia profunda del array de permisos
+    };
   }
 
   ngOnInit(): void {
-
-    this.permisosService.getAllPermisos().subscribe(data => {
-      this.permisos = data;
-    },
-    error => {
-      console.log("Error al obtener los permisos: " + error);
-    })
+    this.permisosService.getAllPermisos().subscribe(
+      (data) => {
+        this.permisos = data;
+      },
+      (error) => {
+        console.log('Error al obtener los permisos: ' + error);
+      }
+    );
   }
 
   editRol() {
-    this.dialogRef.close(this.rol);
+    this.dialogRef.close(this.rol); // Devolver los datos editados
   }
 
   rolTienePermiso(permiso: Permiso): boolean {
-    return this.rol.permisos.some(p => p.id === permiso.id);
+    return this.rol.permisos.some((p) => p.id === permiso.id);
   }
 
   anadirPermiso(permiso: Permiso): void {
-    const index = this.rol.permisos.findIndex(p => p.id === permiso.id);
+    const permisosCopy = [...this.rol.permisos]; // Trabajar con una copia
+    const index = permisosCopy.findIndex((p) => p.id === permiso.id);
+
     if (index !== -1) {
-      // Si el permiso ya está en la lista, lo eliminamos
-      this.rol.permisos.splice(index, 1);
+      permisosCopy.splice(index, 1); // Eliminar permiso
     } else {
-      // Si el permiso no está en la lista, lo agregamos
-      this.rol.permisos.push(permiso);
+      permisosCopy.push(permiso); // Añadir permiso
     }
+
+    this.rol.permisos = permisosCopy; // Actualizar el array
   }
 
   ocultarModalEditarRol() {
     this.dialogRef.close(null);
   }
-
 }
