@@ -3,7 +3,7 @@
   <div class="search-filter-container">
     <!-- Fila de Inputs -->
     <div class="form-row">
-      
+
       <app-date-picker label="Check-in" [(model)]="checkIn"></app-date-picker>
 
       <app-date-picker label="Check-out" [(model)]="checkOut" [minDate]="checkIn || ''"></app-date-picker>
@@ -24,12 +24,22 @@
         </select>
       </div>
 
-      <mat-form-field appearance="outline">
+      <!--<mat-form-field appearance="outline">
         <mat-label>Servicios</mat-label>
         <mat-select [(ngModel)]="servicios" multiple>
           <mat-option *ngFor="let servicio of serviciosArray" [value]="servicio.key">{{ servicio.key }}</mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field>-->
+
+      <div class="form-group">
+        <label>Servicios</label>
+        <mat-select [(ngModel)]="servicios" multiple>
+          <mat-option *ngFor="let servicio of serviciosArray" [value]="servicio.key">{{ servicio.key }}</mat-option>
+        </mat-select>
+      </div>
+
+
+
     </div>
 
     <!-- Fila de Botones -->

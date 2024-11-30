@@ -40,6 +40,7 @@ export class HotelesGuestComponent implements OnInit {
   continentes: string[] = [];
   paises: string[] = [];
   ciudades: string[] = [];
+  ciudadesFiltradas: string[] = [];
   servicios = [
     { key: 'GIMNASIO', value: 'GIMNASIO' },
     { key: 'LAVANDERIA', value: 'LAVANDERIA' },
@@ -161,6 +162,7 @@ private esperarUbicaciones(callback: () => void): void {
     this.ubicacionesService.getAllUbicaciones().subscribe((ubicaciones: any[]) => {
       this.ubicaciones = ubicaciones;
       this.extraerValoresUnicos(ubicaciones);
+      this.ciudadesFiltradas = [...this.ciudades];
     });
   }
 
@@ -168,6 +170,36 @@ private esperarUbicaciones(callback: () => void): void {
     this.continentes = [...new Set(ubicaciones.map(ubicacion => String(ubicacion.continente)))];
     this.paises = [...new Set(ubicaciones.map(ubicacion => String(ubicacion.pais)))];
     this.ciudades = [...new Set(ubicaciones.map(ubicacion => String(ubicacion.ciudad)))];
+  }
+
+  onCiudadChange(): void {
+    if (this.filtroCiudad) {
+      // Encontrar la ubicación correspondiente a la ciudad seleccionada
+      const ubicacion = this.ubicaciones.find(u => u.ciudad === this.filtroCiudad);
+
+      if (ubicacion) {
+        // Actualizar el filtro de país con el país correspondiente
+        this.filtroPais = ubicacion.pais;
+        this.filtrarCiudadesPorPais(this.filtroPais);
+      }
+    }
+  }
+
+  onPaisChange(): void {
+    if (this.filtroPais) {
+      // Vaciar el filtro de ciudad cuando se selecciona un país
+      this.filtroCiudad = '';
+      this.filtrarCiudadesPorPais(this.filtroPais);
+    } else {
+      this.ciudadesFiltradas = [...this.ciudades];
+    }
+  }
+
+  filtrarCiudadesPorPais(pais: string): void {
+    // Filtrar ciudades que pertenezcan al país seleccionado
+    this.ciudadesFiltradas = this.ubicaciones
+      .filter(ubicacion => ubicacion.pais === pais)
+      .map(ubicacion => ubicacion.ciudad);
   }
 
   getHoteles() {
