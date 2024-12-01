@@ -67,6 +67,12 @@ export class HotelListComponent implements OnInit {
           // Si no tiene hotel, abrir el flujo de creación
           this.isSpinnerVisible = false;
           this.openAddHotelModal();
+          this.showNotification = true;
+              this.message = 'Crea tu hotel';
+              this.color = false;
+              setTimeout(() => {
+                this.showNotification = false;
+              }, 3000);
         } else {
           console.error('Error al comprobar hotel del usuario:', error);
         }

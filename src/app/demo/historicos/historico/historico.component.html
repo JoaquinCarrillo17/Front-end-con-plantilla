@@ -1,4 +1,5 @@
 <div class="row align-items-end">
+  <app-spinner *ngIf="isSpinnerVisible"></app-spinner>
   <!-- Selector de Hotel -->
   <div class="col-md-4" *ngIf="esSuperAdmin">
     <div class="form-group" style="margin-bottom: 0px !important;">
@@ -50,10 +51,11 @@
   <div class="row">
     <!-- Gráfica Habitaciones -->
     <div class="col-md-12">
-      <app-card cardTitle="Habitaciones" [options]="false">
+      <app-card cardTitle="Estado de las Habitaciones en Tiempo Real" [options]="false">
         <apx-chart [series]="habitacionesChart.series" [chart]="habitacionesChart.chart" [labels]="habitacionesChart.labels"
           [xaxis]="habitacionesChart.xaxis" [tooltip]="habitacionesChart.tooltip"></apx-chart>
       </app-card>
     </div>
   </div>
 </div>
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

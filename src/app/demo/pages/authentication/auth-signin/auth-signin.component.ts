@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TokenService } from 'src/app/demo/token/token.service';
 import { AuthService } from '../services/auth.service';
-import { SharedModule } from "../../../../theme/shared/shared.module";
+import { SharedModule } from '../../../../theme/shared/shared.module';
 
 @Component({
   selector: 'app-auth-signin',
@@ -51,10 +51,16 @@ export class AuthSigninComponent implements OnInit {
 
           if (this.redirectUrl) {
             this.router.navigateByUrl(this.redirectUrl);
-          } else if (username.includes('admin')) {
-            this.router.navigate(['/admin']);
           } else {
-            this.router.navigate(['/']); // Ruta por defecto si no hay redirectUrl
+            const roles = this.tokenService.getRoles(); // Obtén los roles del usuario
+            if (
+              roles.includes('ROLE_HOTELES_W') ||
+              roles.includes('ROLE_SUPER_ADMIN')
+            ) {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/']); // Ruta por defecto
+            }
           }
         },
         (error) => {
@@ -69,7 +75,9 @@ export class AuthSigninComponent implements OnInit {
   }
 
   goToSignUp() {
-    const queryParams = this.redirectUrl ? { redirectUrl: this.redirectUrl } : {};
+    const queryParams = this.redirectUrl
+      ? { redirectUrl: this.redirectUrl }
+      : {};
     this.router.navigate(['/auth/signup'], { queryParams });
   }
 }
