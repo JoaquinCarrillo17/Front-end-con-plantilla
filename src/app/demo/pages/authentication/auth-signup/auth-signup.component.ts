@@ -20,6 +20,8 @@ export class AuthSignupComponent implements OnInit {
   message: any;
   color: boolean = false;
 
+  isSpinnerVisible = false;
+
   redirectUrl: any;
 
   constructor(
@@ -46,7 +48,7 @@ export class AuthSignupComponent implements OnInit {
       password: this.signupForm.value.password,
       fechaNacimiento: this.signupForm.value.fechaNacimiento,
     };
-
+    this.isSpinnerVisible = true;
     this.authService.signUp(usuario).subscribe(
       (response: any) => {
         const token = response;
@@ -72,8 +74,10 @@ export class AuthSignupComponent implements OnInit {
             this.router.navigate(['/']); // Ruta por defecto
           }
         }
+        this.isSpinnerVisible = false;
       },
       (error) => {
+        this.isSpinnerVisible = false;
         this.showNotification = true;
         this.message = 'Error al registrarse. Verifica los datos ingresados.';
         this.color = false;
