@@ -239,7 +239,7 @@ export default class HistoricoComponent implements OnInit {
       (hotelResponse) => {
         habitaciones.forEach((habitacion) => {
           habitacion.hotel = hotelResponse; // Asociar el hotel creado a las habitaciones
-          this.habitacionesService.crearHabitacion(habitacion).subscribe(
+          /*this.habitacionesService.crearHabitacion(habitacion).subscribe(
             () => {
               this.showNotification = true;
               this.message = 'Operación realizada con éxito';
@@ -256,7 +256,22 @@ export default class HistoricoComponent implements OnInit {
                 this.showNotification = false;
               }, 3000);
             },
-          );
+          );*/
+        });
+        this.habitacionesService.crearHabitaciones(habitaciones).subscribe((response => {
+          this.showNotification = true;
+          this.message = 'Operación realizada con éxito';
+          this.color = true;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+        }), error => {
+          this.showNotification = true;
+              this.message = 'Error al realizar la operación';
+              this.color = false;
+              setTimeout(() => {
+                this.showNotification = false;
+              }, 3000);
         });
         // Recargar la lista de hoteles
       },

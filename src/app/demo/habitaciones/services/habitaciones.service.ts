@@ -83,4 +83,8 @@ export class HabitacionesService {
     return this.http.post(`${this.baseUrl}/habitaciones/dynamicFilterAnd`, body);
   }
 
+  crearHabitaciones(habitaciones): Observable<any> {
+    return this.http.post(`${this.baseUrl}/habitaciones/crearHabitaciones`, habitaciones);
+  }
+
 }
