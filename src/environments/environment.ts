@@ -7,7 +7,8 @@ import packageInfo from '../../package.json';
 export const environment = {
   appVersion: packageInfo.version,
   production: true,
-  baseUrl: 'http://localhost:8081'
+  //baseUrl: 'http://localhost:8081'
+  baseUrl: 'https://proyecto-hoteles.onrender.com'
 };
 /*
  * For easier debugging in development mode, you can import the following file
