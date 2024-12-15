@@ -10,7 +10,10 @@
     </div>
   </div>
   <div>
-    <span class="material-icons user-icon" style="color: white; font-size: 25px; cursor: pointer; margin-right: 15px;" (click)="toggleDropdown()">person</span>
+    <div class="user-info" (click)="toggleDropdown()">
+      <span *ngIf="usuario !== null" class="responsive-username" style="margin-right: 3px; cursor: pointer;">{{ usuario.username }}</span>
+      <span class="material-icons user-icon" style="color: white; font-size: 25px; cursor: pointer; margin-right: 15px;" >person</span>
+    </div>
     <div class="dropdown-menu dropdown-menu-end profile-notification" *ngIf="showDropdown">
       <div class="dropdown-header">
           <img
@@ -65,8 +68,11 @@
 
             <div class="form-group">
               <label for="fechaNacimiento">Fecha de nacimiento</label>
-              <input type="text" class="form-control" id="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"
-                name="fechaNacimiento" required>
+              <input
+              class="form-control"
+              type="date"
+              [(ngModel)]="usuario.fechaNacimiento"
+            />
             </div>
 
           </div>
@@ -81,4 +87,4 @@
   </div>
 </div>
 
-<app-notification [showNotification]="showNotification" message="Has actualizado el perfil correctamente" [color]="true"></app-notification>
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

@@ -16,7 +16,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private publicUrls: string[] = [
     '/auth/signUp',
     '/auth/login',
-    '/ubicaciones',
+    '/ubicaciones/getActivas',
     '/hoteles/dynamicFilterAnd',
     '/habitaciones/dynamicFilterAnd',
   ];
@@ -26,8 +26,6 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const token = this.tokenService.getToken();
-
-    console.log(`Es publica la ruta ${req.url}? ${this.isPublicUrl(req.url)}`)
 
     if (this.isPublicUrl(req.url)) {
       return next.handle(req); // Continuar sin autenticación
@@ -40,11 +38,6 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(authReq);
     } else {
       // Token inválido o no disponible, redirigir al login
-      console.log(req.url);
-      console.log('NO TENGO TOKEN');
-      if (this.jwtHelper.isTokenExpired(token)) {
-console.log("Tengo el token caducado");
-      }
       this.router.navigate(['/auth/login']);
       return next.handle(req);
     }

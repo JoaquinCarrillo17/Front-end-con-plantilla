@@ -2,43 +2,54 @@
 
 .background-image {
   background-image: url('/assets/images/bg3.jpg');
-  background-position: top;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; /* Cambia a "contain" si deseas que toda la imagen esté visible sin recorte */
   position: relative;
-  height: 85vh;
-
+  height: 85vh; /* Puedes ajustar este valor según prefieras */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
+
+/* Contenedor del formulario */
 .search-filter-container {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 15px;
   display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas */
   justify-content: space-between;
   align-items: center;
-  margin-top: -50px; /* Ajusta este valor para superponer el formulario en la imagen */
   gap: 15px;
   position: absolute;
-  bottom: 30px; /* Ajusta la posición vertical del formulario */
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%; /* Ajusta el ancho del formulario según sea necesario */
+  width: 90%;
   max-width: 1400px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
 }
 
+/* Estilo para grupos de formulario */
 .form-group {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 150px;
+  min-width: 200px;
 }
 
+/* Estilo para etiquetas */
 .form-group label {
   font-size: 14px;
   color: #333;
   margin-bottom: 5px;
 }
 
-.form-group input, .form-group select {
+/* Estilo para inputs y selects */
+.form-group input,
+.form-group select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -47,35 +58,90 @@
   transition: border-color 0.3s;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   border-color: #1a73e8;
 }
 
+/* Botón de búsqueda */
 .button-blue {
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
-  margin-top: 8px;
   font-size: 16px;
   cursor: pointer;
+  background-color: #1a73e8;
+  color: #fff;
   transition: background-color 0.3s;
+  flex: 1;
+  min-width: 200px;
 }
 
 .button-blue:hover {
   background-color: #155bb5;
 }
 
+/* Estilos responsivos */
+@media (max-width: 1024px) {
+  .search-filter-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .form-group {
+    flex: 1 1 45%; /* Ocupa el 45% del contenedor */
+    min-width: 150px;
+  }
+
+  .button-blue {
+    flex: 1 1 100%; /* Botón ocupa toda la fila en pantallas pequeñas */
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-filter-container {
+    flex-direction: column; /* Cambia a diseño en columna */
+    width: 95%;
+    bottom: 20px;
+  }
+
+  .form-group {
+    flex: 1 1 100%; /* Cada elemento ocupa toda la fila */
+  }
+
+  .button-blue {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-group input,
+  .form-group select {
+    font-size: 14px; /* Reduce el tamaño de fuente */
+    padding: 8px;
+  }
+
+  .button-blue {
+    font-size: 14px; /* Ajusta el texto del botón */
+    padding: 10px;
+  }
+}
+
+/* Contenedor de servicios */
 .servicios {
   padding: 5% 15%;
 }
 
+/* Contenedor de tarjetas */
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas por defecto */
   gap: 15px;
   margin-top: 20px;
 }
 
+/* Tarjetas individuales */
 .card {
   position: relative;
   background-color: #fff;
@@ -121,6 +187,87 @@
   font-size: 16px;
   margin: 0;
 }
+
+/* Estilos responsivos */
+@media (max-width: 1250px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas medianas */
+    gap: 10px;
+  }
+
+  .card {
+    height: 240px; /* Reduce la altura de las tarjetas */
+  }
+
+  .card-content p {
+    font-size: 16px; /* Reduce el tamaño de fuente */
+  }
+
+  h2 {
+    font-size: 35px;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .cards-container {
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas medianas */
+    gap: 10px;
+  }
+
+  .card {
+    height: 240px; /* Reduce la altura de las tarjetas */
+  }
+
+  .card-content p {
+    font-size: 14px; /* Reduce el tamaño de fuente */
+  }
+}
+
+@media (max-width: 768px) {
+  .servicios {
+    padding: 5% 10%; /* Reduce el padding en pantallas más pequeñas */
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    gap: 10px;
+  }
+
+  .card {
+    height: 200px; /* Reduce aún más la altura */
+  }
+
+  .card-content p {
+    font-size: 13px; /* Ajusta el texto para pantallas pequeñas */
+  }
+  h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cards-container {
+    gap: 8px; /* Reduce la separación entre tarjetas */
+  }
+
+  .card {
+    height: 180px;
+  }
+
+  .card-content p {
+    font-size: 12px; /* Tamaño más pequeño para dispositivos móviles */
+    padding: 15px; /* Reduce el padding interno */
+  }
+
+  .card-content {
+    padding: 10px; /* Reduce el padding interno */
+  }
+  h2 {
+    font-size: 26px;
+  }
+}
+
 
 .hoteles {
   padding: 0 15% 5%;

@@ -187,6 +187,7 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
   z-index: 1030;
+  padding: 30px;
 }
 
 .modal-content.delete-modal {
@@ -222,4 +223,75 @@
 .button-container button {
   flex: 1; /* Los botones ocupan todo el espacio disponible */
   margin-right: 10px; /* Espacio entre los botones */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 16px; /* Ajusta el tamaño según necesites */
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0.8rem; /* Reduce el padding en pantallas pequeñas */
+  }
+
+  .dropdown-menu {
+    width: 190px;
+  }
+
+  .dropdown-item a {
+    font-size: 0.9rem !important;
+  }
+
+  .responsive-username {
+    display: none; /* Oculta el elemento */
+  }
+
+  .navbar-brand-links span, .navbar-brand-links a {
+    font-size: 1rem; /* Texto más pequeño */
+  }
+
+  .user-icon {
+    font-size: 20px; /* Ícono más pequeño */
+  }
+
+  .modal-content {
+    max-width: 100%; /* Modal ocupa todo el ancho */
+    margin: 0 10px; /* Margen interno para evitar que toque los bordes */
+  }
+
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.6rem; /* Reduce el padding en pantallas pequeñas */
+  }
+
+  .dropdown-menu {
+    width: 170px;
+  }
+
+  .dropdown-item a {
+    font-size: 0.8rem !important;
+  }
+
+  .responsive-username {
+    display: none; /* Oculta el elemento */
+  }
+
+  .navbar-brand-links span, .navbar-brand-links a {
+    font-size: 0.9rem; /* Texto más pequeño */
+  }
+
+  .user-icon {
+    font-size: 10px; /* Ícono más pequeño */
+  }
+
+  .modal-content {
+    max-width: 100%; /* Modal ocupa todo el ancho */
+    margin: 0 10px; /* Margen interno para evitar que toque los bordes */
+  }
+
 }

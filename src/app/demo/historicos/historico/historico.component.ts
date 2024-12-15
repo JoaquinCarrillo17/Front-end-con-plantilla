@@ -51,7 +51,7 @@ export default class HistoricoComponent implements OnInit {
     this.idUsuario = localStorage.getItem('usuario');
     this.esSuperAdmin = localStorage.getItem('superadmin') === 'true';
     this.loadInitialData();
-    if (!this.esSuperAdmin) this.comprobarHotelUsuario()
+    if (!this.esSuperAdmin) this.comprobarHotelUsuario();
   }
 
   loadInitialData() {
@@ -84,13 +84,21 @@ export default class HistoricoComponent implements OnInit {
       hotelId = this.selectedHotel || null;
     }
 
-
-    this.historicoService
-      .getEstadisticas(hotelId, this.selectedYear)
-      .subscribe((data) => {
+    this.historicoService.getEstadisticas(hotelId, this.selectedYear).subscribe(
+      (data) => {
         const monthNames = [
-          'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
-          'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
+          'ENERO',
+          'FEBRERO',
+          'MARZO',
+          'ABRIL',
+          'MAYO',
+          'JUNIO',
+          'JULIO',
+          'AGOSTO',
+          'SEPTIEMBRE',
+          'OCTUBRE',
+          'NOVIEMBRE',
+          'DICIEMBRE',
         ];
         // Configurar Reservas por Mes
         const reservasPorMes = Object.keys(data.reservasPorMes).map((mes) => ({
@@ -172,14 +180,16 @@ export default class HistoricoComponent implements OnInit {
           },
         };
         this.dataLoaded = true;
-      }, (error) => {
+      },
+      (error) => {
         this.showNotification = true;
-              this.message = 'Error cargando las estadísticas del hotel';
-              this.color = false;
-              setTimeout(() => {
-                this.showNotification = false;
-              }, 3000);
-      });
+        this.message = 'Error cargando las estadísticas del hotel';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
+      },
+    );
   }
 
   comprobarHotelUsuario(): void {
@@ -194,11 +204,11 @@ export default class HistoricoComponent implements OnInit {
           this.isSpinnerVisible = false;
           this.openAddHotelModal();
           this.showNotification = true;
-              this.message = 'Crea tu hotel';
-              this.color = false;
-              setTimeout(() => {
-                this.showNotification = false;
-              }, 3000);
+          this.message = 'Crea tu hotel';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
         } else {
           console.error('Error al comprobar hotel del usuario:', error);
         }
@@ -234,46 +244,19 @@ export default class HistoricoComponent implements OnInit {
   }
 
   saveHotelAndRooms(hotel: any, habitaciones: any[]): void {
-    // Realizar el POST del hotel y las habitaciones
-    this.hotelesService.addHotel(hotel).subscribe(
-      (hotelResponse) => {
-        habitaciones.forEach((habitacion) => {
-          habitacion.hotel = hotelResponse; // Asociar el hotel creado a las habitaciones
-          /*this.habitacionesService.crearHabitacion(habitacion).subscribe(
-            () => {
-              this.showNotification = true;
-              this.message = 'Operación realizada con éxito';
-              this.color = true;
-              setTimeout(() => {
-                this.showNotification = false;
-              }, 3000);
-            },
-            (error) => {
-              this.showNotification = true;
-              this.message = 'Error al realizar la operación';
-              this.color = false;
-              setTimeout(() => {
-                this.showNotification = false;
-              }, 3000);
-            },
-          );*/
-        });
-        this.habitacionesService.crearHabitaciones(habitaciones).subscribe((response => {
-          this.showNotification = true;
-          this.message = 'Operación realizada con éxito';
-          this.color = true;
-          setTimeout(() => {
-            this.showNotification = false;
-          }, 3000);
-        }), error => {
-          this.showNotification = true;
-              this.message = 'Error al realizar la operación';
-              this.color = false;
-              setTimeout(() => {
-                this.showNotification = false;
-              }, 3000);
-        });
-        // Recargar la lista de hoteles
+    const body = {
+      hotel: hotel,
+      habitaciones: habitaciones,
+    };
+
+    this.habitacionesService.crearHabitaciones(body).subscribe(
+      (response) => {
+        this.showNotification = true;
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
       },
       (error) => {
         this.showNotification = true;
@@ -285,5 +268,4 @@ export default class HistoricoComponent implements OnInit {
       },
     );
   }
-
 }

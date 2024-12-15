@@ -36,6 +36,8 @@ export class NavbarComponent implements OnInit {
 
   public mostrarModalEditarPerfil = false;
   public showNotification = false;
+  message: any;
+  color: boolean = false;
 
   toggleDropdown() {
     if (localStorage.getItem('auth_token') === null) {
@@ -83,15 +85,19 @@ export class NavbarComponent implements OnInit {
     this.profileService.editUsuario(this.usuario.id, this.usuario).subscribe(response => {
       this.ocultarModal();
       this.showNotification = true;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 3000);
+        this.message = 'Operación realizada con éxito';
+        this.color = true;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
     },
       error => {
         this.showNotification = true;
-      setTimeout(() => {
-        this.showNotification = false;
-      }, 3000);
+        this.message = 'Error al realizar la operación';
+        this.color = false;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 3000);
       }
     );
   }

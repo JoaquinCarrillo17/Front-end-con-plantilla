@@ -93,11 +93,10 @@ export class AuthService {
             this.createToken(sub).subscribe(
               (updatedToken) => {
                 this.tokenService.setToken(updatedToken);
-                this.isTokenRefreshing = false; // Liberar la bandera cuando la llamada finaliza
+                this.isTokenRefreshing = false;
               },
               (error) => {
-                console.error('Error refreshing token', error);
-                this.isTokenRefreshing = false; // Liberar la bandera en caso de error
+                this.isTokenRefreshing = false; 
               },
             );
           }

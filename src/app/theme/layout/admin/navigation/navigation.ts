@@ -31,7 +31,7 @@ const NavigationItems = [
     children: [
       {
         id: 'apexChart',
-        title: 'Hoteles Chart',
+        title: 'Estadísticas',
         type: 'item',
         url: '/admin/hotel-chart',
         classes: 'nav-item',
