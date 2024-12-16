@@ -11,6 +11,7 @@
 
 .hotel-card {
   display: flex;
+  flex-direction: row;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -45,12 +46,11 @@
   margin: 5px 0;
 }
 
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
+.ver-disponibilidad-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-size: 14px;
 }
 
 .pagination-container {
@@ -59,19 +59,14 @@ a:hover {
   justify-content: center;
 }
 
-.ver-disponibilidad-button {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-}
-
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,54 +77,100 @@ a:hover {
   background: white;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Añade una sombra suave */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
   max-width: 500px;
   width: 90%;
 }
 
-.modal-content h2 {
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-  color: #003366; /* Azul oscuro */
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .hotel-info p {
+    font-size: 14px;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 13px;
+    padding: 6px 10px;
+    bottom: 12px;
+    right: 12px;
+  }
 }
 
-.modal-content p {
-  font-size: 1rem;
-  margin-bottom: 20px;
-  color: #333;
+@media (max-width: 880px) {
+  .hotel-card {
+    flex-direction: column; /* Apila la tarjeta verticalmente */
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .hotel-card img {
+    width: 100%; /* La imagen ocupa el ancho completo */
+    height: 350px; /* Ajusta la altura */
+    object-fit: cover;
+  }
+
+  .hotel-info {
+    padding: 15px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 13px;
+    padding: 8px 10px;
+    bottom: 15px;
+    right: 15px;
+  }
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: space-around;
-  gap: 20px; /* Espacio entre botones */
+@media (max-width: 640px) {
+  .hotel-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding-bottom: 0; /* Elimina el espacio reservado */
+  }
+
+  .hotel-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .hotel-info {
+    padding: 15px;
+    text-align: left;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%; /* Botón ocupa todo el ancho */
+    position: static; /* Sigue el flujo natural */
+    margin-top: 10px; /* Espacio superior */
+  }
 }
 
-.modal-actions button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+@media (max-width: 480px) {
+  .hotel-card img {
+    height: 200px; /* Ajusta la altura para móviles */
+  }
 
-.modal-actions button:first-child {
-  background-color: #ff4d4d; /* Rojo para "Sí" */
-  color: white;
-}
+  .hotel-info h3 {
+    font-size: 16px;
+  }
 
-.modal-actions button:first-child:hover {
-  background-color: #cc0000;
-}
+  .hotel-info p {
+    font-size: 12px;
+  }
 
-.modal-actions button:last-child {
-  background-color: #cccccc; /* Gris claro para "No" */
-  color: #333;
-}
+  .ver-disponibilidad-button {
+    font-size: 12px;
+    padding: 8px;
+  }
 
-.modal-actions button:last-child:hover {
-  background-color: #999999;
+  .modal-content {
+    padding: 15px;
+    max-width: 100%;
+  }
 }
-

@@ -12,16 +12,13 @@
 }
 
 .search-filter-container {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 15px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
   flex-wrap: wrap;
-  max-width: 1400px;
-  margin-bottom: 20px;
+  gap: 15px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -98,9 +95,10 @@
 }
 
 .button-container {
-  margin-left: auto; /* Empuja los botones hacia la derecha */
   display: flex;
-  gap: 10px; /* Espacio entre los botones */
+  margin-left: auto;
+  gap: 10px;
+  margin-top: 15px;
 }
 
 .options-container label {
@@ -124,10 +122,11 @@
 
 .hotel-card {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  position: relative;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
@@ -191,6 +190,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 0 10%;
 }
 
 .modal-content {
@@ -212,3 +212,150 @@ a:hover {
 }
 
 
+/* RESPONSIVE STYLES */
+@media (max-width: 1024px) {
+  .hotel-info p {
+    font-size: 13px;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 13px; /* Reducir el tamaño de la fuente */
+    padding: 6px 10px; /* Reducir el padding */
+    bottom: 12px; /* Ajustar la posición vertical */
+    right: 12px; /* Ajustar la posición horizontal */
+  }
+}
+
+@media (max-width: 880px) {
+  .hotel-card {
+    flex-direction: column; /* Apila la tarjeta en una columna */
+    align-items: flex-start; /* Alinea los elementos a la izquierda */
+    position: relative; /* Mantiene la posición relativa para el botón */
+  }
+
+  .hotel-card img {
+    width: 100%; /* La imagen ocupa el ancho completo */
+    height: 350px;
+    object-fit: cover;
+  }
+
+  .hotel-info {
+    padding: 15px; /* Reduce el padding para pantallas pequeñas */
+    text-align: left; /* Alinea el texto a la izquierda */
+    width: 100%;
+  }
+
+  .hotel-info p {
+    font-size: 14px;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 14px; /* Reduce el tamaño del texto del botón */
+    padding: 5px 8px; /* Reduce el padding del botón */
+    position: absolute; /* Mantiene el botón en la esquina inferior derecha */
+    bottom: 15px; /* Posición más ajustada */
+    right: 15px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .padding {
+    padding: 5% 12%;
+  }
+
+  .search-filter-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .form-group {
+    min-width: 100%;
+  }
+
+  .pagination-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 630px) {
+  .hotel-info p {
+    font-size: 13px;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 13px; /* Reducir el tamaño de la fuente */
+    padding: 6px 10px; /* Reducir el padding */
+    bottom: 12px; /* Ajustar la posición vertical */
+    right: 12px; /* Ajustar la posición horizontal */
+  }
+}
+
+@media (max-width: 550px) {
+  .hotel-card {
+    flex-direction: column; /* Asegura que el diseño sea en columna */
+    align-items: stretch; /* Hace que los elementos ocupen todo el ancho */
+    position: relative;
+    padding-bottom: 0; /* Elimina el espacio reservado para el botón */
+  }
+
+  .hotel-card img {
+    width: 100%; /* Imagen ocupa todo el ancho */
+    height: 250px; /* Ajusta la altura */
+    object-fit: cover;
+  }
+
+  .hotel-info {
+    padding: 15px;
+    text-align: left;
+  }
+
+  .ver-disponibilidad-button {
+    font-size: 13px; /* Ajusta el tamaño de fuente */
+    padding: 10px; /* Aumenta el padding para mejor interacción táctil */
+    width: 100%; /* Botón ocupa todo el ancho */
+    position: static; /* Elimina la posición absoluta */
+    margin-top: 10px; /* Agrega un pequeño margen superior */
+  }
+}
+
+@media (max-width: 480px) {
+  .form-group label {
+    font-size: 12px; /* Reduce el tamaño del texto */
+  }
+
+  h3 {
+    font-size: 22px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .hotel-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hotel-card img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .hotel-info h3 {
+    font-size: 16px;
+  }
+
+  .button-container button {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .modal-content {
+    padding: 15px;
+    max-width: 100%;
+  }
+}

@@ -15,7 +15,7 @@ export class ReservasService {
   }
 
   dynamicSearch(body: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/reservas/dynamicSearch`, body);
+    return this.http.post<any>(`${this.baseUrl}/reservas/dynamicFilterOr`, body);
   }
 
   getReservasDynamicFilterOr(body: any): Observable<any> {

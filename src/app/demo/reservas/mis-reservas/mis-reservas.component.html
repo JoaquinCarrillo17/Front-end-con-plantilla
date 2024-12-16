@@ -15,9 +15,9 @@
         <h3>{{ reserva.hotel.nombre }}</h3>
         <p>Tipo: {{ reserva.habitacion.tipoHabitacion }}</p>
         <p>Precio: {{ reserva.coste }}€</p>
+        <p>Huéspedes: {{ getNombresHuespedes(reserva) }}</p>
         <p>Servicios: {{ (reserva.hotel.servicios.concat(reserva.habitacion.servicios)).join(', ') }}</p>
         <p>Fecha: {{ reserva.checkIn | date: 'dd/MM/yyyy' }} - {{ reserva.checkOut | date: 'dd/MM/yyyy' }}</p>
-        <p>Huéspedes: {{ getNombresHuespedes(reserva) }}</p>
         <button mat-raised-button class="ver-disponibilidad-button" color="warn" (click)="mostrarModalCancelar(reserva.id)">Cancelar reserva</button>
       </div>
     </div>

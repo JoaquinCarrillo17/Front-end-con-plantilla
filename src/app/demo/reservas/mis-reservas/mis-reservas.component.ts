@@ -58,14 +58,13 @@ export class MisReservasComponent implements OnInit {
 
   getMisReservas() {
     const body = {
-      listOrderCriteria: [
+      listOrderCriteria:
         {
           valueSortOrder: this.valueSortOrder,
           sortBy: this.sortBy,
         },
-      ],
       listSearchCriteria: [
-        { key: 'idUsuario', operation: 'EQUAL', value: this.idUsuario },
+        { key: 'idUsuario', operation: 'equals', value: this.idUsuario },
       ],
       page: {
         pageIndex: this.pageNumber,

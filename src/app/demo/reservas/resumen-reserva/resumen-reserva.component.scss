@@ -72,3 +72,97 @@ p {
   margin-top: 20px;
   gap: 10px;
 }
+
+/* RESPONSIVE STYLES */
+
+/* Ajuste para Tablets (1024px) */
+@media (max-width: 1024px) {
+
+  h2 {
+    font-size: 38px;
+  }
+
+  .resumen-container {
+    padding: 3% 10%;
+  }
+
+  .row {
+    flex-direction: column; /* Apila las tarjetas verticalmente */
+  }
+
+  .card {
+    padding: 15px; /* Reduce el padding */
+  }
+
+  .huespedes-grid.cuadruple,
+  .huespedes-grid.triple,
+  .huespedes-grid.doble {
+    grid-template-columns: repeat(2, 1fr); /* Reduce las columnas */
+  }
+}
+
+/* Ajuste para Pantallas Medianas (768px) */
+@media (max-width: 768px) {
+
+  h2 {
+    font-size: 32px;
+  }
+
+  .resumen-container {
+    padding: 4% 8%;
+  }
+
+  .card h3 {
+    font-size: 18px; /* Reduce el tamaño del título */
+  }
+
+  .huespedes-grid {
+    grid-template-columns: repeat(1, 1fr); /* Una sola columna */
+  }
+
+  .form-control {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+}
+
+/* Ajuste para Pantallas Pequeñas (480px) */
+@media (max-width: 480px) {
+
+  .huespedes-grid.cuadruple,
+  .huespedes-grid.triple,
+  .huespedes-grid.doble,
+  .huespedes-grid.individual {
+    grid-template-columns: repeat(1, 1fr); /* Reduce las columnas */
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .resumen-container {
+    padding: 5% 8%;
+  }
+
+  .card {
+    padding: 10px; /* Reduce el padding para ahorrar espacio */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .card p {
+    font-size: 12px; /* Reduce el tamaño del texto */
+  }
+
+  .huespedes-info {
+    margin-top: 15px;
+  }
+
+  .button-container {
+    gap: 8px;
+  }
+}
