@@ -12,6 +12,7 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
   padding: 10px 20px; /* Espaciado interno */
   border-radius: 8px; /* Bordes redondeados */
+  text-align: center; 
 }
 
 .desaparecer {
@@ -31,4 +32,29 @@ p {
   margin-bottom: 0;
   font-weight: bold;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .notification {
+    padding: 8px 16px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification {
+    padding: 7px 14px;
+  }
+
+  p {
+    font-size: 11px;
+  }
+
+  .notification-wrapper {
+    right: 0px !important;
+    padding: 0 8px !important;
+  }
 }

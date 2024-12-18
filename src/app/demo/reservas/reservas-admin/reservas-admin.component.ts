@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './reservas-admin.component.scss'
 })
 export class ReservasAdminComponent implements OnInit {
+  resetPagination: boolean = false;
 
   isSpinnerVisible: boolean = true;
 
@@ -132,7 +133,15 @@ export class ReservasAdminComponent implements OnInit {
 
   search(value: string): void {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0;
+
+  // Forzar reset de la paginación
+  this.resetPagination = true;
     this.getReservas(value);
+    // Resetear la bandera después de ejecutar el método
+  setTimeout(() => {
+    this.resetPagination = false;
+  }, 0);
     this.query = value;
   }
 

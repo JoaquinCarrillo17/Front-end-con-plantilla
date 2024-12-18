@@ -14,6 +14,8 @@ import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-
   styleUrl: './room-list.component.scss',
 })
 export class RoomListComponent implements OnInit {
+  resetPagination: boolean = false;
+
   isSpinnerVisible: boolean = true;
   public habitaciones: any[];
   public habitacionSeleccionada: any = null;
@@ -145,7 +147,14 @@ export class RoomListComponent implements OnInit {
 
   search(value: string): void {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0;
+
+    this.resetPagination = true;
     this.getHabitaciones(value);
+    // Resetear la bandera después de ejecutar el método
+    setTimeout(() => {
+      this.resetPagination = false;
+    }, 0);
     this.query = value;
   }
 

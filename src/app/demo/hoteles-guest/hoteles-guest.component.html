@@ -22,17 +22,13 @@
       </select>
     </div>
 
-    <app-date-picker label="Check-in" [(model)]="filtroCheckIn"></app-date-picker>
-
-    <app-date-picker label="Check-out" [(model)]="filtroCheckOut" [minDate]="filtroCheckIn || ''"></app-date-picker>
-
-    <!--<div class="form-group">
+    <div style="flex: 1;">
     <app-date-picker label="Check-in" [(model)]="filtroCheckIn"></app-date-picker>
   </div>
 
-  <div class="form-group">
+  <div style="flex: 1;">
     <app-date-picker label="Check-out" [(model)]="filtroCheckOut" [minDate]="filtroCheckIn || ''"></app-date-picker>
-  </div>-->
+  </div>
 
     <div class="form-group">
       <label>Servicios</label>
@@ -68,7 +64,7 @@
   </div>
   <div class="pagination-container">
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
-                    (itemsPerPageChange)="onItemPerPageChange($event)">
+                    (itemsPerPageChange)="onItemPerPageChange($event)" [resetToFirstPage]="resetPagination">
     </app-pagination>
   </div>
 </div>
@@ -118,3 +114,5 @@
     <button mat-raised-button class="button-blue" (click)="goToHabitaciones()">Buscar</button>
   </div>
 </div>
+
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

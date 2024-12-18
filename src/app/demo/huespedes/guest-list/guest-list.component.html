@@ -28,8 +28,10 @@
         </tbody>
       </table>
     </div>
+    <div class="pagination-container">
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
-      (itemsPerPageChange)="onItemPerPageChange($event)"></app-pagination>
+      (itemsPerPageChange)="onItemPerPageChange($event)" [resetToFirstPage]="resetPagination"></app-pagination>
+    </div>
   </app-card>
   <app-floating-button *ngIf="esSuperAdmin" (click)="onAddGuest()"></app-floating-button>
 </div>

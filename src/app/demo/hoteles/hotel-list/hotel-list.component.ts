@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-
   imports: [CommonModule, SharedModule],
 })
 export class HotelListComponent implements OnInit {
+  resetPagination: boolean = false;
   mostrarAddRoomModal = false;
   hotelSeleccionado: any;
 
@@ -205,7 +206,12 @@ export class HotelListComponent implements OnInit {
   search(value: string) {
     this.isSpinnerVisible = true;
     this.pageNumber = 0; // Para que me muestre la primera página al buscar
+    this.resetPagination = true;
     this.getHoteles(value);
+    // Resetear la bandera después de ejecutar el método
+    setTimeout(() => {
+      this.resetPagination = false;
+    }, 0);
     this.query = value;
   }
 

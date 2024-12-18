@@ -4,9 +4,13 @@
     <!-- Fila de Inputs -->
     <div class="form-row">
 
+      <div style="flex: 1;">
       <app-date-picker label="Check-in" [(model)]="checkIn"></app-date-picker>
+    </div>
 
+      <div style="flex: 1;">
       <app-date-picker label="Check-out" [(model)]="checkOut" [minDate]="checkIn || ''"></app-date-picker>
+    </div>
 
       <app-range-slider
         [min]="0"
@@ -66,9 +70,10 @@
   </div>
   <div class="pagination-container">
     <app-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"
-                    (itemsPerPageChange)="onItemPerPageChange($event)">
+                    (itemsPerPageChange)="onItemPerPageChange($event)" [resetToFirstPage]="resetPagination">
     </app-pagination>
   </div>
 </div>
 
 
+<app-notification [showNotification]="showNotification" [message]="message" [color]="color"></app-notification>

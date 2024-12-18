@@ -32,19 +32,36 @@
         [ngClass]="{
           'cuadruple': habitacion.tipoHabitacion === 'CUADRUPLE',
           'triple': habitacion.tipoHabitacion === 'TRIPLE',
-          'doble': habitacion.tipoHabitacion === 'DOBLE',
+          'doble': habitacion.tipoHabitacion === 'DOBLE' || habitacion.tipoHabitacion === 'SUITE',
           'individual': habitacion.tipoHabitacion === 'INDIVIDUAL'
         }"
         formArrayName="huespedes">
           <div class="huesped" *ngFor="let huesped of huespedes.controls; let i = index" [formGroupName]="i">
+            <div class="mbottom">
             <label>Nombre Completo</label>
             <input formControlName="nombreCompleto" type="text" class="form-control">
+            <div *ngIf="huesped.get('nombreCompleto').invalid && huesped.get('nombreCompleto').touched" class="error-message">
+              El nombre es obligatorio.
+            </div>
+          </div>
 
+          <div class="mbottom">
             <label>DNI</label>
             <input formControlName="dni" type="text" class="form-control">
+            <div *ngIf="huesped.get('dni').invalid && huesped.get('dni').touched" class="error-message">
+              <span *ngIf="huesped.get('dni').errors?.['required']">El DNI es obligatorio.</span>
+              <span *ngIf="huesped.get('dni').errors?.['pattern']">El DNI debe tener 8 números y una letra.</span>
+            </div>
+          </div>
 
+          <div class="mbottom">
             <label>Email</label>
             <input formControlName="email" type="email" class="form-control">
+            <div *ngIf="huesped.get('email').invalid && huesped.get('email').touched" class="error-message">
+              <span *ngIf="huesped.get('email').errors?.['required']">El email es obligatorio.</span>
+              <span *ngIf="huesped.get('email').errors?.['email']">El formato del email es incorrecto.</span>
+            </div>
+          </div>
           </div>
         </div>
         <div class="button-container">

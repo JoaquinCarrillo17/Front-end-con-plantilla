@@ -28,6 +28,14 @@ export class AuthSigninComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.redirectUrl = this.route.snapshot.queryParamMap.get('redirectUrl');
+    if (this.redirectUrl) {
+      this.showNotification = true;
+          this.message = 'Inicia sesión para realizar esta acción';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
+    }
   }
 
   login() {

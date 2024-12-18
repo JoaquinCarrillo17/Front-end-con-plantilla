@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-
     imports: [SharedModule]
 })
 export class RolesListComponent implements OnInit {
+  resetPagination: boolean = false;
 
   isSpinnerVisible: boolean = true;
   public roles: Rol[];
@@ -58,6 +59,10 @@ export class RolesListComponent implements OnInit {
 
   search(value: string): void {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0;
+
+  // Forzar reset de la paginación
+  this.resetPagination = true;
     this.rolesService.getRolesFilteredByQuery(value, this.valueSortOrder, this.sortBy, this.pageNumber, this.itemsPerPage)
       .subscribe(response => {
         this.roles = response.roles;
@@ -69,6 +74,10 @@ export class RolesListComponent implements OnInit {
         console.error('Error al cargar los servicios:', error);
         this.isSpinnerVisible = false; // En caso de error, también oculta el spinner
       });
+      // Resetear la bandera después de ejecutar el método
+  setTimeout(() => {
+    this.resetPagination = false;
+  }, 0);
   }
 
   order(columnName: string) {

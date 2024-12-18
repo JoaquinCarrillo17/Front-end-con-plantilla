@@ -83,4 +83,15 @@ export class PaginationComponent {
       this.pages.push(i);
     }
   }
+
+  @Input()
+  set resetToFirstPage(value: boolean) {
+    if (value) {
+      this.currentPage = 1;
+      this.pageChange.emit(0); // Emitir la página 0 al padre
+      this.calculateIndexes();
+      this.ngOnChanges();
+    }
+  }
+
 }

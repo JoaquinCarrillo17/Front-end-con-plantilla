@@ -56,6 +56,10 @@ p {
   color: #333;
 }
 
+.mbottom {
+  margin-bottom: 10px;
+}
+
 .form-control {
   padding: 8px;
   border: 1px solid #ccc;
@@ -63,7 +67,7 @@ p {
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 10px;
+  //margin-bottom: 10px;
 }
 
 .button-container {

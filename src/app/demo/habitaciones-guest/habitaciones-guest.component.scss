@@ -113,6 +113,13 @@
   justify-content: center;
 }
 
+.button-container {
+  display: flex;
+  margin-left: auto;
+  gap: 10px;
+  margin-top: 15px;
+}
+
 /* Responsive Styles */
 @media (max-width: 1024px) {
   .hotel-info p {
@@ -196,6 +203,11 @@
 
   .hotel-info p {
     font-size: 12px;
+  }
+
+  .button-container button {
+    font-size: 14px;
+    padding: 8px 10px;
   }
 
   .ver-disponibilidad-button {

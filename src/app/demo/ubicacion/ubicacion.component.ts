@@ -14,6 +14,9 @@ import { ConfirmDialogComponent } from 'src/app/theme/shared/components/confirm-
   styleUrl: './ubicacion.component.scss',
 })
 export class UbicacionComponent implements OnInit {
+
+  resetPagination: boolean = false;
+
   isSpinnerVisible: boolean = true;
 
   ubicaciones: any[];
@@ -113,7 +116,14 @@ export class UbicacionComponent implements OnInit {
 
   search(value: string): void {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0;
+
+  // Forzar reset de la paginación
+  this.resetPagination = true;
     this.getUbicaciones(value);
+    setTimeout(() => {
+      this.resetPagination = false;
+    }, 0);
     this.query = value;
   }
 

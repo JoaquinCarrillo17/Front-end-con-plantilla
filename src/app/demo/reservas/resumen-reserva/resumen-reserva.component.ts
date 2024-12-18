@@ -25,8 +25,8 @@ import { SharedModule } from "../../../theme/shared/shared.module";
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    SharedModule
-],
+    SharedModule,
+  ],
   templateUrl: './resumen-reserva.component.html',
   styleUrl: './resumen-reserva.component.scss',
 })
@@ -117,23 +117,59 @@ export class ResumenReservaComponent implements OnInit {
       });
   }
 
+
   initializeHuespedesForm(): void {
-    const capacidad = this.getCapacidadHabitacion(
-      this.habitacion.tipoHabitacion,
-    );
+    const capacidad = this.getCapacidadHabitacion(this.habitacion.tipoHabitacion);
     const huespedesArray = this.huespedForm.get('huespedes') as FormArray;
 
     for (let i = 0; i < capacidad; i++) {
+      const isRequired = this.habitacion.tipoHabitacion !== 'SUITE' || i === 0;
+
       huespedesArray.push(
         this.fb.group({
-          id: [null],
-          nombreCompleto: ['', Validators.required],
-          dni: ['', Validators.required],
-          email: ['', [Validators.required, Validators.email]],
-        }),
+          nombreCompleto: [
+            '',
+            isRequired ? Validators.required : null,
+          ],
+          dni: [
+            '',
+            isRequired
+              ? [Validators.required, Validators.pattern(/^[0-9]{8}[A-Za-z]$/)]
+              : Validators.pattern(/^[0-9]{8}[A-Za-z]$/),
+          ],
+          email: [
+            '',
+            isRequired
+              ? [Validators.required, Validators.email]
+              : Validators.email,
+          ],
+        })
       );
     }
+
+    // Validación global solo si es SUITE
+    if (this.habitacion.tipoHabitacion === 'SUITE') {
+      this.huespedForm.setValidators(this.alMenosUnHuespedValido());
+    }
   }
+
+
+
+  alMenosUnHuespedValido() {
+    return (form: FormGroup) => {
+      const huespedes = form.get('huespedes') as FormArray;
+
+      const valido = huespedes.controls.some(huesped =>
+        huesped.get('nombreCompleto')?.value &&
+        /^[0-9]{8}[A-Za-z]$/.test(huesped.get('dni')?.value) &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(huesped.get('email')?.value)
+      );
+
+      return valido ? null : { alMenosUnHuespedInvalido: true };
+    };
+  }
+
+
 
   get huespedes(): FormArray {
     return this.huespedForm.get('huespedes') as FormArray;
@@ -151,6 +187,36 @@ export class ResumenReservaComponent implements OnInit {
   }
 
   confirmarReserva(): void {
+
+    // Si es SUITE, validamos solo "al menos un huésped"
+  if (this.habitacion.tipoHabitacion === 'SUITE') {
+    const formularioEsValido = this.alMenosUnHuespedValido()(this.huespedForm) === null;
+
+    if (!formularioEsValido) {
+      this.huespedForm.markAllAsTouched();
+      this.showNotification = true;
+      this.message = 'Debe completar al menos un huésped con datos válidos.';
+      this.color = false;
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
+      return;
+    }
+  } else {
+    // Validación estándar para otras habitaciones
+    if (this.huespedForm.invalid) {
+      this.huespedForm.markAllAsTouched();
+      this.showNotification = true;
+      this.message = 'Por favor, rellene todos los campos correctamente.';
+      this.color = false;
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
+      return;
+    }
+  }
+
+
     if (localStorage.getItem('auth_token') == null) {
       sessionStorage.setItem(
         'reservaData',
@@ -183,7 +249,9 @@ export class ResumenReservaComponent implements OnInit {
           this.color = true;
           setTimeout(() => {
             this.showNotification = false;
-          }, 3000);
+            this.router.navigate(['/']);
+          }, 1000);
+
         },
         (error) => {
           this.showNotification = true;

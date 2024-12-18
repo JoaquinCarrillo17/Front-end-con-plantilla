@@ -35,10 +35,16 @@ import { DatePickerComponent } from "../../theme/shared/components/date-picker/d
 })
 export class HabitacionesGuestComponent implements OnInit {
 
+  resetPagination: boolean = false;
+
   isSpinnerVisible: boolean = true;
 
   precioMin: any;
   precioMax: any;
+
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
 
   ocupacionArray = [
     'INDIVIDUAL',
@@ -108,7 +114,15 @@ export class HabitacionesGuestComponent implements OnInit {
 
   buscarHabitaciones() {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0;
+
+    // Forzar reset de la paginación
+    this.resetPagination = true;
     this.getHabitaciones();
+    // Resetear la bandera después de ejecutar el método
+    setTimeout(() => {
+      this.resetPagination = false;
+    }, 0);
   }
 
   getHabitaciones() {
@@ -120,6 +134,13 @@ export class HabitacionesGuestComponent implements OnInit {
       if (error.status === 404) {
         this.habitaciones = [];
         this.totalItems = 0;
+      } else {
+        this.showNotification = true;
+          this.message = 'Error al buscar las habitaciones, inténtelo de nuevo';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
       }
       this.isSpinnerVisible = false;
     });
@@ -187,8 +208,6 @@ export class HabitacionesGuestComponent implements OnInit {
   }
 
   limpiarFiltros() {
-    this.checkIn = '';
-    this.checkOut = '';
     this.ocupacion = '';
     this.servicios = [];
     this.precioMin = 0;

@@ -37,7 +37,7 @@ export class MisReservasComponent implements OnInit {
   pageNumber: number = 0;
   itemsPerPage: number = 5;
   valueSortOrder: string = 'ASC';
-  sortBy: string = 'id';
+  sortBy: string = 'checkIn';
 
   idUsuario: any;
 

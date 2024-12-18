@@ -36,6 +36,12 @@ import { DatePickerComponent } from "../../theme/shared/components/date-picker/d
 })
 export class HotelesGuestComponent implements OnInit {
 
+  resetPagination: boolean = false;
+
+  showNotification: boolean = false;
+  message: any;
+  color: boolean = false;
+
   ubicaciones: any;
   continentes: string[] = [];
   paises: string[] = [];
@@ -211,6 +217,13 @@ private esperarUbicaciones(callback: () => void): void {
       if (error.status === 404) {
         this.hoteles = [];
         this.totalItems = 0;
+      } else {
+        this.showNotification = true;
+          this.message = 'Error al buscar los hoteles, inténtelo de nuevo';
+          this.color = false;
+          setTimeout(() => {
+            this.showNotification = false;
+          }, 3000);
       }
       this.isSpinnerVisible = false;
     });
@@ -270,7 +283,12 @@ private esperarUbicaciones(callback: () => void): void {
   // Método para actualizar filtros y buscar hoteles
   buscarHoteles() {
     this.isSpinnerVisible = true;
+    this.pageNumber = 0;
+    this.resetPagination = true;
     this.getHoteles();
+    setTimeout(() => {
+      this.resetPagination = false;
+    }, 0);
   }
 
   onPageChange(value: number) {
