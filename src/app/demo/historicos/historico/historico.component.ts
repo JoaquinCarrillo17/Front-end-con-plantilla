@@ -161,11 +161,11 @@ export default class HistoricoComponent implements OnInit {
             height: 350,
           },
           series: [
-            data.totalHabitaciones,
+            //data.totalHabitaciones,
             data.habitacionesReservadas,
             data.habitacionesLibres,
           ],
-          labels: ['Total', 'Reservadas', 'Disponibles'],
+          labels: [/*'Total',*/ 'Reservadas', 'Disponibles'],
           legend: {
             show: true, // Mostrar leyenda
             position: 'right', // Posición de la leyenda (puedes usar 'top', 'bottom', 'left', 'right')

@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
-import { HabitacionesModule } from './demo/habitaciones/habitaciones.module';
-import { RolesModule } from './demo/roles/roles.module';
 
 const routes: Routes = [
 

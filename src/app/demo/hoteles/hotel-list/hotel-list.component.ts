@@ -58,6 +58,10 @@ export class HotelListComponent implements OnInit {
   }
 
   comprobarHotelUsuario(): void {
+    if (this.esSuperAdmin) {
+      this.getHoteles(this.query)
+      return;
+    }
     this.hotelesService.getHotelPorUsuario(this.usuario).subscribe(
       (response) => {
         // Si el usuario tiene un hotel, se carga la lista de hoteles
